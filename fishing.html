@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎣 钓鱼百科 · Fathoms — 玩法 Wiki</title>
+<style>
+  :root{
+    --bg:#12141a; --panel:#191c25; --card:#1d212c; --line:#2a2f3d;
+    --text:#d8dce6; --muted:#9298a8; --accent:#4cc3e6; --accent-dim:#2e7f9d;
+    --link:#7fb0f5; --code-bg:#0d0f15;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:76px;}
+  body{background:var(--bg); color:var(--text);
+    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    font-size:15.5px; line-height:1.75;}
+  a{color:var(--link); text-decoration:none;} a:hover{text-decoration:underline;}
+
+  .topnav{position:fixed; top:0; left:0; right:0; height:52px; background:rgba(20,22,30,.94); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; z-index:70; padding:0 18px; gap:4px; backdrop-filter:blur(8px);}
+  .topnav .brand{font-weight:bold; color:var(--accent); margin-right:14px; font-size:15px; white-space:nowrap;}
+  .topnav a{padding:6px 13px; border-radius:8px; color:var(--text); font-size:13.5px; white-space:nowrap;}
+  .topnav a:hover{background:var(--card); text-decoration:none;}
+  .topnav a.here{background:var(--card); color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent-dim);}
+
+  .layout{display:flex; padding-top:52px; min-height:100vh;}
+  .sidebar{width:270px; flex-shrink:0; background:var(--panel); border-right:1px solid var(--line);
+    padding:20px 14px; position:sticky; top:52px; height:calc(100vh - 52px); overflow-y:auto;}
+  .sidebar::-webkit-scrollbar{width:8px;} .sidebar::-webkit-scrollbar-thumb{background:#2e3444; border-radius:4px;}
+  .logo{display:flex; align-items:center; gap:10px; padding:4px 8px 14px; border-bottom:1px solid var(--line); margin-bottom:14px;}
+  .logo .crown{font-size:26px;}
+  .logo b{font-size:16px; color:var(--accent); letter-spacing:.5px;}
+  .logo small{display:block; color:var(--muted); font-size:11.5px; font-weight:normal;}
+  #navSearch{width:100%; padding:8px 12px; margin-bottom:12px; border-radius:8px; border:1px solid var(--line);
+    background:var(--code-bg); color:var(--text); font-size:13.5px; outline:none;}
+  #navSearch:focus{border-color:var(--accent-dim);}
+  .nav a{display:block; padding:6px 10px; margin:2px 0; border-radius:7px; color:var(--text); font-size:13.5px; border-left:3px solid transparent;}
+  .nav a:hover{background:var(--card); text-decoration:none;}
+  .nav a.active{background:var(--card); border-left-color:var(--accent); color:var(--accent);}
+  .nav .num{color:var(--accent-dim); margin-right:7px; font-size:12px;}
+  .nav-group-title{color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:1.5px; padding:14px 10px 4px;}
+
+  main{flex:1; min-width:0; padding:32px 48px 80px; max-width:1020px; margin:0 auto;}
+  .hero{background:linear-gradient(135deg,#16222c 0%,#12202a 100%); border:1px solid var(--line); border-radius:14px; padding:34px 36px; margin-bottom:30px;}
+  .hero h1{font-size:30px; color:var(--accent); letter-spacing:1px; margin-bottom:10px;}
+  .hero p{color:var(--muted); font-size:14.5px; max-width:760px;}
+  .hero .warnbar{margin-top:16px; padding:12px 16px; border-radius:9px; font-size:13.5px;
+    background:rgba(76,195,230,.07); border:1px solid rgba(76,195,230,.35); color:#c3e4ef;}
+
+  section{margin-bottom:56px;}
+  h2{font-size:24px; color:var(--accent); padding-bottom:10px; margin-bottom:20px; border-bottom:2px solid var(--line); letter-spacing:.5px;}
+  h2 .h2icon{margin-right:8px;}
+  h3{font-size:18.5px; color:#a8ddef; margin:28px 0 12px;}
+  h4{font-size:16px; color:var(--text); margin:20px 0 8px;}
+  p{margin:10px 0;} ul,ol{margin:10px 0 10px 26px;} li{margin:5px 0;}
+  li::marker{color:var(--accent-dim);}
+  strong{color:#d3eef8;}
+
+  code{background:var(--code-bg); border:1px solid var(--line); border-radius:5px; padding:1.5px 7px; font-size:13px; color:#f2c94c;
+    font-family:Consolas,"Cascadia Mono",monospace;}
+  pre.cmd{background:var(--code-bg); border:1px solid var(--line); border-left:3px solid var(--accent-dim); border-radius:8px;
+    padding:14px 18px; overflow-x:auto; margin:14px 0; font-family:Consolas,"Cascadia Mono",monospace; font-size:13.5px; line-height:1.7;}
+  pre.cmd .cmt{color:#6d7689;}
+
+  table{width:100%; border-collapse:collapse; margin:16px 0; font-size:13.5px; background:var(--card); border-radius:9px; overflow:hidden;}
+  th{background:#22303a; color:#a8ddef; text-align:left; padding:9px 12px; border:1px solid var(--line);}
+  td{padding:8px 12px; border:1px solid var(--line); vertical-align:top;}
+  tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+
+  .callout{border-radius:9px; padding:13px 18px; margin:16px 0; font-size:14.5px; border:1px solid;}
+  .callout.tip{background:rgba(76,174,109,.07); border-color:rgba(76,174,109,.4);}
+  .callout.warn{background:rgba(230,184,76,.07); border-color:rgba(230,184,76,.4);}
+  .callout.danger{background:rgba(217,107,107,.07); border-color:rgba(217,107,107,.45);}
+  .callout .tag{font-weight:bold; margin-right:6px;}
+
+  details.faq{background:var(--card); border:1px solid var(--line); border-radius:10px; margin:12px 0; overflow:hidden;}
+  details.faq summary{cursor:pointer; padding:14px 18px; font-weight:bold; color:#a8ddef; list-style:none; user-select:none;}
+  details.faq summary::-webkit-details-marker{display:none;}
+  details.faq summary::before{content:"▸ "; color:var(--accent-dim);}
+  details.faq[open] summary::before{content:"▾ ";}
+  details.faq .faq-body{padding:0 18px 16px; color:var(--text); font-size:14.5px;}
+
+  .backtop{position:fixed; right:26px; bottom:26px; width:44px; height:44px; border-radius:50%; background:var(--accent);
+    color:#10181d; border:none; font-size:19px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:.25s;}
+  .backtop.show{opacity:1; pointer-events:auto;}
+  .menu-btn{display:none;}
+  footer{color:var(--muted); font-size:13px; text-align:center; padding:30px 0 10px; border-top:1px solid var(--line); margin-top:40px;}
+
+  @media (max-width:900px){
+    .layout{display:block;}
+    .topnav{padding-left:58px; overflow-x:auto;}
+    .sidebar{position:fixed; z-index:50; left:0; top:52px; height:calc(100vh - 52px); transform:translateX(-105%);
+      transition:transform .28s ease; box-shadow:8px 0 30px rgba(0,0,0,.5);}
+    .sidebar.open{transform:translateX(0);}
+    main{padding:24px 20px 60px;}
+    .menu-btn{display:block; position:fixed; z-index:80; top:9px; left:12px; background:var(--card); color:var(--accent);
+      border:1px solid var(--line); border-radius:8px; padding:5px 11px; font-size:16px; cursor:pointer;}
+    .hero{padding:24px 20px;} .hero h1{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<button class="menu-btn" id="menuBtn">☰</button>
+<nav class="topnav">
+  <span class="brand">🎣 钓鱼百科</span>
+  <a href="index.html">🏠 首页</a>
+  <a href="kingdoms.html">⚔️ 国家</a>
+  <a class="here" href="fishing.html">🎣 钓鱼</a>
+  <a href="cooking.html">🍳 烹饪</a>
+  <a href="bartending.html">🍸 调酒</a>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <span class="crown">🎣</span>
+      <div><b>Fathoms 钓鱼</b><small>深渊垂钓 · 玩家教程</small></div>
+    </div>
+    <input type="text" id="navSearch" placeholder="🔍 搜索章节…">
+    <nav class="nav" id="nav">
+      <div class="nav-group-title">入门</div>
+      <a href="#start"><span class="num">01</span>快速上手</a>
+      <a href="#mechanic"><span class="num">02</span>基础机制与五大渔获</a>
+      <a href="#moon"><span class="num">03</span>月相系统：夏至与日蚀</a>
+      <div class="nav-group-title">图鉴</div>
+      <a href="#fish"><span class="num">04</span>鱼类图鉴（39 种）</a>
+      <a href="#aberration"><span class="num">05</span>畸变鱼图鉴（36 种）</a>
+      <a href="#bait"><span class="num">06</span>诱饵指南</a>
+      <a href="#luck"><span class="num">07</span>海之眷顾的奥秘</a>
+      <div class="nav-group-title">进阶</div>
+      <a href="#chopping"><span class="num">08</span>切鱼台</a>
+      <a href="#idol"><span class="num">09</span>神像与仪式</a>
+      <a href="#treasure"><span class="num">10</span>宝藏·垃圾·矿物</a>
+      <a href="#bottle"><span class="num">11</span>瓶中信与沉没笔记</a>
+      <a href="#calligraphy"><span class="num">12</span>书法台与诅咒附魔</a>
+      <a href="#events"><span class="num">13</span>特殊事件与 Boss</a>
+      <a href="#misc"><span class="num">14</span>鱼料理与实用家具</a>
+      <div class="nav-group-title">工具</div>
+      <a href="#commands"><span class="num">15</span>指令速查</a>
+      <a href="#faq"><span class="num">16</span>常见问题 FAQ</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h1>🎣 钓鱼百科（Fathoms）</h1>
+      <p>一套彻底取代原版钓鱼的深度玩法：<b>39 种普通鱼 + 36 种畸变鱼</b>、随月相轮转的夏至/日蚀钓法、切鱼台、神像仪式、书法台解密……钓上来的每一条鱼都是图鉴的一块拼图。</p>
+      <div class="warnbar">📖 本教程基于插件默认规则整理，服务器可能有所调整，以游戏内实际为准。鱼饵、鱼竿、家具的<b>合成配方在服务器资源包中</b>，可向管理员索取合成表。</div>
+    </div>
+
+    <!-- 01 快速上手 -->
+    <section id="start">
+      <h2><span class="h2icon">🚀</span>快速上手</h2>
+      <ol>
+        <li><b>拿鱼竿找片水</b>：插件会完全替换原版渔获。每次起竿，动作栏会提示"钓到了 ×× ×1"。</li>
+        <li><b>打开鱼图鉴</b>：输入 <code>/fathoms gastronomicon</code>（或手持"美食圣典"右键）查看收集进度——已解锁的鱼会显示图鉴信息与栖息环境提示，未解锁显示"？？？"+ 环境线索。</li>
+        <li><b>按环境换钓点</b>：鱼按<b>生物群系 + 时段 + 月相</b>出没。想钓某种鱼，先看图鉴里的环境提示，再对照本教程的鱼类表。</li>
+        <li><b>用诱饵提效率</b>：把诱饵拿在<b>主手或副手</b>才生效。糖饵清垃圾、鮟鱇饵引畸变、宝石磁铁钓矿物。</li>
+        <li><b>切鱼利用</b>：多余的鱼放到<b>切鱼台</b>上用刀切开——产出鱼子、矿物、经验球，还能给神像喂养"精魂"。</li>
+      </ol>
+      <div class="callout tip"><span class="tag">💡</span>鱼没有出售价格和经验等级系统——鱼的价值在于<b>图鉴收集、切鱼产出和仪式材料</b>。全收集后有隐藏奖励（见"特殊事件"章）。</div>
+    </section>
+
+    <!-- 02 基础机制 -->
+    <section id="mechanic">
+      <h2><span class="h2icon">🎲</span>基础机制与五大渔获</h2>
+      <p>每次起竿，插件先决定本次渔获的<b>类别</b>，再从该类别中抽具体物品：</p>
+      <table>
+        <tr><th>类别</th><th>说明</th></tr>
+        <tr><td><b>普通鱼</b></td><td>最常见的主力渔获</td></tr>
+        <tr><td><b>畸变鱼</b></td><td>稀有的变异体，切鱼经验更高</td></tr>
+        <tr><td><b>垃圾</b></td><td>皮革、骨头、腐肉等杂物，可被某些诱饵清零</td></tr>
+        <tr><td><b>宝藏</b></td><td>较为稀少，需要在<b>开阔水域</b>才能钓到</td></tr>
+        <tr><td><b>矿物</b></td><td>仅手持<b>宝石磁铁</b>时才会出现</td></tr>
+      </table>
+
+      <h3>开阔水域判定（宝藏门槛）</h3>
+      <p>以你的浮标为中心，统计周围 <b>5×3×5 = 75 格</b>内的水方块数量，<b>≥15 格</b>才算开阔水域。在水沟、窄河道里永远钓不到宝藏——想钓宝藏去大海或大湖。</p>
+
+      <h3>影响渔获的因素</h3>
+      <ul>
+        <li>手持<b>糖饵</b>：更容易钓到鱼，且垃圾清零；手持<b>腥饵</b>：垃圾清零；手持<b>虾 / 鲦鱼</b>：更容易钓到鱼；</li>
+        <li>手持<b>鮟鱇饵</b>：更容易遇到畸变鱼；幽灵虾 / 蜘蛛鲦也有类似效果；背包里放着<b>怪异护符</b>还能再添一份运气（不消耗）；</li>
+        <li><b>夜晚</b>畸变鱼的出现率更高。</li>
+      </ul>
+
+      <h3>诱饵规则须知</h3>
+      <ul>
+        <li>诱饵必须在<b>主手或副手</b>（怪异护符例外，背包任意位置有效）；</li>
+        <li>同时拿多种诱饵时<b>只生效优先级最高的一种</b>：糖饵 &gt; 腥饵 &gt; 鮟鱇饵 &gt; 宝石磁铁 &gt; 幽灵虾 &gt; 蜘蛛鲦 &gt; 虾 &gt; 鲦鱼；</li>
+        <li>每次起竿有概率消耗一个诱饵（详见诱饵指南章节）。</li>
+      </ul>
+    </section>
+
+    <!-- 03 月相 -->
+    <section id="moon">
+      <h2><span class="h2icon">🌕</span>月相系统：夏至与日蚀</h2>
+      <p>Fathoms 引入了一套 8 个游戏日一轮回的"至日月相"：</p>
+      <ul>
+        <li><b>第 1–4 天 = 夏至</b>，<b>第 5–8 天 = 日蚀</b>；</li>
+        <li>普通鱼和畸变鱼各有 11 种<b>夏至限定</b>、11 种<b>日蚀限定</b>——错过的月相只能等下一轮；</li>
+        <li>若服务器在 HUD/计分板上显示了月相图标，可直接查看当前处于哪个半程。</li>
+      </ul>
+      <div class="callout warn"><span class="tag">⚠️</span><b>虾会反转月相！</b>手持<b>虾</b>或<b>幽灵虾</b>钓鱼时，月相判定被反转：夏至期间拿虾能钓<b>日蚀限定</b>鱼，日蚀期间拿虾能钓<b>夏至限定</b>鱼。想不受月相限制？两种虾各备一点，随时切换。</div>
+      <div class="callout tip"><span class="tag">💡</span>记不住顺序也没关系：月亮圆缺循环一轮（8 个游戏日）= 夏至 4 天 + 日蚀 4 天，数日子即可。</div>
+    </section>
+
+    <!-- 04 鱼类图鉴 -->
+    <section id="fish">
+      <h2><span class="h2icon">🐟</span>鱼类图鉴（39 种）</h2>
+
+      <h3>🌊 海洋类</h3>
+      <table>
+        <tr><th>鱼</th><th>栖息环境</th><th>时段</th><th>月相</th><th>备注</th></tr>
+        <tr><td>鳕鱼</td><td>海洋</td><td>全天</td><td>—</td><td>—</td></tr>
+        <tr><td>金枪鱼</td><td>海洋/沙滩/石岸</td><td>全天</td><td>夏至</td><td>—</td></tr>
+        <tr><td>红鲷鱼</td><td>海洋/沙滩/石岸</td><td>全天</td><td>日蚀</td><td>—</td></tr>
+        <tr><td>鲑鱼</td><td>河流、寒冷海洋、沼泽</td><td>全天</td><td>—</td><td>—</td></tr>
+        <tr><td>虾</td><td>海洋</td><td>全天</td><td>—</td><td>一次多条；可做诱饵/反转月相</td></tr>
+        <tr><td>石斑鱼</td><td>海洋</td><td>全天</td><td>夏至</td><td>—</td></tr>
+        <tr><td>黑线鳕</td><td>海洋</td><td>全天</td><td>日蚀</td><td>—</td></tr>
+        <tr><td>沉船鱼</td><td>海洋</td><td>全天</td><td>—</td><td>附近需有<b>沉船/海底废墟</b></td></tr>
+        <tr><td>鮟鱇鱼</td><td>海洋/深海</td><td>夜晚</td><td>夏至</td><td>白天有小概率钓到</td></tr>
+        <tr><td>鳗鱼</td><td>海洋</td><td>夜晚</td><td>日蚀</td><td>白天有小概率钓到</td></tr>
+        <tr><td>腔棘鱼</td><td>海洋/深暗之域</td><td>全天</td><td>—</td><td>需<b>古代水库</b>群系，或<b>雨天露天</b></td></tr>
+        <tr><td>大比目鱼</td><td>寒冷/冰冻海洋</td><td>全天</td><td>夏至</td><td>—</td></tr>
+        <tr><td>罗非鱼</td><td>寒冷/冰冻海洋</td><td>全天</td><td>日蚀</td><td>—</td></tr>
+        <tr><td>小丑鱼</td><td>温暖海洋</td><td>全天</td><td>—</td><td>—</td></tr>
+        <tr><td>河豚</td><td>温暖海洋</td><td>全天</td><td>—</td><td>—</td></tr>
+        <tr><td>神仙鱼</td><td>温暖海洋</td><td>全天</td><td>—</td><td>—</td></tr>
+        <tr><td>青铜颚剑鱼</td><td>寒冷/冰冻海洋</td><td>全天</td><td>—</td><td>—</td></tr>
+        <tr><td>龙虾</td><td>沙漠/深暗之域</td><td>全天</td><td>—</td><td>极小概率蜕变为<b>蓝龙虾</b>；坚硬外壳</td></tr>
+        <tr><td>蓝龙虾</td><td>—</td><td>—</td><td>—</td><td>只能靠龙虾蜕变获得</td></tr>
+      </table>
+
+      <h3>🏞️ 河流湖泊类</h3>
+      <table>
+        <tr><th>鱼</th><th>栖息环境</th><th>时段</th><th>月相</th><th>备注</th></tr>
+        <tr><td>鲈鱼</td><td>黑森林/雪林/沼泽/针叶林等广泛分布</td><td>全天</td><td>日蚀</td><td><b>万能保底鱼</b>（任何群系都能钓到）</td></tr>
+        <tr><td>鲤鱼</td><td>同鲈鱼</td><td>全天</td><td>夏至</td><td><b>万能保底鱼</b></td></tr>
+        <tr><td>鲶鱼</td><td>河流/沼泽/红树林</td><td>全天</td><td>夏至</td><td>—</td></tr>
+        <tr><td>鳟鱼</td><td>河流/沼泽/红树林</td><td>全天</td><td>日蚀</td><td>—</td></tr>
+        <tr><td>鲦鱼</td><td>河流</td><td>夜晚</td><td>—</td><td>一次多条；可做诱饵</td></tr>
+        <tr><td>鲷鱼</td><td>河流/黑森林/苍白花园</td><td>夜晚</td><td>夏至</td><td>—</td></tr>
+        <tr><td>碧古鱼</td><td>同鲷鱼</td><td>夜晚</td><td>日蚀</td><td>—</td></tr>
+        <tr><td>雀鳝</td><td>沼泽/红树林/丛林</td><td>全天</td><td>夏至</td><td>—</td></tr>
+        <tr><td>巨骨舌鱼</td><td>沼泽/红树林/丛林</td><td>全天</td><td>日蚀</td><td>—</td></tr>
+        <tr><td>河鲈</td><td>冰峰/雪原/针叶林等寒冷群系</td><td>全天</td><td>夏至</td><td>—</td></tr>
+        <tr><td>白斑狗鱼</td><td>同河鲈</td><td>全天</td><td>日蚀</td><td>—</td></tr>
+        <tr><td>锦鲤</td><td>樱花林</td><td>全天</td><td>—</td><td>—</td></tr>
+      </table>
+
+      <h3>🏔️ 特殊群系 / 结构限定</h3>
+      <table>
+        <tr><th>鱼</th><th>出现条件</th><th>月相</th></tr>
+        <tr><td>琥珀鰤</td><td>苍白花园群系</td><td>任意</td></tr>
+        <tr><td>红点鲑</td><td>恶地/热带草原/沙漠/丛林/深暗之域</td><td>夏至</td></tr>
+        <tr><td>比目鱼</td><td>同红点鲑</td><td>日蚀</td></tr>
+        <tr><td>凯撒鲈</td><td>雪原/冰刺 + 附近有<b>许愿井</b></td><td>任意</td></tr>
+        <tr><td>盲鲈</td><td>蘑菇岛</td><td>日蚀</td></tr>
+        <tr><td>腐化鲤</td><td>蘑菇岛</td><td>夏至</td></tr>
+        <tr><td>鳉鱼</td><td>蘑菇岛</td><td>任意</td></tr>
+        <tr><td>金鳃鱼</td><td>只能在<b>鎏金微光</b>附近钓到（见特殊事件）</td><td>任意</td></tr>
+      </table>
+      <div class="callout tip"><span class="tag">💡</span>进入苍白花园、蘑菇岛、深暗之域、古代水库时屏幕会弹出<b>标题卡片</b>提示该地区的特色鱼种——留意这些提示能省很多图鉴功课。</div>
+    </section>
+
+    <!-- 05 畸变鱼 -->
+    <section id="aberration">
+      <h2><span class="h2icon">👁️</span>畸变鱼图鉴（36 种）</h2>
+      <p>畸变鱼是鱼的变异体，出现概率很低；切鱼经验更高，且全部携带"畸变"精魂。按月相分三组：</p>
+      <h3>任意月相（14 种）</h3>
+      <p>幻影鳕鱼（海洋）、破碎鲑鱼（鲑鱼群系）、弄臣鱼（温暖海洋）、闪光棘河豚（温暖海洋）、幽灵虾（海洋）、蜘蛛鲦（河流夜晚）、伊赫提斯（温暖海洋）、白鲸残骸（需沉船）、腐烂锦鲤（樱花林）、封葬琥珀鰤（苍白花园）、骇人团块（沙漠/深暗）、致癌奇虾（深暗）、鹦鹉螺潜伏者（深暗）、炫目腔棘鱼（需雨天/古代水库）。</p>
+      <h3>夏至限定（11 种）</h3>
+      <p>人面鲤（鲤鱼群系）、黑曜鲶（河流/沼泽）、孢子金枪鱼（海洋系）、羽河鲈（寒冷群系）、辉光鲷（鲷鱼群系·夜晚）、疤痕雀鳝（沼泽丛林）、焦红点鲑（红点鲑群系）、水晶大比目鱼（寒冷海洋）、被噬石斑（海洋）、缠结鮟鱇（海洋·夜晚）、狂乱鲤（蘑菇岛）。</p>
+      <h3>日蚀限定（11 种）</h3>
+      <p>无底鲈（鲈鱼群系）、满口鳟（鳟鱼群系）、眼球琼斯（海洋系）、磨牙狗鱼（寒冷群系）、剜眼（鲷鱼群系·夜晚）、剥皮骨舌鱼（沼泽丛林）、弗朗德里（红点鲑群系）、耀罗非鱼（寒冷海洋）、悲鸣黑线鳕（海洋）、伏特鳗（海洋·夜晚）、深底鲈（蘑菇岛）。</p>
+      <div class="callout tip"><span class="tag">💡</span>图鉴大成条件：集齐 <b>38 种普通鱼 + 20 种畸变鱼</b>。畸变钓率太低时，戴怪异护符 + 鮟鱇饵 + 夜钓三件套叠加，效果显著。</div>
+    </section>
+
+    <!-- 06 诱饵 -->
+    <section id="bait">
+      <h2><span class="h2icon">🪝</span>诱饵指南</h2>
+      <table>
+        <tr><th>诱饵</th><th>效果</th><th>消耗</th><th>使用场景</th></tr>
+        <tr><td><b>糖饵</b></td><td>更容易钓到鱼，<b>清零垃圾</b></td><td>每竿必耗</td><td>刷图鉴主力</td></tr>
+        <tr><td><b>腥饵</b></td><td><b>清零垃圾</b></td><td>偶尔消耗</td><td>低成本稳定渔获</td></tr>
+        <tr><td><b>鮟鱇饵</b></td><td>更容易遇到畸变鱼</td><td>较常消耗</td><td>冲畸变图鉴</td></tr>
+        <tr><td><b>宝石磁铁</b></td><td><b>解锁矿物类别</b></td><td>偶尔消耗</td><td>水下"采矿"</td></tr>
+        <tr><td><b>虾</b></td><td>更容易钓到鱼，<b>反转月相</b></td><td>较常消耗</td><td>钓错半月相的鱼</td></tr>
+        <tr><td><b>幽灵虾</b></td><td>畸变概率提升，反转月相</td><td>经常消耗</td><td>畸变+月相双修</td></tr>
+        <tr><td><b>鲦鱼</b></td><td>更容易钓到鱼</td><td>较常消耗</td><td>廉价鱼类加成</td></tr>
+        <tr><td><b>蜘蛛鲦</b></td><td>畸变概率提升</td><td>较常消耗</td><td>畸变加成</td></tr>
+        <tr><td><b>怪异护符</b></td><td>畸变概率提升</td><td>不消耗</td><td>放背包里常驻</td></tr>
+      </table>
+      <div class="callout warn"><span class="tag">⚠️</span>同时拿多种诱饵只有<b>优先级最高的一个</b>生效（糖饵 &gt; 腥饵 &gt; 鮟鱇饵 &gt; 宝石磁铁 &gt; 幽灵虾 &gt; 蜘蛛鲦 &gt; 虾 &gt; 鲦鱼）。想"糖饵 + 鮟鱇饵"双开是不行的，按目标选一种拿在手上。</div>
+      <div class="callout tip"><span class="tag">💡</span>虾和鲦鱼本身就是可钓的鱼——即"钓上来的诱饵"，早期可以先钓虾/鲦鱼攒起来当诱饵用。</div>
+    </section>
+
+    <!-- 07 海之眷顾 -->
+    <section id="luck">
+      <h2><span class="h2icon">🍀</span>海之眷顾的奥秘</h2>
+      <p>鱼竿上的原版<b>海之眷顾（Luck of the Sea）附魔</b>在本玩法中影响巨大：</p>
+      <ul>
+        <li>对大多数稀有鱼（<b>鮟鱇鱼、鳗鱼、沉船鱼、锦鲤、琥珀鰤、龙虾、腔棘鱼</b>等）和多数畸变鱼：附魔等级越高，出现率越高；</li>
+        <li>对<b>虾、鲦鱼、鲤鱼、鲈鱼</b>：附魔反而会<b>降低</b>它们的出现率；</li>
+        <li>宝藏和垃圾同样受影响：鹦鹉螺壳、皮革、骨头越附魔越多；旧皮靴、海螺越钓越少。</li>
+      </ul>
+      <div class="callout tip"><span class="tag">💡</span>冲图鉴时给鱼竿附<b>高等级海之眷顾</b>性价比极高；但如果你在专门刷虾/鲦鱼做诱饵，反而要拿<b>无附魔</b>或低附魔的竿。</div>
+    </section>
+
+    <!-- 08 切鱼台 -->
+    <section id="chopping">
+      <h2><span class="h2icon">🔪</span>切鱼台</h2>
+      <p>切鱼台是把多余的鱼转化为资源的核心设施（有 19 种木质外观）。</p>
+      <h3>操作方法</h3>
+      <ol>
+        <li>放置切鱼台；</li>
+        <li><b>手持鱼右键</b>台面 → 把鱼摆上台（显示 3D 鱼模型）；</li>
+        <li><b>手持刀右键</b> → 切开结算掉落；<b>空手右键</b> → 把鱼取回背包。</li>
+      </ol>
+      <p>可用刀具：献祭小刀家族、华丽切肉斧，以及原版<b>铁/石/钻石/下界合金的剑与斧</b>（每次切鱼消耗 1 点耐久）。</p>
+
+      <h3>切鱼产出</h3>
+      <table>
+        <tr><th>产出</th><th>概率</th><th>说明</th></tr>
+        <tr><td>生鱼</td><td>必得</td><td>每次必掉</td></tr>
+        <tr><td>鱼子</td><td>有机会</td><td>食用可获得短暂的幸运效果！</td></tr>
+        <tr><td>骨粉</td><td>有机会</td><td>带"耐力"精魂的鱼更容易出</td></tr>
+        <tr><td>异变墨囊</td><td>有机会</td><td>带"神秘"精魂的鱼更容易出（书法台消耗品）</td></tr>
+        <tr><td>额外生鱼</td><td>小概率</td><td>华丽切肉斧概率更高，并有"双倍掉落"提示</td></tr>
+        <tr><td>矿物</td><td>小概率</td><td>铁粒/金粒/绿宝石/海晶晶粒/海晶碎片等，偶尔能出<b>钻石</b>；带"福佑"精魂的鱼概率更高</td></tr>
+        <tr><td>告密之心</td><td>小概率</td><td>畸变鱼和金鳃鱼的概率更高</td></tr>
+        <tr><td>绿宝石</td><td>有机会</td><td>切金鳃鱼时</td></tr>
+        <tr><td>经验球</td><td>必得</td><td>畸变鱼经验更多</td></tr>
+      </table>
+
+      <div class="callout danger"><span class="tag">❗</span><b>坚硬外壳</b>：龙虾、蓝龙虾、致癌奇虾、鹦鹉螺潜伏者必须用<b>华丽切肉斧</b>（或下界合金版）才能切，普通刀切不动！<br><b>副作用</b>：切畸变鱼有可能让自己短暂反胃 + 失明，胆小勿看。切鱼台下方放羊毛可以消音。</div>
+      <div class="callout warn"><span class="tag">⚠️</span>只有<b>献祭小刀家族</b>切鱼时会把鱼的"精魂"传给附近的神像——用普通剑斧切鱼无法喂养神像！</div>
+    </section>
+
+    <!-- 09 神像与仪式 -->
+    <section id="idol">
+      <h2><span class="h2icon">🗿</span>神像与仪式</h2>
+      <p>7 种畸变神像 = 7 种一次性强力仪式。完整流程：</p>
+      <ol>
+        <li>放置神像（怪异/受损/侵蚀/沉重/崎岖/潮湿/易碎 7 种外观）；</li>
+        <li>在神像<b>附近</b>用<b>献祭小刀</b>切对应精魂的鱼，精魂粒子会飞向神像被吸收；</li>
+        <li>精魂<b>总数刚好凑齐</b>（不能多也不能少）→ 神像就绪（音爆特效）；</li>
+        <li>手持对应<b>沉没笔记</b>右键神像执行仪式（易碎神像无需笔记，就绪后直接右键）。</li>
+      </ol>
+
+      <h3>七种仪式需求一览</h3>
+      <table>
+        <tr><th>神像</th><th>仪式</th><th>精魂需求</th><th>所需沉没笔记</th></tr>
+        <tr><td>易碎</td><td>错误决定</td><td>质量1 + 狡黠1 + 神秘1</td><td>无需笔记</td></tr>
+        <tr><td>怪异</td><td>屠宰护符</td><td>质量2</td><td>海洋 · 屠宰护符</td></tr>
+        <tr><td>潮湿</td><td>召唤兽群</td><td>日蚀1 + 质量2 + 狡黠1 + 耐力1</td><td>多石水域 · 召唤兽群</td></tr>
+        <tr><td>崎岖</td><td>神赐</td><td>夏至1 + 福佑2 + 质量1 + 狡黠1</td><td>多石水域 · 神赐</td></tr>
+        <tr><td>沉重</td><td>献祭</td><td>夏至1 + 质量1 + 耐力2</td><td>海洋 · 形态化马</td></tr>
+        <tr><td>侵蚀</td><td>祈雨舞</td><td>日蚀1 + 福佑1 + 狡黠2</td><td>海洋 · 祈雨舞</td></tr>
+        <tr><td>受损</td><td>幸运仪式</td><td>福佑2</td><td>海洋 · 幸运仪式</td></tr>
+      </table>
+      <div class="callout tip"><span class="tag">💡</span>哪些鱼带哪种精魂？切鱼时看产出就知道（如切鲤鱼掉鱼子=带福佑）。速记：<b>质量</b>=大块头鱼（鳕鱼/龙虾/金枪鱼等）、<b>耐力</b>=洄游鱼（鲑鱼/鳟鱼等）、<b>狡黠</b>=机灵鱼（河豚/狗鱼等）、<b>福佑</b>=锦鲤/金鳃/比目鱼等、<b>神秘</b>=小丑鱼/腔棘鱼/鳉鱼。畸变鱼必带"畸变"精魂外加自身月相精魂。</div>
+
+      <h3>仪式效果</h3>
+      <table>
+        <tr><th>仪式</th><th>效果</th></tr>
+        <tr><td>错误决定</td><td>给自己短暂的凋零 + 虚弱，换取随机掉落物，还有机会刷出怪物</td></tr>
+        <tr><td>屠宰护符</td><td>幸运效果 + 掉落骨头；短时间内击杀掉落提升</td></tr>
+        <tr><td>召唤兽群</td><td>召唤一批深渊生物——刷怪场の友</td></tr>
+        <tr><td>神赐</td><td>随机掉落一件好东西：鹦鹉螺壳/海洋之心/海螺/附魔金苹果/钻石/下界合金锭等</td></tr>
+        <tr><td>献祭</td><td>献祭附近一匹马/驴/骡/骆驼，召唤深渊神话生物；失败则生成<b>凯尔皮</b>骷髅马（见下）</td></tr>
+        <tr><td>祈雨舞</td><td>切换降雨/雷暴 ↔ 放晴（农民和钓客狂喜）</td></tr>
+        <tr><td>幸运仪式</td><td>幸运 + 村庄英雄效果，外加绿宝石和金锭</td></tr>
+      </table>
+
+      <h3>凯尔皮（Kelpie）水上坐骑</h3>
+      <p>献祭仪式的产物之一：一匹自带鞍的骷髅马"Kelpie"，速度飞快。它<b>离水会逐渐干涸</b>减速冒烟——手持<b>水桶右键</b>补水即可恢复，泡在水里也会自动回湿。养在水边就是一辆水上跑车。</p>
+    </section>
+
+    <!-- 10 宝藏 -->
+    <section id="treasure">
+      <h2><span class="h2icon">💎</span>宝藏 · 垃圾 · 矿物</h2>
+      <h3>宝藏表（需开阔水域）</h3>
+      <table>
+        <tr><th>物品</th><th>稀有度</th><th>说明</th></tr>
+        <tr><td>鹦鹉螺壳</td><td>常见</td><td>最常见宝藏</td></tr>
+        <tr><td>瓶中信</td><td>较常见</td><td>仅海洋群系或多石水域；可开出仪式笔记（见下章）</td></tr>
+        <tr><td>命名牌</td><td>一般</td><td>—</td></tr>
+        <tr><td>普通书</td><td>一般</td><td>钓上来会变成随机附魔书</td></tr>
+        <tr><td>海螺 / 荆棘螺壳</td><td>较稀有</td><td>乐器！右键吹奏（有冷却）</td></tr>
+        <tr><td>经验修补附魔书</td><td>稀有</td><td>稀有大奖</td></tr>
+      </table>
+      <h3>垃圾表（按群系变化）</h3>
+      <p>通用：皮革、骨头、线、腐肉；海洋：望远镜、破损皮靴、墨囊；平原/森林：小麦种子；沙漠/恶地：枯灌木；沼泽：睡莲；针叶林：蕨；丛林：竹子。用糖饵或腥饵可以直接<b>把垃圾清零</b>。</p>
+      <h3>矿物（手持宝石磁铁）</h3>
+      <p>以铁锭、金锭为主，也有绿宝石，偶尔能捞出<b>钻石</b>。矿工不下矿的理由 +1。</p>
+    </section>
+
+    <!-- 11 瓶中信 -->
+    <section id="bottle">
+      <h2><span class="h2icon">🍶</span>瓶中信与沉没笔记</h2>
+      <p>瓶中信是仪式系统的"图纸"来源。开启规则：</p>
+      <ul>
+        <li>必须站在<b>海洋/沙滩群系</b>或<b>多石水域</b>右键开启，其他地方开启会提示"此瓶中信息无效"；</li>
+        <li><b>海洋开启</b>：多数情况得到海洋沉没笔记（幸运仪式 / 屠宰护符 / 形态化马 / 祈雨舞），也有机会得到多石水域航海图；</li>
+        <li><b>多石水域开启</b>：可能得到神赐笔记、召唤兽群笔记，或绿洲航海图、许愿井航海图；</li>
+        <li>偶尔还会额外掉落一个鹦鹉螺壳。</li>
+      </ul>
+      <p><b>沉没笔记</b>共 6 种，<b>空中右键可以翻面</b>，lore 标注"记载仪式: ××"。凑齐笔记 + 喂满精魂的神像，就能执行对应仪式。</p>
+    </section>
+
+    <!-- 12 书法台 -->
+    <section id="calligraphy">
+      <h2><span class="h2icon">🖌️</span>书法台与诅咒附魔</h2>
+      <p>书法台是个带风险的特殊附魔系统——解密典籍，附加"诅咒"（有好有坏）到工具上。</p>
+      <h3>解密流程</h3>
+      <ol>
+        <li>手持<b>典籍</b>（神秘/注能/寒霜/制作/收线 5 种）右键书法台放入；</li>
+        <li>翻开 12 张卡牌进行<b>记忆配对</b>（6 种精魂各 2 张）——<b>每翻一张消耗 1 个异变墨囊</b>（切"神秘"精魂的鱼有机会获得）；</li>
+        <li>配错稍后会盖回；6 对全部配对成功 → 典籍解码为<b>诅咒附魔书</b>；</li>
+        <li><b>主手持诅咒书、副手持工具</b>右键 → 诅咒附加到工具上（可叠加多个）。</li>
+      </ol>
+      <h3>五种诅咒效果</h3>
+      <table>
+        <tr><th>典籍</th><th>诅咒</th><th>效果</th></tr>
+        <tr><td>神秘典籍</td><td>碾碎</td><td>潜行挖方块时有概率连锁破坏周围一圈软方块——掘地神器</td></tr>
+        <tr><td>注能典籍</td><td>鞭刑</td><td>近战攻击有概率反噬：自己飘浮一下并受到少量伤害</td></tr>
+        <tr><td>寒霜典籍</td><td>寒霜</td><td>挖方块有概率让自己短暂缓慢 + 冰冻值上升</td></tr>
+        <tr><td>制作典籍</td><td>制作</td><td>近战命中有概率掉落一个工作台（移动工作台！）</td></tr>
+        <tr><td>收线典籍</td><td>收线</td><td>收杆有概率把自己向浮标拖拽——钓鱼"赶路"技</td></tr>
+      </table>
+      <div class="callout tip"><span class="tag">💡</span>诅咒各有妙用："碾碎"是速挖神器、"制作"等于随身工作台、"收线"能用来水上位移——别被"诅咒"两个字吓到。</div>
+    </section>
+
+    <!-- 13 特殊事件 -->
+    <section id="events">
+      <h2><span class="h2icon">🌩️</span>特殊事件与 Boss</h2>
+      <h3>深渊低语者 Augur</h3>
+      <ul>
+        <li>在<b>雷暴天气</b>的<b>深暗之域</b>钓到畸变鱼时，有概率在全服公告中现身"深渊低语... Augur 现身！"；</li>
+        <li>它会放电攻击靠近的玩家（短暂缓慢 + 虚弱）；</li>
+        <li>击败它的奖励由服务器配置决定——高风险高回报。</li>
+      </ul>
+      <h3>鎏金微光</h3>
+      <ul>
+        <li>钓鱼场次累计 ≥32 且捕到过至少 1 条畸变鱼后，将有概率出现；</li>
+        <li>在微光 32 格内起竿：必定钓到金鳃鱼，钓到后微光消散；</li>
+        <li>金鳃鱼切鱼将有机会掉落告密之心、绿宝石——见到微光请立刻抄竿！</li>
+      </ul>
+      <h3>鎏金鱼与全收集奖励</h3>
+      <ul>
+        <li>集齐全部鱼后，钓鱼时将有极小概率让本次渔获<b>鎏金化</b>：稀有度提升一档并获得金色"鎏金"标识；</li>
+        <li>全收集达成时自动发放称号类权限奖励（服务器自定义）。</li>
+      </ul>
+      <h3>蓝龙虾</h3>
+      <p>钓到龙虾时有极小概率直接蜕变为蓝龙虾——图鉴里最难的一抹蓝，纯看脸。</p>
+    </section>
+
+    <!-- 14 料理与杂项 -->
+    <section id="misc">
+      <h2><span class="h2icon">🍤</span>鱼料理与实用家具</h2>
+      <h3>食用效果</h3>
+      <table>
+        <tr><th>物品</th><th>食用效果</th></tr>
+        <tr><td>鱼子</td><td><b>短暂的幸运效果</b>（前期挖矿加成神器）</td></tr>
+        <tr><td>龙虾尾</td><td>饱和 + 生命恢复</td></tr>
+        <tr><td>畸变熟鱼</td><td>夜视 + 生命恢复</td></tr>
+        <tr><td>畸变生鱼</td><td>凋零 + 反胃 + 饥饿（慎吃！）</td></tr>
+        <tr><td>熟鱼 / 生鱼</td><td>少量饱和 / 生鱼可能越吃越饿</td></tr>
+      </table>
+      <h3>实用物具</h3>
+      <ul>
+        <li><b>海螺 / 荆棘螺壳</b>：右键吹奏音乐（有冷却），纯氛围组；</li>
+        <li><b>鹦鹉螺虹吸管</b>：放置后自动吸取附近的掉落物进内置容器；右键开容器、潜行+右键一键取走；外壳随收集量升级变色；</li>
+        <li><b>华丽工具 6 件</b>：镐/斧/铲/锄/切肉斧/献祭小刀，可在锻造台用<b>下界合金锭</b>升级为下界合金版（保留附魔与耐久）；华丽切肉斧是切龙虾刚需；</li>
+        <li><b>鱼肚掉落</b>：切鱼有机会掉<b>沉没钥匙</b>（带"福佑"精魂的鱼概率更高），金鳃鱼有机会掉<b>华丽钥匙</b>——服务器可能用它们对接宝箱/抽奖系统。</li>
+      </ul>
+    </section>
+
+    <!-- 15 指令 -->
+    <section id="commands">
+      <h2><span class="h2icon">⌨️</span>指令速查</h2>
+      <p>主指令 <code>/fathoms</code>，别名 <code>/fath</code>。玩家指令默认全部开放，无需额外权限。</p>
+      <table>
+        <tr><th style="width:42%">指令</th><th>说明</th></tr>
+        <tr><td><code>/fathoms help</code></td><td>显示帮助</td></tr>
+        <tr><td><code>/fathoms gastronomicon</code></td><td>打开美食圣典（鱼图鉴）</td></tr>
+        <tr><td><code>/fathoms stats</code></td><td>查看个人统计（鱼/畸变/总数）</td></tr>
+        <tr><td><code>/fathoms give &lt;物品id&gt; [玩家]</code></td><td>管理员：发放物品</td></tr>
+        <tr><td><code>/fathoms jinx &lt;诅咒&gt;</code></td><td>管理员：给手持物品附加诅咒</td></tr>
+        <tr><td><code>/fathoms bellyloot</code></td><td>管理员：管理鱼肚掉落表</td></tr>
+        <tr><td><code>/fathoms reload</code></td><td>管理员：重载配置</td></tr>
+      </table>
+      <p>图鉴 GUI：已捕获显示鱼模型 + 栖息环境；未捕获显示"？？？"+ 环境线索；支持翻页，底部统计书显示总进度。</p>
+    </section>
+
+    <!-- 16 FAQ -->
+    <section id="faq">
+      <h2><span class="h2icon">❓</span>常见问题 FAQ</h2>
+
+      <details class="faq"><summary>为什么我钓不到宝藏？</summary><div class="faq-body">
+        宝藏要求<b>开阔水域</b>：以浮标为中心 75 格内至少 15 格水。去大海、大湖深水区钓；小水沟、人工窄河道出不了宝藏。另外宝藏本身出现率就很低，需要耐心。
+      </div></details>
+
+      <details class="faq"><summary>为什么钓上来全是垃圾？</summary><div class="faq-body">
+        垃圾占比不低。解法：① 手持<b>糖饵</b>（更容易钓到鱼且垃圾清零）；② 手持<b>腥饵</b>（垃圾清零，消耗少更省钱）；③ 去鎏金微光或古代水库钓（垃圾强制清零）。
+      </div></details>
+
+      <details class="faq"><summary>图鉴里的鱼怎么都显示"？？？"？</summary><div class="faq-body">
+        未捕获的鱼不显示名字，但会显示<b>栖息环境提示</b>（如"多石水域·夜晚"）。对照本教程的鱼类表找对应群系/时段/月相去钓即可解锁。
+      </div></details>
+
+      <details class="faq"><summary>月相怎么查看？夏至/日蚀是什么？</summary><div class="faq-body">
+        月相按 8 个游戏日循环：前 4 天夏至、后 4 天日蚀。服务器 HUD/计分板若显示月相图标可直接查看；没有的话看天上的月亮数日子即可。手持<b>虾/幽灵虾</b>可以反转月相判定。
+      </div></details>
+
+      <details class="faq"><summary>为什么我的诱饵一直不消耗 / 完全没效果？</summary><div class="faq-body">
+        诱饵必须在<b>主手或副手</b>。如果同时拿了多种，只有优先级最高的那个生效。消耗是概率性的：有的每竿必耗（如糖饵），有的只是偶尔消耗（如宝石磁铁）。
+      </div></details>
+
+      <details class="faq"><summary>切鱼台放了鱼却切不开？</summary><div class="faq-body">
+        必须手持<b>刀具</b>（铁/石/钻石/合金的剑或斧、献祭小刀、华丽切肉斧）。如果提示"坚硬外壳需要华丽切肉斧"，说明你切的是龙虾类，普通刀切不动，去做一把华丽切肉斧。
+      </div></details>
+
+      <details class="faq"><summary>神像喂了很久都不就绪？</summary><div class="faq-body">
+        神像要求精魂<b>总数刚好等于需求</b>，一种都不能多喂。比如需求"质量1+狡黠1+神秘1"，多喂一条质量鱼就永远不会就绪。右键神像可查看当前进度。另外必须用<b>献祭小刀</b>切鱼才会传精魂，普通剑斧无效。
+      </div></details>
+
+      <details class="faq"><summary>书法台翻牌没反应？</summary><div class="faq-body">
+        每翻一张卡消耗 1 个<b>异变墨囊</b>——切带"神秘"精魂的鱼（小丑鱼/腔棘鱼/鳉鱼等）有机会获得。没有墨囊时翻牌无效。
+      </div></details>
+
+      <details class="faq"><summary>金鳃鱼到底怎么钓？</summary><div class="faq-body">
+        常规钓法钓不到。需要"鎏金微光"生成在你附近（条件：钓鱼场次累计 ≥32 且钓到过至少 1 条畸变鱼），之后在微光附近起竿<b>必得金鳃鱼</b>，钓到即消散。
+      </div></details>
+
+      <details class="faq"><summary>钓到的鱼能卖钱吗？</summary><div class="faq-body">
+        插件本身没有出售/经济系统。鱼的价值在图鉴收集、切鱼产出（矿物/鱼子/经验）和仪式材料上；服务器若接了商店插件另说。
+      </div></details>
+    </section>
+
+    <footer>钓鱼百科 · Fathoms · 玩家教程 · 2026-08</footer>
+  </main>
+</div>
+
+<button class="backtop" id="backtop" title="回到顶部">↑</button>
+
+<script>
+  var sidebar = document.getElementById('sidebar');
+  document.getElementById('menuBtn').onclick = function(e){ e.stopPropagation(); sidebar.classList.toggle('open'); };
+  document.addEventListener('click', function(e){
+    if(sidebar.classList.contains('open') && !sidebar.contains(e.target)) sidebar.classList.remove('open');
+  });
+  document.getElementById('navSearch').addEventListener('input', function(){
+    var q = this.value.trim().toLowerCase();
+    document.querySelectorAll('#nav a').forEach(function(a){
+      a.style.display = (!q || a.textContent.toLowerCase().indexOf(q) > -1) ? '' : 'none';
+    });
+    document.querySelectorAll('.nav-group-title').forEach(function(t){ t.style.display = q ? 'none' : ''; });
+  });
+  var links = Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function highlight(){
+    var idx = 0;
+    sections.forEach(function(s, i){ if(s && s.getBoundingClientRect().top < 140) idx = i; });
+    links.forEach(function(a, i){ a.classList.toggle('active', i === idx); });
+  }
+  window.addEventListener('scroll', highlight, {passive:true}); highlight();
+  var backtop = document.getElementById('backtop');
+  window.addEventListener('scroll', function(){ backtop.classList.toggle('show', window.scrollY > 600); }, {passive:true});
+  backtop.onclick = function(){ window.scrollTo({top:0, behavior:'smooth'}); };
+</script>
+</body>
+</html>

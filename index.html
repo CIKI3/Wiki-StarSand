@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>服务器玩法 Wiki — 国家 · 钓鱼 · 烹饪 · 调酒</title>
+<style>
+  :root{
+    --bg:#12141a; --panel:#191c25; --card:#1d212c; --line:#2a2f3d;
+    --text:#d8dce6; --muted:#9298a8; --code-bg:#0d0f15;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    font-size:15.5px; line-height:1.75;
+    min-height:100vh;
+    background-image:radial-gradient(ellipse 900px 500px at 50% -10%, rgba(230,184,76,.07), transparent);
+  }
+  a{color:inherit; text-decoration:none;}
+
+  .topnav{position:sticky; top:0; z-index:70; height:52px; background:rgba(20,22,30,.94); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; padding:0 20px; gap:4px; backdrop-filter:blur(8px);}
+  .topnav .brand{font-weight:bold; color:#e6b84c; margin-right:16px; font-size:15px; white-space:nowrap;}
+  .topnav a{padding:6px 13px; border-radius:8px; color:var(--text); font-size:13.5px; white-space:nowrap;}
+  .topnav a:hover{background:var(--card);}
+
+  .wrap{max-width:1150px; margin:0 auto; padding:56px 28px 60px;}
+  .hero{text-align:center; margin-bottom:52px;}
+  .hero .big{font-size:56px; line-height:1;}
+  .hero h1{font-size:34px; color:#e6b84c; letter-spacing:2px; margin:14px 0 10px;}
+  .hero p{color:var(--muted); max-width:640px; margin:0 auto;}
+  .hero .note{display:inline-block; margin-top:18px; padding:10px 20px; border-radius:10px; font-size:13px;
+    background:rgba(230,184,76,.07); border:1px solid rgba(230,184,76,.35); color:#e8d9b0;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:22px;}
+  .gcard{
+    display:block; background:var(--panel); border:1px solid var(--line); border-radius:16px;
+    padding:30px 26px 26px; position:relative; overflow:hidden;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .gcard:hover{transform:translateY(-6px); box-shadow:0 14px 34px rgba(0,0,0,.45);}
+  .gcard::before{content:""; position:absolute; top:0; left:0; right:0; height:4px; background:var(--c);}
+  .gcard:hover{border-color:var(--c);}
+  .gcard .icon{font-size:46px; line-height:1;}
+  .gcard h2{font-size:21px; color:var(--c); margin:14px 0 4px; letter-spacing:1px;}
+  .gcard .en{font-size:12px; color:var(--muted); letter-spacing:1px;}
+  .gcard p{color:var(--muted); font-size:13.5px; margin:12px 0 18px; min-height:66px;}
+  .gcard .go{display:inline-block; font-size:13px; font-weight:bold; color:var(--c);
+    border:1px solid var(--c); border-radius:999px; padding:6px 18px;}
+  .gcard:hover .go{background:var(--c); color:#14161d;}
+
+  .extra{margin-top:44px; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
+  .tip{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 20px; font-size:13.5px; color:var(--muted);}
+  .tip b{color:var(--text);}
+  footer{text-align:center; color:var(--muted); font-size:12.5px; padding:50px 0 26px;}
+  @media (max-width:700px){ .wrap{padding:36px 18px;} .hero h1{font-size:26px;} }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚜ 玩法 Wiki</span>
+  <a href="index.html" style="color:#e6b84c;">🏠 首页</a>
+  <a href="kingdoms.html">⚔️ 国家</a>
+  <a href="fishing.html">🎣 钓鱼</a>
+  <a href="cooking.html">🍳 烹饪</a>
+  <a href="bartending.html">🍸 调酒</a>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="big">⚜</div>
+    <h1>服务器玩法 Wiki</h1>
+    <p>四大玩法的完整中文教程：建国征战、深海垂钓、厨房烹饪、酒馆调酒。从零基础到精通，点卡片进入对应百科。</p>
+    <div class="note">📖 教程基于插件默认配置与源码整理，服务器可能自定义了规则与数值，一切以游戏内实际设置为准</div>
+  </div>
+
+  <div class="grid">
+    <a class="gcard" href="kingdoms.html" style="--c:#e6b84c;">
+      <div class="icon">⚔️</div>
+      <h2>国家</h2>
+      <div class="en">KingdomsX · 王国战争</div>
+      <p>创建王国、圈占领地、建造炮塔与攻城炮，发动入侵战争抢夺土地。护盾、和平主义、全民战争、和平条约一网打尽。</p>
+      <span class="go">进入教程 →</span>
+    </a>
+    <a class="gcard" href="fishing.html" style="--c:#4cc3e6;">
+      <div class="icon">🎣</div>
+      <h2>钓鱼</h2>
+      <div class="en">Fathoms · 深渊垂钓</div>
+      <p>39 种鱼类与 36 种畸变鱼图鉴、夏至/日蚀月相钓法、8 种诱饵、切鱼台、神像仪式与诅咒附魔，还有深渊 Boss。</p>
+      <span class="go">进入教程 →</span>
+    </a>
+    <a class="gcard" href="cooking.html" style="--c:#e6824c;">
+      <div class="icon">🍳</div>
+      <h2>烹饪</h2>
+      <div class="en">Kaleidoscope Cookery · 森罗料理</div>
+      <p>炒锅翻炒、高汤炖煮、蒸笼叠层、石磨推磨……七大厨具全流程，配比精准度决定菜品品质，做出完美料理。</p>
+      <span class="go">进入教程 →</span>
+    </a>
+    <a class="gcard" href="bartending.html" style="--c:#c44ce6;">
+      <div class="icon">🍸</div>
+      <h2>调酒</h2>
+      <div class="en">Kaleidoscope Tavern · 森罗酒馆</div>
+      <p>种葡萄、踩果盆、酒桶发酵、龙头灌瓶，再用雪克杯卡点摇出 12 种鸡尾酒。25 种酒带来 12 种神奇效果。</p>
+      <span class="go">进入教程 →</span>
+    </a>
+  </div>
+
+  <div class="extra">
+    <div class="tip">🆕 <b>新手建议</b>：先看「钓鱼」和「烹饪」安稳度过前期，攒够资源后再涉足「国家」的 PvP 征战，最后用「调酒」的增益效果武装自己。</div>
+    <div class="tip">🔗 <b>独立玩法</b>：四种玩法相互独立，可以单独游玩；烹饪与调酒是同一系列的姊妹作品，但数据互不通用。</div>
+    <div class="tip">❓ <b>遇到问题</b>：每个教程末尾都有 FAQ 与指令速查表；若与游戏内表现不符，优先咨询服务器管理员。</div>
+  </div>
+</div>
+
+<footer>服务器玩法 Wiki · 内容基于各插件默认配置整理 · 2026-08</footer>
+</body>
+</html>

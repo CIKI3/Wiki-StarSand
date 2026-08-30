@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍸 调酒百科 · Kaleidoscope Tavern — 玩法 Wiki</title>
+<style>
+  :root{
+    --bg:#12141a; --panel:#191c25; --card:#1d212c; --line:#2a2f3d;
+    --text:#d8dce6; --muted:#9298a8; --accent:#c44ce6; --accent-dim:#8a34a3;
+    --link:#7fb0f5; --code-bg:#0d0f15;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:76px;}
+  body{background:var(--bg); color:var(--text);
+    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    font-size:15.5px; line-height:1.75;}
+  a{color:var(--link); text-decoration:none;} a:hover{text-decoration:underline;}
+
+  .topnav{position:fixed; top:0; left:0; right:0; height:52px; background:rgba(20,22,30,.94); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; z-index:70; padding:0 18px; gap:4px; backdrop-filter:blur(8px);}
+  .topnav .brand{font-weight:bold; color:var(--accent); margin-right:14px; font-size:15px; white-space:nowrap;}
+  .topnav a{padding:6px 13px; border-radius:8px; color:var(--text); font-size:13.5px; white-space:nowrap;}
+  .topnav a:hover{background:var(--card); text-decoration:none;}
+  .topnav a.here{background:var(--card); color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent-dim);}
+
+  .layout{display:flex; padding-top:52px; min-height:100vh;}
+  .sidebar{width:270px; flex-shrink:0; background:var(--panel); border-right:1px solid var(--line);
+    padding:20px 14px; position:sticky; top:52px; height:calc(100vh - 52px); overflow-y:auto;}
+  .sidebar::-webkit-scrollbar{width:8px;} .sidebar::-webkit-scrollbar-thumb{background:#2e3444; border-radius:4px;}
+  .logo{display:flex; align-items:center; gap:10px; padding:4px 8px 14px; border-bottom:1px solid var(--line); margin-bottom:14px;}
+  .logo .crown{font-size:26px;}
+  .logo b{font-size:16px; color:var(--accent); letter-spacing:.5px;}
+  .logo small{display:block; color:var(--muted); font-size:11.5px; font-weight:normal;}
+  #navSearch{width:100%; padding:8px 12px; margin-bottom:12px; border-radius:8px; border:1px solid var(--line);
+    background:var(--code-bg); color:var(--text); font-size:13.5px; outline:none;}
+  #navSearch:focus{border-color:var(--accent-dim);}
+  .nav a{display:block; padding:6px 10px; margin:2px 0; border-radius:7px; color:var(--text); font-size:13.5px; border-left:3px solid transparent;}
+  .nav a:hover{background:var(--card); text-decoration:none;}
+  .nav a.active{background:var(--card); border-left-color:var(--accent); color:var(--accent);}
+  .nav .num{color:var(--accent-dim); margin-right:7px; font-size:12px;}
+  .nav-group-title{color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:1.5px; padding:14px 10px 4px;}
+
+  main{flex:1; min-width:0; padding:32px 48px 80px; max-width:1020px; margin:0 auto;}
+  .hero{background:linear-gradient(135deg,#221626 0%,#1d1226 100%); border:1px solid var(--line); border-radius:14px; padding:34px 36px; margin-bottom:30px;}
+  .hero h1{font-size:30px; color:var(--accent); letter-spacing:1px; margin-bottom:10px;}
+  .hero p{color:var(--muted); font-size:14.5px; max-width:760px;}
+  .hero .warnbar{margin-top:16px; padding:12px 16px; border-radius:9px; font-size:13.5px;
+    background:rgba(196,76,230,.08); border:1px solid rgba(196,76,230,.4); color:#e6c9ef;}
+
+  section{margin-bottom:56px;}
+  h2{font-size:24px; color:var(--accent); padding-bottom:10px; margin-bottom:20px; border-bottom:2px solid var(--line); letter-spacing:.5px;}
+  h2 .h2icon{margin-right:8px;}
+  h3{font-size:18.5px; color:#dfabea; margin:28px 0 12px;}
+  h4{font-size:16px; color:var(--text); margin:20px 0 8px;}
+  p{margin:10px 0;} ul,ol{margin:10px 0 10px 26px;} li{margin:5px 0;}
+  li::marker{color:var(--accent-dim);}
+  strong{color:#f0dbf5;}
+
+  code{background:var(--code-bg); border:1px solid var(--line); border-radius:5px; padding:1.5px 7px; font-size:13px; color:#f2c94c;
+    font-family:Consolas,"Cascadia Mono",monospace;}
+  pre.cmd{background:var(--code-bg); border:1px solid var(--line); border-left:3px solid var(--accent-dim); border-radius:8px;
+    padding:14px 18px; overflow-x:auto; margin:14px 0; font-family:Consolas,"Cascadia Mono",monospace; font-size:13.5px; line-height:1.7;}
+  pre.cmd .cmt{color:#6d7689;}
+
+  table{width:100%; border-collapse:collapse; margin:16px 0; font-size:13.5px; background:var(--card); border-radius:9px; overflow:hidden;}
+  th{background:#2e2436; color:#dfabea; text-align:left; padding:9px 12px; border:1px solid var(--line);}
+  td{padding:8px 12px; border:1px solid var(--line); vertical-align:top;}
+  tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+
+  .callout{border-radius:9px; padding:13px 18px; margin:16px 0; font-size:14.5px; border:1px solid;}
+  .callout.tip{background:rgba(76,174,109,.07); border-color:rgba(76,174,109,.4);}
+  .callout.warn{background:rgba(230,184,76,.07); border-color:rgba(230,184,76,.4);}
+  .callout.danger{background:rgba(217,107,107,.07); border-color:rgba(217,107,107,.45);}
+  .callout .tag{font-weight:bold; margin-right:6px;}
+
+  details.faq{background:var(--card); border:1px solid var(--line); border-radius:10px; margin:12px 0; overflow:hidden;}
+  details.faq summary{cursor:pointer; padding:14px 18px; font-weight:bold; color:#dfabea; list-style:none; user-select:none;}
+  details.faq summary::-webkit-details-marker{display:none;}
+  details.faq summary::before{content:"▸ "; color:var(--accent-dim);}
+  details.faq[open] summary::before{content:"▾ ";}
+  details.faq .faq-body{padding:0 18px 16px; color:var(--text); font-size:14.5px;}
+
+  .backtop{position:fixed; right:26px; bottom:26px; width:44px; height:44px; border-radius:50%; background:var(--accent);
+    color:#1a0f1d; border:none; font-size:19px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:.25s;}
+  .backtop.show{opacity:1; pointer-events:auto;}
+  .menu-btn{display:none;}
+  footer{color:var(--muted); font-size:13px; text-align:center; padding:30px 0 10px; border-top:1px solid var(--line); margin-top:40px;}
+
+  @media (max-width:900px){
+    .layout{display:block;}
+    .topnav{padding-left:58px; overflow-x:auto;}
+    .sidebar{position:fixed; z-index:50; left:0; top:52px; height:calc(100vh - 52px); transform:translateX(-105%);
+      transition:transform .28s ease; box-shadow:8px 0 30px rgba(0,0,0,.5);}
+    .sidebar.open{transform:translateX(0);}
+    main{padding:24px 20px 60px;}
+    .menu-btn{display:block; position:fixed; z-index:80; top:9px; left:12px; background:var(--card); color:var(--accent);
+      border:1px solid var(--line); border-radius:8px; padding:5px 11px; font-size:16px; cursor:pointer;}
+    .hero{padding:24px 20px;} .hero h1{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<button class="menu-btn" id="menuBtn">☰</button>
+<nav class="topnav">
+  <span class="brand">🍸 调酒百科</span>
+  <a href="index.html">🏠 首页</a>
+  <a href="kingdoms.html">⚔️ 国家</a>
+  <a href="fishing.html">🎣 钓鱼</a>
+  <a href="cooking.html">🍳 烹饪</a>
+  <a class="here" href="bartending.html">🍸 调酒</a>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <span class="crown">🍸</span>
+      <div><b>森罗酒馆</b><small>Kaleidoscope Tavern · 基于源码整理</small></div>
+    </div>
+    <input type="text" id="navSearch" placeholder="🔍 搜索章节…">
+    <nav class="nav" id="nav">
+      <div class="nav-group-title">入门</div>
+      <a href="#start"><span class="num">01</span>快速上手</a>
+      <a href="#grape"><span class="num">02</span>种植葡萄</a>
+      <div class="nav-group-title">酿造</div>
+      <a href="#press"><span class="num">03</span>压榨果盆</a>
+      <a href="#barrel"><span class="num">04</span>酒桶发酵（品质系统）</a>
+      <a href="#tap"><span class="num">05</span>龙头灌装</a>
+      <a href="#recipes"><span class="num">06</span>酒类配方总表（25 种）</a>
+      <div class="nav-group-title">调酒</div>
+      <a href="#shaker"><span class="num">07</span>雪克杯（卡点摇晃）</a>
+      <a href="#cocktail"><span class="num">08</span>鸡尾酒配方（12 杯）</a>
+      <div class="nav-group-title">效果</div>
+      <a href="#effects"><span class="num">09</span>酒效图鉴（12 种奇效）</a>
+      <a href="#drunk"><span class="num">10</span>醉酒·醒酒·燃烧瓶</a>
+      <div class="nav-group-title">生活</div>
+      <a href="#decor"><span class="num">11</span>酒馆装修指南</a>
+      <a href="#commands"><span class="num">12</span>指令速查</a>
+      <a href="#faq"><span class="num">13</span>常见问题 FAQ</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h1>🍸 调酒百科（森罗物语：酒馆）</h1>
+      <p>从一根野生葡萄藤开始的酿酒人生：种葡萄 → 踩果盆榨汁 → 酒桶发酵 → 龙头灌瓶，最后用雪克杯"卡点摇晃"调出鸡尾酒。<b>25 种酒 + 12 种鸡尾酒</b>，每种都带来独特效果——从穿草隐身到音波炮。</p>
+      <div class="warnbar">📖 本教程基于插件源码与默认配置整理。酒馆与烹饪是姊妹系列但<b>数据互不通用</b>；服务器可能调整配方与时长，游戏内用 <code>/kt recipes</code> 查看本服实际配方。</div>
+    </div>
+
+    <!-- 01 快速上手 -->
+    <section id="start">
+      <h2><span class="h2icon">🚀</span>快速上手</h2>
+      <ol>
+        <li><b>找葡萄藤</b>：野外橡树/白桦树下找野生葡萄藤，空手破坏采集；</li>
+        <li><b>搭藤架</b>：3 根葡萄藤合成 8 个<b>藤架</b>。手持葡萄藤右键放在泥土上方的藤架 → 长成葡萄藤架，藤蔓蔓延后结出葡萄；</li>
+        <li><b>榨汁</b>：葡萄放进<b>果盆</b>，站在果盆上<b>蹦跳踩踏</b>榨汁，榨满后用空桶装成"果汁桶"；</li>
+        <li><b>发酵</b>：果汁桶倒进<b>酒桶</b>（4 桶满），按配方加原料，盖盖发酵——<b>时间越长品质越高</b>（最长 30 分钟出典藏）；</li>
+        <li><b>灌瓶</b>：把<b>龙头</b>装在酒桶正面，下方摆空瓶，长按龙头 1.5 秒灌酒；</li>
+        <li><b>喝或调</b>：直接喝（品质≥3 有增益），或用<b>雪克杯</b>混合 3 份酒摇出鸡尾酒。</li>
+      </ol>
+      <div class="callout tip"><span class="tag">💡</span>品质是本玩法的核心：品质 1 难以下咽（喝了反胃 30 秒），品质 6 典藏效果最强。雪克杯调酒要求原料酒<b>至少优质（4 级）</b>，所以学会"看时间酿酒"是第一课。</div>
+    </section>
+
+    <!-- 02 种植葡萄 -->
+    <section id="grape">
+      <h2><span class="h2icon">🍇</span>种植葡萄</h2>
+      <h3>获取藤蔓</h3>
+      <ul>
+        <li>野外<b>橡树/白桦树</b>下找野生葡萄藤（空手破坏掉落）；</li>
+        <li>对树苗用骨粉催熟成树时，也有概率长出野生葡萄藤。</li>
+      </ul>
+      <h3>藤架与三种葡萄</h3>
+      <p>3 藤藤蔓合成 8 个藤架。手持葡萄藤右键<b>土壤上方一格的单体藤架</b>，藤架种类由<b>下方方块</b>决定：</p>
+      <table>
+        <tr><th>下方方块</th><th>藤架</th><th>葡萄</th><th>生长季节（默认）</th></tr>
+        <tr><td>泥土/草方块</td><td>普通葡萄藤架</td><td>葡萄（淡紫系酒）</td><td>春、夏</td></tr>
+        <tr><td>冰/雪块</td><td>冰葡萄藤架</td><td>冰葡萄（蓝色系酒）</td><td>冬季（寒冷群系更佳）</td></tr>
+        <tr><td>下界岩/岩浆块</td><td>黄金葡萄藤架</td><td>黄金葡萄（金色系酒）</td><td>夏季（炎热环境更佳）</td></tr>
+      </table>
+      <ul>
+        <li>藤蔓沿藤架向上、向四周蔓延，有藤的藤架下方空位会结出悬挂葡萄；</li>
+        <li><b>骨粉催熟不受季节限制</b>，温室玻璃也可豁免季节；</li>
+        <li>收获：<b>剪刀右键</b>收获更多，还有机会附带<b>青提葡萄</b>；直接破坏则收获较少。剪刀收更划算！</li>
+        <li>葡萄本身可食用（2 点饥饿）。青提葡萄用来榨"青提葡萄汁"（干白系酒原料）。</li>
+      </ul>
+    </section>
+
+    <!-- 03 压榨 -->
+    <section id="press">
+      <h2><span class="h2icon">🦶</span>压榨果盆</h2>
+      <p>1 个原版木桶合成 2 个果盆（贴墙放置会变"倾斜果盆"，只能存物不能榨汁，注意朝向）。</p>
+      <ol>
+        <li><b>存料</b>：手持可榨汁物品右键放入（只能放一种，最多 64 个）；</li>
+        <li><b>踩踏</b>：<b>站到果盆上方蹦跳踩踏</b>，每踩一次消耗 1 个原料、榨出一些果汁；</li>
+        <li><b>榨满</b>：榨满后果汁盆会提示完成，手持<b>空桶</b>右键果盆 → 换成对应<b>果汁桶</b>；</li>
+        <li>取料：空手右键取 1 个，潜行+空手取全部。</li>
+      </ol>
+      <p><b>可榨汁 6 种</b>：葡萄、青提葡萄、冰葡萄、黄金葡萄、甜浆果、发光浆果——对应 6 种颜色的果汁，决定了酒的色系。</p>
+      <div class="callout tip"><span class="tag">💡</span><b>果汁桶还能醒酒！</b>喝任何果汁桶会<b>清除身上所有药水效果和酒效</b>（含负面），是解醉神器，出门带一桶。</div>
+    </section>
+
+    <!-- 04 酒桶 -->
+    <section id="barrel">
+      <h2><span class="h2icon">🛢️</span>酒桶发酵（品质系统）</h2>
+      <h3>搭建</h3>
+      <ul>
+        <li>3×3 共 <b>9 个原版木桶</b>合成 1 个酒桶（3×3×3 多方块结构）；</li>
+        <li><b>龙头</b>（拉杆+漏斗合成）必须安装在<b>酒桶正面中层中间</b>的位置。</li>
+      </ul>
+      <h3>酿造流程</h3>
+      <ol>
+        <li>右键<b>顶部边缘/盖子</b>开盖（点桶身其他部位 = 查看酿造进度）；</li>
+        <li>手持<b>果汁桶</b>右键中心顶格倒入流体，共需 <b>4 桶</b>果汁；</li>
+        <li>加原料：手持原料右键中心顶格（最多 4 格、每格 16 个）——<b>种类和数量必须与配方完全一致</b>；</li>
+        <li>空手右键<b>顶部边缘</b>关盖，开始发酵（开盖不发酵；发酵中无法开盖）；</li>
+        <li>完成后从<b>龙头</b>灌瓶取酒（不能用桶舀）。</li>
+      </ol>
+      <h3>品质时间表（核心！）</h3>
+      <p>下桶即品质 1（难以下咽），品质随发酵时长提升。发着慢，但<b>离线也计时</b>：</p>
+      <table>
+        <tr><th>品质</th><th>名称</th><th>累计发酵时间</th></tr>
+        <tr><td>1</td><td>难以下咽</td><td>0（刚下桶）</td></tr>
+        <tr><td>2</td><td>劣质</td><td>2 分钟</td></tr>
+        <tr><td>3</td><td>普通</td><td>6 分钟</td></tr>
+        <tr><td>4</td><td><b>优质</b>（调酒最低门槛）</td><td>12 分钟</td></tr>
+        <tr><td>5</td><td>精酿</td><td>20 分钟</td></tr>
+        <tr><td>6</td><td><b>典藏</b>（效果最强）</td><td>30 分钟</td></tr>
+      </table>
+      <ul>
+        <li>点桶身随时查看进度："成品×数量 | 品质 | 距下一品质 mm:ss"；</li>
+        <li>产瓶数：无原料配方（纯果汁酒）= 16 瓶；有原料的 = 最少那种原料的数量（上限 16）；</li>
+        <li><b>配方不匹配</b>的满桶发酵到底 → 产出 16 瓶<b>醋</b>（保底产物，也有小用途，见酒效表）。</li>
+      </ul>
+      <div class="callout warn"><span class="tag">⚠️</span>发酵中<b>不能开盖</b>！想加料/换料要在开盖阶段完成。品质只升不降、不设上限惩罚，所以"忘了关盖"比"发酵过头"可怕——毕竟盖着盖子才计时。</div>
+    </section>
+
+    <!-- 05 龙头 -->
+    <section id="tap">
+      <h2><span class="h2icon">🚰</span>龙头灌装</h2>
+      <p>龙头（拉杆 + 漏斗合成）是个万能取液器：<b>长按右键约 1.5 秒松开</b>完成一次抽取，液体会在龙头口滴落。</p>
+      <table>
+        <tr><th>对准的目标</th><th>下方放置</th><th>获得</th></tr>
+        <tr><td>水炼药锅/水源</td><td>空瓶</td><td>水瓶</td></tr>
+        <tr><td>熔岩炼药锅</td><td>空瓶</td><td><b>莫洛托夫鸡尾酒</b>（投掷武器！）</td></tr>
+        <tr><td>蜂巢/蜂箱</td><td>空瓶</td><td>蜂蜜瓶（消耗 1 级蜂蜜）</td></tr>
+        <tr><td>龙头方块</td><td>空瓶</td><td>龙息瓶</td></tr>
+        <tr><td>整个西瓜</td><td>空瓶</td><td>西瓜汁</td></tr>
+        <tr><td><b>连接的酒桶</b></td><td>空瓶/摆好的空杯</td><td>灌装当前酿造的酒（按品质出）</td></tr>
+      </table>
+      <p>失败提示：酿造未开始 / 酒桶已空 / 需要容器 / 容器不匹配。默认熔岩龙头无限取用。</p>
+    </section>
+
+    <!-- 06 配方总表 -->
+    <section id="recipes">
+      <h2><span class="h2icon">📜</span>酒类配方总表（25 种）</h2>
+      <p>格式：<b>流体（4 桶）+ 原料 → 成品</b>。取酒容器一律为空瓶。</p>
+      <table>
+        <tr><th>成品</th><th>流体</th><th>原料</th><th>色系</th></tr>
+        <tr><td>葡萄酒</td><td>葡萄汁</td><td>（无）</td><td>淡紫</td></tr>
+        <tr><td>白兰地</td><td>葡萄汁</td><td>苹果 ×1</td><td>淡紫</td></tr>
+        <tr><td>佳丽私酿</td><td>葡萄汁</td><td>甜浆果 ×1</td><td>淡紫</td></tr>
+        <tr><td>香槟</td><td>葡萄汁</td><td>糖 ×1</td><td>淡紫</td></tr>
+        <tr><td>樱花葡萄酒</td><td>葡萄汁</td><td>粉红色花瓣 ×1</td><td>淡紫</td></tr>
+        <tr><td>甜浆果酒</td><td>甜浆果汁</td><td>甜浆果 ×1</td><td>红</td></tr>
+        <tr><td>梅酒</td><td>甜浆果汁</td><td>糖 ×1</td><td>红</td></tr>
+        <tr><td>红皇后</td><td>甜浆果汁</td><td>红石粉 ×1</td><td>红</td></tr>
+        <tr><td>雷司令干白</td><td>青提葡萄汁</td><td>火药 ×1 + 糖 ×1</td><td>绿</td></tr>
+        <tr><td>长相思干白</td><td>青提葡萄汁</td><td>甘蔗 ×1 + 糖 ×1</td><td>绿</td></tr>
+        <tr><td>冰葡萄酒</td><td>冰葡萄汁</td><td>（无）</td><td>蓝</td></tr>
+        <tr><td>雪婆婆</td><td>冰葡萄汁</td><td>冰 ×1</td><td>蓝</td></tr>
+        <tr><td>北极星甜白</td><td>冰葡萄汁</td><td>浮冰 ×1</td><td>蓝</td></tr>
+        <tr><td>雪莉</td><td>冰葡萄汁</td><td>蓝冰 ×1</td><td>蓝</td></tr>
+        <tr><td>蜂蜜葡萄酒</td><td>黄金葡萄汁</td><td>蜜脾 ×1</td><td>金</td></tr>
+        <tr><td>奢香夫人</td><td>黄金葡萄汁</td><td>金粒 ×1</td><td>金</td></tr>
+        <tr><td>矿工之星</td><td>黄金葡萄汁</td><td>铁粒 ×1</td><td>金</td></tr>
+        <tr><td>落日余晖</td><td>黄金葡萄汁</td><td>烈焰粉 ×1</td><td>金</td></tr>
+        <tr><td>萤花酿</td><td>发光浆果汁</td><td>荧石粉 ×1</td><td>黄</td></tr>
+        <tr><td>夜光新娘</td><td>发光浆果汁</td><td>荧石墨囊 ×1</td><td>黄</td></tr>
+        <tr><td>伏特加</td><td>水</td><td>马铃薯 ×1</td><td>白</td></tr>
+        <tr><td>威士忌</td><td>水</td><td>小麦 ×1</td><td>白</td></tr>
+        <tr><td>朗姆酒</td><td>水</td><td>甘蔗 ×1</td><td>白</td></tr>
+        <tr><td>莫洛托夫鸡尾酒</td><td>岩浆</td><td>（龙头直接灌）</td><td>🔥</td></tr>
+        <tr><td>醋（保底）</td><td>任意</td><td>不匹配任何配方时</td><td>⚫</td></tr>
+      </table>
+      <div class="callout tip"><span class="tag">💡</span>游戏内输入 <code>/kt recipes barrel</code> 可随时查看本服实际生效的配方列表（还有 pressing 压榨 / shaker 鸡尾酒分页）。</div>
+    </section>
+
+    <!-- 07 雪克杯 -->
+    <section id="shaker">
+      <h2><span class="h2icon">🥤</span>雪克杯（卡点摇晃）</h2>
+      <p>鸡尾酒的唯一制作方式，核心是<b>手感小游戏</b>：按住右键摇晃，在正确的时机松手。</p>
+      <h3>流程</h3>
+      <ol>
+        <li>摆放雪克杯，放入 <b>3 份原料</b>（原料 = 22 种酒中的任意酒 或 原版药水）；<b>酒的品质必须 ≥ 优质（4 级）</b>；</li>
+        <li>空手右键取回手持雪克杯，<b>按住右键开始摇晃</b>（屏幕下方出现进度条，指针从左向右移动）；</li>
+        <li>在正确的区间<b>松手</b>（见下表）→ 出货！</li>
+        <li>把<b>空酒杯</b>摆出来，手持雪克杯右键酒杯 → 鸡尾酒倒入杯中，即可饮用/摆放。</li>
+      </ol>
+      <h3>松手时机对照表（核心！）</h3>
+      <table>
+        <tr><th>按住时长</th><th>结果</th></tr>
+        <tr><td>&lt; 0.95 秒</td><td>无效，什么都没发生</td></tr>
+        <tr><td>0.95 – 3.4 秒</td><td>🥴 <b>谜之鸡尾酒</b>（只有 3 分钟微醺）</td></tr>
+        <tr><td>3.45 – 4.4 秒</td><td>🍹 <b>特调鸡尾酒</b>（继承原料效果，时长 ×1.2）</td></tr>
+        <tr><td><b>4.45 – 4.9 秒</b></td><td>🎯 <b>按配方产出对应鸡尾酒</b>（黄金区间！）</td></tr>
+        <tr><td>≥ 4.95 秒</td><td>🥴 谜之鸡尾酒（摇过头了）</td></tr>
+      </table>
+      <div class="callout tip"><span class="tag">💡</span>黄金窗口只有约<b>半秒</b>（4.45–4.9 秒）。练习方法：心里默数"一千零一、一千零二……"，到"四"的后半段松手；或盯着 HUD 进度条找手感。摇废了也不亏材料——谜之鸡尾酒能喝着玩。潜行+左键挥空可清空雪克杯。</div>
+      <div class="callout warn"><span class="tag">⚠️</span>"特调鸡尾酒"= 混合所有原料的效果（相同效果时长合并后加成，等级取最大）。想<b>自由组合</b>效果时它是自由玩法；但<b>想要指定鸡尾酒（如血腥玛丽）必须在黄金区间松手</b>。</div>
+    </section>
+
+    <!-- 08 鸡尾酒 -->
+    <section id="cocktail">
+      <h2><span class="h2icon">🍹</span>鸡尾酒配方（12 杯）</h2>
+      <p>每种酒按颜色分类，鸡尾酒配方按"颜色组合"记忆：</p>
+      <table>
+        <tr><th>颜色</th><th>成员酒</th></tr>
+        <tr><td>🟣 淡紫</td><td>葡萄酒、香槟、樱花葡萄酒、白兰地、佳丽私酿</td></tr>
+        <tr><td>🔴 红</td><td>梅酒、甜浆果酒、红皇后</td></tr>
+        <tr><td>⚪ 白</td><td>伏特加、威士忌、朗姆酒、原版药水</td></tr>
+        <tr><td>🟡 黄</td><td>夜光新娘、萤花酿</td></tr>
+        <tr><td>🔵 蓝</td><td>冰葡萄酒、北极星甜白、雪婆婆、雪莉</td></tr>
+        <tr><td>🟡 金</td><td>矿工之星、蜂蜜葡萄酒、奢香夫人、落日余晖</td></tr>
+        <tr><td>🟢 绿</td><td>长相思干白、雷司令干白</td></tr>
+      </table>
+      <h3>配方表（均为 3 份原料）</h3>
+      <table>
+        <tr><th>鸡尾酒</th><th>配方</th><th>效果</th></tr>
+        <tr><td>绒球葱花园</td><td>淡紫 ×3</td><td>经验汲取 30 分钟（吸经验球）</td></tr>
+        <tr><td>血腥玛丽</td><td>红 ×3</td><td>击杀回血 30 分钟</td></tr>
+        <tr><td>黄铜心脏</td><td>金 ×3</td><td>醇热 5 分钟（冲刺撞碎石头）</td></tr>
+        <tr><td>翡翠</td><td>绿 ×3</td><td>长臂 45 分钟（加长交互距离）</td></tr>
+        <tr><td>教父</td><td>红 ×2 + 金 ×1</td><td>至高点（瞬发：传送到柱顶）</td></tr>
+        <tr><td>绿色蚱蜢</td><td>绿 ×2 + 白 ×1</td><td>穿草隐身 15 分钟</td></tr>
+        <tr><td>莫吉托</td><td>白 ×2 + 绿 ×1</td><td>灵视 30 分钟（生物发光轮廓）</td></tr>
+        <tr><td>下界特调</td><td>红 + 绿 + 蓝</td><td>摸金校尉 90 秒（缴械怪物武器）</td></tr>
+        <tr><td>螺丝起子</td><td>黄 ×2 + 金 ×1</td><td>倒立（瞬发：怪物翻转视效）</td></tr>
+        <tr><td>幽匿特调</td><td>蓝 ×2 + 淡紫 ×1</td><td>尖啸攻击（瞬发：音波炮）</td></tr>
+        <tr><td>深水炸弹</td><td>蓝 + 淡紫 + 白</td><td>醇热 5 分钟</td></tr>
+        <tr><td>白色佳人</td><td>白 + 绿 + 黄</td><td>高跟鞋 60 分钟（自动上台阶）</td></tr>
+      </table>
+    </section>
+
+    <!-- 09 酒效 -->
+    <section id="effects">
+      <h2><span class="h2icon">✨</span>酒效图鉴（12 种奇效）</h2>
+      <p>饮用规则：<b>品质 1 = 反胃 30 秒</b>；品质 2 = 只有微醺；<b>品质 3 起才有正面效果</b>，品质越高效果越强/越久。鸡尾酒固定按其专属效果生效。</p>
+      <h3>自定义酒效一览</h3>
+      <table>
+        <tr><th>效果</th><th>机制</th></tr>
+        <tr><td><b>微醺</b></td><td>醉酒恍惚视效（仅自己可见）；品质越低，微醺越久</td></tr>
+        <tr><td><b>高跟鞋</b></td><td>自动上一格台阶（走路不用跳跳跳，建筑党最爱）</td></tr>
+        <tr><td><b>长臂</b></td><td>方块/实体的交互距离大幅增加</td></tr>
+        <tr><td><b>穿草隐身</b></td><td>潜行站在草丛/作物/花中对玩家隐身，怪物丢失仇恨（潜行消耗少量饥饿）</td></tr>
+        <tr><td><b>灵视</b></td><td>周围生物发光轮廓——探洞/防偷袭</td></tr>
+        <tr><td><b>醇热</b></td><td>疾跑冲碎面前的石头类方块（含下界岩/末地石）；会磨损盔甲、消耗饱和</td></tr>
+        <tr><td><b>经验汲取</b></td><td>周围的经验球会自动吸向你</td></tr>
+        <tr><td><b>血腥玛丽</b></td><td>击杀生物回复自身生命</td></tr>
+        <tr><td><b>摸金校尉</b></td><td>攻击骷髅/僵尸/猪灵/卫道士等怪物时，有概率缴械其武器</td></tr>
+        <tr><td><b>倒立</b></td><td>瞬发：周围的怪物在你眼中倒立（整蛊特效）</td></tr>
+        <tr><td><b>至高点</b></td><td>瞬发：传送到所在柱最高点（类似紫颂果，清空摔落）</td></tr>
+        <tr><td><b>尖啸攻击</b></td><td>瞬发：监守者音波炮，攻击视线内的目标并击退，伤害随自身生命值提升</td></tr>
+      </table>
+
+      <h3>常见酒的效果速查（品质 3 起生效，品质越高效果越强越久）</h3>
+      <table>
+        <tr><th>酒</th><th>效果</th></tr>
+        <tr><td>白兰地 / 香槟</td><td>高跟鞋（自动上台阶）</td></tr>
+        <tr><td>冰葡萄酒 / 雪婆婆 / 北极星甜白 / 雪莉</td><td>防火（下界之旅必备）</td></tr>
+        <tr><td>伏特加 / 威士忌</td><td>力量</td></tr>
+        <tr><td>葡萄酒 / 樱花葡萄酒</td><td>生命恢复</td></tr>
+        <tr><td>萤花酿 / 夜光新娘</td><td>夜视</td></tr>
+        <tr><td>矿工之星</td><td>急迫（挖矿神器）</td></tr>
+        <tr><td>蜂蜜葡萄酒 / 奢香夫人 / 落日余晖</td><td>抗性（减伤）</td></tr>
+        <tr><td>梅酒</td><td>水下呼吸</td></tr>
+        <tr><td>雷司令干白 / 长相思干白</td><td>穿草隐身</td></tr>
+        <tr><td>红皇后 / 甜浆果酒</td><td>击杀回血</td></tr>
+        <tr><td>佳丽私酿</td><td>瞬间治疗</td></tr>
+        <tr><td>朗姆酒</td><td>不祥之兆（品质 2 起）——触发袭击用的"战斗酒"</td></tr>
+        <tr><td>醋</td><td>随机效果：可能有增益，也可能失明/挖掘疲劳——薛定谔的饮料</td></tr>
+      </table>
+      <div class="callout tip"><span class="tag">💡</span>实用组合推荐：打架前喝<strong>伏特加（力量）</strong> + <strong>佳丽私酿（瞬疗）</strong>；挖矿带<strong>矿工之星（急迫）</strong> + <strong>萤花酿（夜视）</strong>；探索带<strong>冰酒系（防火）</strong>去下界、<strong>莫吉托（灵视）</strong>防偷袭。</div>
+    </section>
+
+    <!-- 10 醉酒 -->
+    <section id="drunk">
+      <h2><span class="h2icon">🥴</span>醉酒 · 醒酒 · 燃烧瓶</h2>
+      <h3>醒酒方式</h3>
+      <ul>
+        <li>喝<b>牛奶桶</b>或任意<b>果汁桶</b>（清除包括酒效在内的全部效果）；</li>
+        <li>管理员可用 <code>/effect clear</code>；死亡也会清空。</li>
+      </ul>
+      <h3>泼酒</h3>
+      <ul>
+        <li>瓶装酒（非鸡尾酒）可以像药水一样<b>扔出去泼洒</b>，命中范围内的人按品质获得效果（时长随距离衰减）——战场支援或"敬敌人一杯"；</li>
+        <li>摆好的酒瓶家具被弹射物打碎时，也会释放其中品质最高那瓶的泼洒效果。</li>
+      </ul>
+      <h3>莫洛托夫鸡尾酒</h3>
+      <ul>
+        <li>用龙头从熔岩炼药锅对空瓶灌取获得；</li>
+        <li>手持<b>蓄力 ≥0.5 秒松开投掷</b>，命中后大范围点燃（灵魂沙上为魂火）——攻城战点火神器，也可引爆摆放的莫洛托夫。</li>
+      </ul>
+      <h3>摆放装饰</h3>
+      <p><b>潜行+右键</b>可把手中酒瓶/酒杯/水瓶/蜂蜜瓶/药水摆放为家具展示；手持饮品正常右键 = 饮用，喝完返还空瓶/空杯。</p>
+    </section>
+
+    <!-- 11 装修 -->
+    <section id="decor">
+      <h2><span class="h2icon">🏛️</span>酒馆装修指南</h2>
+      <p>想开一家真正的酒馆？插件提供了整套家具：</p>
+      <ul>
+        <li><b>酒柜 / 窗式酒柜 / 窖藏酒柜</b>：展示酒瓶（同种酒可叠放 1–4 瓶模型），被打碎会掉出全部存货；部分"异形酒"（白兰地、伏特加等 10 种）只能进窖藏酒柜；</li>
+        <li><b>酒架（单体/倾斜/圆周）/ 酒杯架</b>：悬挂式展示；</li>
+        <li><b>沙发（16 色）/ 高脚凳 / 桌子 / 吧台</b>：沙发和高脚凳<b>可以坐</b>；</li>
+        <li><b>黑板 / 展板</b>：右键后<b>在聊天栏输入文字</b>写在板子上——支持 <code>\n</code> 换行、<code>[left]/[center]/[right]</code> 对齐、<code>!clear</code> 清空；染料改字色、荧石墨囊发光、蜜脾上蜡锁定内容。写菜单、写价目表，酒馆灵魂道具；</li>
+        <li><b>小灯串 / 垂灯</b>：氛围照明；</li>
+        <li><b>香薰（8 种香型）</b>：红石激活后散发粒子，并持续对附近的<b>亡灵生物造成伤害</b>——酒馆兼职防御塔；</li>
+        <li><b>挂画</b>：蒙娜丽莎、星夜等 14 幅名画。</li>
+      </ul>
+    </section>
+
+    <!-- 12 指令 -->
+    <section id="commands">
+      <h2><span class="h2icon">⌨️</span>指令速查</h2>
+      <p>主指令 <code>/kaleidoscopetavern</code>，别名 <code>/kt</code>。</p>
+      <table>
+        <tr><th style="width:46%">指令</th><th>说明</th></tr>
+        <tr><td><code>/kt recipes &lt;barrel|pressing|shaker&gt; [页码]</code></td><td>查看本服实际生效的配方（所有玩家可用）</td></tr>
+        <tr><td><code>/kt status</code></td><td>管理员：查看内容加载状态</td></tr>
+        <tr><td><code>/kt give &lt;物品ID&gt; [数量] [玩家]</code></td><td>管理员：发放物品</td></tr>
+        <tr><td><code>/kt reload</code></td><td>管理员：重载配置与配方</td></tr>
+      </table>
+    </section>
+
+    <!-- 13 FAQ -->
+    <section id="faq">
+      <h2><span class="h2icon">❓</span>常见问题 FAQ</h2>
+
+      <details class="faq"><summary>雪克杯总是摇出"谜之鸡尾酒"？</summary><div class="faq-body">
+        松手时机不对。目标区间是<b>按住 4.45–4.9 秒</b>（黄金半秒）：太早出特调、再早出谜之、超过 4.95 秒又变谜之。盯着屏幕下方的进度条 HUD 练习，指针走到约 4.5–4.9 秒刻度时松手。按住 5.5 秒会自动松手。
+      </div></details>
+
+      <details class="faq"><summary>提示"酒的品质不足"？</summary><div class="faq-body">
+        调酒原料必须至少<b>优质（4 级）</b>，即酒桶发酵累计 <b>12 分钟</b>以上灌出的酒。刚发酵 2 分钟的"劣质"酒只能直接喝或倒掉，进不了雪克杯。
+      </div></details>
+
+      <details class="faq"><summary>酒桶打不开盖子？</summary><div class="faq-body">
+        发酵进行中（盖着盖子）时<b>无法开盖</b>。开盖状态才不计时——如果你在等发酵，别去动盖子；想中途加料只能在开盖阶段完成。
+      </div></details>
+
+      <details class="faq"><summary>酿出来全是醋？</summary><div class="faq-body">
+        流体+原料的组合<b>没有匹配任何配方</b>。对照配方总表：原料的种类和数量必须完全一致（多放一个糖都不行）。保底产 16 瓶醋，不亏太多。
+      </div></details>
+
+      <details class="faq"><summary>龙头灌不出酒？</summary><div class="faq-body">
+        检查：① 龙头是否装在酒桶<b>正面中层中间</b>；② 酒桶是否已开始酿造（有成品）；③ 龙头<b>正下方</b>有没有放空瓶（或摆好的空杯）。长按约 1.5 秒松开才算抽取。
+      </div></details>
+
+      <details class="faq"><summary>葡萄藤架不长葡萄？</summary><div class="faq-body">
+        看三点：① 藤架下方方块类型决定葡萄种类（泥土=普通、冰=冰、下界岩=金）；② 季节限制——普通葡萄春/夏、金葡萄夏季、冰葡萄冬季才自然生长，<b>骨粉催熟不受季节限制</b>；③ 悬挂葡萄结在有藤的藤架<b>下方空位</b>，确认藤蔓已经蔓延到位。
+      </div></details>
+
+      <details class="faq"><summary>喝多了怎么解酒？</summary><div class="faq-body">
+        喝<b>牛奶桶</b>或任意<b>果汁桶</b>（出门带一桶葡萄汁=醒酒药）。品质低的酒（1–2 级）只有反胃和微醺，品质越高微醺越短，尽量喝 4 级以上的酒。
+      </div></details>
+
+      <details class="faq"><summary>黑板怎么写字？</summary><div class="faq-body">
+        右键黑板后在<b>聊天栏输入</b>内容：支持 <code>\n</code> 换行、<code>[center]</code> 等对齐指令、<code>!clear</code> 清空、<code>!cancel</code> 取消。手持染料右键=改字色，荧石墨囊=发光，蜜脾=锁定内容。
+      </div></details>
+
+      <details class="faq"><summary>莫洛托夫怎么用？会不会烧自己家？</summary><div class="faq-body">
+        手持蓄力约 0.5 秒松开投掷，命中点大范围起火。注意火焰会点燃可燃方块，慎在木屋区使用；它也能被弹射物引爆，摆放的莫洛托夫被打碎同样会炸。
+      </div></details>
+
+      <details class="faq"><summary>烹饪和调酒能联动吗？</summary><div class="faq-body">
+        两个插件是同一系列的独立作品，<b>源码层面没有任何数据互通</b>——食材、酒、配方互不通用。可以在 RP 里开"酒馆配餐"，但机制上它们是两套独立玩法。
+      </div></details>
+    </section>
+
+    <footer>调酒百科 · Kaleidoscope Tavern · 基于源码与默认配置整理 · 2026-08</footer>
+  </main>
+</div>
+
+<button class="backtop" id="backtop" title="回到顶部">↑</button>
+
+<script>
+  var sidebar = document.getElementById('sidebar');
+  document.getElementById('menuBtn').onclick = function(e){ e.stopPropagation(); sidebar.classList.toggle('open'); };
+  document.addEventListener('click', function(e){
+    if(sidebar.classList.contains('open') && !sidebar.contains(e.target)) sidebar.classList.remove('open');
+  });
+  document.getElementById('navSearch').addEventListener('input', function(){
+    var q = this.value.trim().toLowerCase();
+    document.querySelectorAll('#nav a').forEach(function(a){
+      a.style.display = (!q || a.textContent.toLowerCase().indexOf(q) > -1) ? '' : 'none';
+    });
+    document.querySelectorAll('.nav-group-title').forEach(function(t){ t.style.display = q ? 'none' : ''; });
+  });
+  var links = Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function highlight(){
+    var idx = 0;
+    sections.forEach(function(s, i){ if(s && s.getBoundingClientRect().top < 140) idx = i; });
+    links.forEach(function(a, i){ a.classList.toggle('active', i === idx); });
+  }
+  window.addEventListener('scroll', highlight, {passive:true}); highlight();
+  var backtop = document.getElementById('backtop');
+  window.addEventListener('scroll', function(){ backtop.classList.toggle('show', window.scrollY > 600); }, {passive:true});
+  backtop.onclick = function(){ window.scrollTo({top:0, behavior:'smooth'}); };
+</script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍳 烹饪百科 · Kaleidoscope Cookery — 玩法 Wiki</title>
+<style>
+  :root{
+    --bg:#12141a; --panel:#191c25; --card:#1d212c; --line:#2a2f3d;
+    --text:#d8dce6; --muted:#9298a8; --accent:#e6824c; --accent-dim:#a85c34;
+    --link:#7fb0f5; --code-bg:#0d0f15;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:76px;}
+  body{background:var(--bg); color:var(--text);
+    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    font-size:15.5px; line-height:1.75;}
+  a{color:var(--link); text-decoration:none;} a:hover{text-decoration:underline;}
+
+  .topnav{position:fixed; top:0; left:0; right:0; height:52px; background:rgba(20,22,30,.94); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; z-index:70; padding:0 18px; gap:4px; backdrop-filter:blur(8px);}
+  .topnav .brand{font-weight:bold; color:var(--accent); margin-right:14px; font-size:15px; white-space:nowrap;}
+  .topnav a{padding:6px 13px; border-radius:8px; color:var(--text); font-size:13.5px; white-space:nowrap;}
+  .topnav a:hover{background:var(--card); text-decoration:none;}
+  .topnav a.here{background:var(--card); color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent-dim);}
+
+  .layout{display:flex; padding-top:52px; min-height:100vh;}
+  .sidebar{width:270px; flex-shrink:0; background:var(--panel); border-right:1px solid var(--line);
+    padding:20px 14px; position:sticky; top:52px; height:calc(100vh - 52px); overflow-y:auto;}
+  .sidebar::-webkit-scrollbar{width:8px;} .sidebar::-webkit-scrollbar-thumb{background:#2e3444; border-radius:4px;}
+  .logo{display:flex; align-items:center; gap:10px; padding:4px 8px 14px; border-bottom:1px solid var(--line); margin-bottom:14px;}
+  .logo .crown{font-size:26px;}
+  .logo b{font-size:16px; color:var(--accent); letter-spacing:.5px;}
+  .logo small{display:block; color:var(--muted); font-size:11.5px; font-weight:normal;}
+  #navSearch{width:100%; padding:8px 12px; margin-bottom:12px; border-radius:8px; border:1px solid var(--line);
+    background:var(--code-bg); color:var(--text); font-size:13.5px; outline:none;}
+  #navSearch:focus{border-color:var(--accent-dim);}
+  .nav a{display:block; padding:6px 10px; margin:2px 0; border-radius:7px; color:var(--text); font-size:13.5px; border-left:3px solid transparent;}
+  .nav a:hover{background:var(--card); text-decoration:none;}
+  .nav a.active{background:var(--card); border-left-color:var(--accent); color:var(--accent);}
+  .nav .num{color:var(--accent-dim); margin-right:7px; font-size:12px;}
+  .nav-group-title{color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:1.5px; padding:14px 10px 4px;}
+
+  main{flex:1; min-width:0; padding:32px 48px 80px; max-width:1020px; margin:0 auto;}
+  .hero{background:linear-gradient(135deg,#241a14 0%,#26170f 100%); border:1px solid var(--line); border-radius:14px; padding:34px 36px; margin-bottom:30px;}
+  .hero h1{font-size:30px; color:var(--accent); letter-spacing:1px; margin-bottom:10px;}
+  .hero p{color:var(--muted); font-size:14.5px; max-width:760px;}
+  .hero .warnbar{margin-top:16px; padding:12px 16px; border-radius:9px; font-size:13.5px;
+    background:rgba(230,130,76,.08); border:1px solid rgba(230,130,76,.4); color:#f0dcc9;}
+
+  section{margin-bottom:56px;}
+  h2{font-size:24px; color:var(--accent); padding-bottom:10px; margin-bottom:20px; border-bottom:2px solid var(--line); letter-spacing:.5px;}
+  h2 .h2icon{margin-right:8px;}
+  h3{font-size:18.5px; color:#f2bd93; margin:28px 0 12px;}
+  h4{font-size:16px; color:var(--text); margin:20px 0 8px;}
+  p{margin:10px 0;} ul,ol{margin:10px 0 10px 26px;} li{margin:5px 0;}
+  li::marker{color:var(--accent-dim);}
+  strong{color:#f7e3d1;}
+
+  code{background:var(--code-bg); border:1px solid var(--line); border-radius:5px; padding:1.5px 7px; font-size:13px; color:#f2c94c;
+    font-family:Consolas,"Cascadia Mono",monospace;}
+  pre.cmd{background:var(--code-bg); border:1px solid var(--line); border-left:3px solid var(--accent-dim); border-radius:8px;
+    padding:14px 18px; overflow-x:auto; margin:14px 0; font-family:Consolas,"Cascadia Mono",monospace; font-size:13.5px; line-height:1.7;}
+  pre.cmd .cmt{color:#6d7689;}
+
+  table{width:100%; border-collapse:collapse; margin:16px 0; font-size:13.5px; background:var(--card); border-radius:9px; overflow:hidden;}
+  th{background:#332a22; color:#f2bd93; text-align:left; padding:9px 12px; border:1px solid var(--line);}
+  td{padding:8px 12px; border:1px solid var(--line); vertical-align:top;}
+  tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+
+  .callout{border-radius:9px; padding:13px 18px; margin:16px 0; font-size:14.5px; border:1px solid;}
+  .callout.tip{background:rgba(76,174,109,.07); border-color:rgba(76,174,109,.4);}
+  .callout.warn{background:rgba(230,184,76,.07); border-color:rgba(230,184,76,.4);}
+  .callout.danger{background:rgba(217,107,107,.07); border-color:rgba(217,107,107,.45);}
+  .callout .tag{font-weight:bold; margin-right:6px;}
+
+  details.faq{background:var(--card); border:1px solid var(--line); border-radius:10px; margin:12px 0; overflow:hidden;}
+  details.faq summary{cursor:pointer; padding:14px 18px; font-weight:bold; color:#f2bd93; list-style:none; user-select:none;}
+  details.faq summary::-webkit-details-marker{display:none;}
+  details.faq summary::before{content:"▸ "; color:var(--accent-dim);}
+  details.faq[open] summary::before{content:"▾ ";}
+  details.faq .faq-body{padding:0 18px 16px; color:var(--text); font-size:14.5px;}
+
+  .backtop{position:fixed; right:26px; bottom:26px; width:44px; height:44px; border-radius:50%; background:var(--accent);
+    color:#1d120b; border:none; font-size:19px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:.25s;}
+  .backtop.show{opacity:1; pointer-events:auto;}
+  .menu-btn{display:none;}
+  footer{color:var(--muted); font-size:13px; text-align:center; padding:30px 0 10px; border-top:1px solid var(--line); margin-top:40px;}
+
+  @media (max-width:900px){
+    .layout{display:block;}
+    .topnav{padding-left:58px; overflow-x:auto;}
+    .sidebar{position:fixed; z-index:50; left:0; top:52px; height:calc(100vh - 52px); transform:translateX(-105%);
+      transition:transform .28s ease; box-shadow:8px 0 30px rgba(0,0,0,.5);}
+    .sidebar.open{transform:translateX(0);}
+    main{padding:24px 20px 60px;}
+    .menu-btn{display:block; position:fixed; z-index:80; top:9px; left:12px; background:var(--card); color:var(--accent);
+      border:1px solid var(--line); border-radius:8px; padding:5px 11px; font-size:16px; cursor:pointer;}
+    .hero{padding:24px 20px;} .hero h1{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<button class="menu-btn" id="menuBtn">☰</button>
+<nav class="topnav">
+  <span class="brand">🍳 烹饪百科</span>
+  <a href="index.html">🏠 首页</a>
+  <a href="kingdoms.html">⚔️ 国家</a>
+  <a href="fishing.html">🎣 钓鱼</a>
+  <a class="here" href="cooking.html">🍳 烹饪</a>
+  <a href="bartending.html">🍸 调酒</a>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <span class="crown">🍳</span>
+      <div><b>森罗料理</b><small>Kaleidoscope Cookery · 基于源码整理</small></div>
+    </div>
+    <input type="text" id="navSearch" placeholder="🔍 搜索章节…">
+    <nav class="nav" id="nav">
+      <div class="nav-group-title">入门</div>
+      <a href="#start"><span class="num">01</span>快速上手</a>
+      <a href="#heat"><span class="num">02</span>热源与炉灶</a>
+      <div class="nav-group-title">七大厨具</div>
+      <a href="#pot"><span class="num">03</span>炒锅</a>
+      <a href="#stockpot"><span class="num">04</span>高汤锅</a>
+      <a href="#steamer"><span class="num">05</span>蒸笼</a>
+      <a href="#shawarma"><span class="num">06</span>沙威玛烤架</a>
+      <a href="#millstone"><span class="num">07</span>石磨</a>
+      <a href="#board"><span class="num">08</span>砧板</a>
+      <a href="#teapot"><span class="num">09</span>茶壶与茶杯垫</a>
+      <div class="nav-group-title">核心系统</div>
+      <a href="#quality"><span class="num">10</span>品质系统（重点！）</a>
+      <a href="#recipe"><span class="num">11</span>配方·食材·种植</a>
+      <a href="#tools"><span class="num">12</span>油与厨房工具</a>
+      <div class="nav-group-title">生活</div>
+      <a href="#furniture"><span class="num">13</span>趣味家具与特殊物品</a>
+      <a href="#commands"><span class="num">14</span>指令与权限</a>
+      <a href="#faq"><span class="num">15</span>常见问题 FAQ</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h1>🍳 烹饪百科（森罗物语 · Kaleidoscope Cookery）</h1>
+      <p>七种可交互厨具组成的深度烹饪玩法：倒油、投料、翻炒、炖煮、推磨、切配、泡茶……<b>投料配比的精准度</b>决定菜品品质，从而决定饱食度收益。约 250 条配方等你解锁。</p>
+      <div class="warnbar">📖 本教程基于插件源码与默认配置整理。具体菜谱内容（配方表、食材清单）存放在服务器的 CraftEngine 资源包中，各服务器可能增删改配方，游戏内用 <code>/kcrecipe</code> 查看本服实际配方。</div>
+    </div>
+
+    <!-- 01 快速上手 -->
+    <section id="start">
+      <h2><span class="h2icon">🚀</span>快速上手</h2>
+      <ol>
+        <li><b>认识热源</b>：所有加热厨具都要求<b>正下方一格</b>是热源——点燃的篝火/营火/熔炉、岩浆块、火、岩浆，或本插件的<b>炉灶</b>。</li>
+        <li><b>做第一顿饭</b>：把<b>炒锅</b>放在热源上 → 手持油瓶倒油 → 放入食材 → 手持<b>锅铲</b>连点翻炒 6 次 → 听到"出锅"提示后 10 秒内用碗盛出。开吃！</li>
+        <li><b>查配方</b>：向管理员申请食谱浏览权限后，用 <code>/kcrecipe</code> 打开食谱菜单，查看每道菜的食材配比与所需厨具。</li>
+        <li><b>用食谱书抄菜</b>：对着<b>刚出锅的锅</b>右键空白食谱书 = 记录锅内配比；之后对着空锅右键食谱书 = <b>一键投料</b>，不用再背配方。</li>
+        <li><b>追求完美</b>：按配方精确投料（零偏差）可做出金色"完美"品质——营养价值是普通发挥的 2 倍（见品质系统章节）。</li>
+      </ol>
+      <div class="callout warn"><span class="tag">⚠️</span>厨具（炒锅、锅铲、菜刀、油壶等）的<b>合成配方在资源包中</b>，用 <code>/kcrecipe</code> 或问服主。配方不是在工作台里"合成菜品"——所有菜都要靠实体厨具做出来。</div>
+    </section>
+
+    <!-- 02 热源 -->
+    <section id="heat">
+      <h2><span class="h2icon">🔥</span>热源与炉灶</h2>
+      <p>厨具正下方一格满足任一条件即为热源：</p>
+      <ul>
+        <li>任何点燃状态的方块：篝火、灵魂篝火、燃烧的熔炉等；</li>
+        <li>岩浆块、火、魂火、岩浆；</li>
+        <li>本插件的<b>炉灶</b>（点火后算热源）。</li>
+      </ul>
+      <h3>炉灶使用</h3>
+      <ul>
+        <li><b>点火</b>：打火石或火焰弹（副手优先）；</li>
+        <li><b>熄火</b>：手持任意原版铲子右键；下雨或上方有水流也会自动熄灭；</li>
+        <li>点燃的炉灶是炒锅、高汤锅、蒸笼、茶壶的理想底座——稳定、可控、不怕雨（记得搭个棚）。</li>
+      </ul>
+    </section>
+
+    <!-- 03 炒锅 -->
+    <section id="pot">
+      <h2><span class="h2icon">🥘</span>炒锅</h2>
+      <p>核心厨具，"模糊配方"的代表：一道菜只规定<b>理想配比</b>，多放杂料也能出锅，但会拉低品质。</p>
+      <h3>完整流程</h3>
+      <ol>
+        <li><b>架锅</b>：炒锅放在热源上（未加热倒油会提示"需要热源"）；</li>
+        <li><b>倒油</b>：手持<b>油瓶</b>消耗 1 个，或手持<b>油壶</b>扣 1 点油量，或用<b>沾油锅铲</b>把油倒进去；</li>
+        <li><b>投料</b>：手持食材右键，最多 <b>9 格</b>；只收白名单内食材。空手可取回最上层食材——<b>锅里有油时取料会被烫掉 1 颗心！</b></li>
+        <li><b>翻炒</b>：手持<b>无油锅铲</b>右键连点 <b>6 次</b>（每次翻炒有概率磨损锅铲耐久）；</li>
+        <li><b>出锅</b>：提示"出锅了，需要什么容器盛"后，你有 <b>10 秒窗口</b>手持<b>碗</b>右键盛菜（有几只碗盛几份；要求空手的菜直接拿）；</li>
+        <li><b>烧糊</b>：10 秒没盛 → 整锅变<b>黑暗料理</b>；再过 20 秒锅自动重置并掉落<b>木炭</b>。匹配不到任何配方 → 产出<b>迷之炒菜</b>（20 秒后消失变木炭，抓紧吃/拿）。</li>
+      </ol>
+      <div class="callout tip"><span class="tag">💡</span>份数按"每种食材的投入量 ÷ 该食材理想量"中<b>最低的一档</b>计算，至少 1 份——比如配方要 6 鳕鱼+1 辣椒，投 12 鳕鱼+2 辣椒能一次盛 2 碗。</div>
+    </section>
+
+    <!-- 04 高汤锅 -->
+    <section id="stockpot">
+      <h2><span class="h2icon">🍲</span>高汤锅</h2>
+      <ol>
+        <li><b>加汤底</b>：手持<b>汤底桶</b>（水桶/岩浆桶等）右键加入；汤底决定可做的菜（水底菜 vs 岩浆底菜完全不同）；</li>
+        <li><b>投料</b>：最多 9 格食材；投错可空手取回（有汤时取料<b>烫 1 颗心</b>）；</li>
+        <li><b>盖锅盖</b>：右键盖上——<b>不盖盖子不计时</b>！盖盖+有料后炖 <b>20 秒</b>完成；</li>
+        <li><b>舀汤</b>：手持<b>碗</b>右键，可盛出最多 <b>9 份</b>，每份耗一只碗；加料/取料/揭盖都会<b>重置计时</b>；</li>
+        <li>舀完最后一碗后锅和汤底一起重置。</li>
+      </ol>
+      <div class="callout tip"><span class="tag">💡</span>高汤锅<b>不会烧糊</b>：配比不对只会做出原版"谜之炖菜"（1 份），锅也不坏——新手试配方建议先上高汤锅。</div>
+      <div class="callout warn"><span class="tag">⚠️</span>经典翻车点：投完料忘盖盖子，火开着干等十分钟——注意提示音，没盖盖子时只有"烧开"的音效，不会完成。</div>
+    </section>
+
+    <!-- 05 蒸笼 -->
+    <section id="steamer">
+      <h2><span class="h2icon">🥟</span>蒸笼</h2>
+      <ul>
+        <li><b>叠层</b>：手持蒸笼物品右键向上叠加——<b>炉灶上最多 16 层、篝火等热源上 8 层</b>；放在别处不会蒸熟；</li>
+        <li><b>放料</b>：手持食材右键放入（每个大蒸笼 8 格容量）；空手取出；<b>潜行+空手</b>开关顶盖；</li>
+        <li><b>蒸制</b>：每个食材独立计时 <b>10 秒</b>蒸熟，走"精准配方"（一种料进、一种成品出）；</li>
+        <li><b>会塌！</b>失去支撑整摞蒸笼连料一起掉落，别把地基拆了。</li>
+      </ul>
+      <p>适合量产：16 层 × 8 格 = 炉灶一次可同时蒸 128 个食材。</p>
+    </section>
+
+    <!-- 06 沙威玛 -->
+    <section id="shawarma">
+      <h2><span class="h2icon">🌯</span>沙威玛烤架</h2>
+      <ul>
+        <li>双格高结构，上下两层、每层 8 槽共 <b>16 槽</b>；</li>
+        <li>手持食材右键 = 逐个塞入该层；空手右键 = 取出该层成品（或生料）；</li>
+        <li><b>红石信号驱动</b>：通电时旋转烤制，每个食材 <b>15 秒</b>烤熟；断电暂停（进度保留）。拉个拉杆或做个红石时钟就是自动烤肉机。</li>
+      </ul>
+    </section>
+
+    <!-- 07 石磨 -->
+    <section id="millstone">
+      <h2><span class="h2icon">🪨</span>石磨</h2>
+      <p>最有"质感"的厨具：真的要靠力气（或牲口）推磨。</p>
+      <h3>方式一：自己推</h3>
+      <ul>
+        <li>站上磨杆轨道，绕着磨盘走圈——玩家一圈约 <b>7.5 秒</b>；</li>
+        <li>推太超前（超过 60°）会脱手，磨杆会反过来"拽着"你走，注意节奏。</li>
+      </ul>
+      <h3>方式二：牲口拉磨</h3>
+      <ul>
+        <li>手持<b>拴绳</b>右键生物再连到磨盘。速度表：骡 6 秒/圈 &gt; 村民 7.5 &gt; 驴 10 &gt; 马/骷髅马 25 &gt; 羊驼 30 &gt; 牛 40 &gt; 羊/山羊 50；</li>
+        <li>用支持生物的刷怪蛋右键石磨可直接生成拉磨牲口；幼年个体不能干活；</li>
+      </ul>
+      <h3>产出</h3>
+      <ul>
+        <li>默认每 <b>4 圈</b>产出一批（个别配方会指定圈数）；</li>
+        <li>精准配方：如铁矿石磨上几圈 → 有机会得到铁锭或金锭；小麦磨面粉等。</li>
+      </ul>
+    </section>
+
+    <!-- 08 砧板 -->
+    <section id="board">
+      <h2><span class="h2icon">🔪</span>砧板</h2>
+      <ul>
+        <li>手持食材右键放上（仅白名单原料）；空手右键拿回；</li>
+        <li>手持<b>菜刀</b>连续右键切配——<b>每刀磨损 1 耐久</b>；</li>
+        <li>每份配方规定刀数（如生牛肉 4 刀、鳕鱼 5 刀），切满按权重出成品；</li>
+        <li>可能有副产物：如切生牛肉有机会附送骨头。</li>
+      </ul>
+    </section>
+
+    <!-- 09 茶壶 -->
+    <section id="teapot">
+      <h2><span class="h2icon">🍵</span>茶壶与茶杯垫</h2>
+      <ol>
+        <li><b>装液</b>：手持茶壶对视线 5 格内的<b>水/岩浆源方块</b>右键装满（两种液面外观不同）；</li>
+        <li><b>放置投料</b>：放好后手持原料右键投入（上限为配方要求量），<b>先投料再加热</b>；</li>
+        <li><b>预煮校验</b>：10 秒预煮——不匹配的配方会把料原样吐出来；匹配后按配方时间煮（默认 10 秒）；</li>
+        <li><b>产量按比例</b>：满液面 = 8 杯；份数 = 8 × 实投量 ÷ 配方要求量（向下取整）；</li>
+        <li><b>倒茶</b>：茶杯放在<b>茶杯垫</b>上，手持茶壶右键空杯倒茶，每杯扣 1 份；空手右键壶可整壶拿走。</li>
+      </ol>
+      <p>示例：大麦茶 = 12 小麦种子 + 水 → 8 杯；蜂蜜柚子茶用蜂蜜液面 + 甜浆果。</p>
+    </section>
+
+    <!-- 10 品质 -->
+    <section id="quality">
+      <h2><span class="h2icon">⭐</span>品质系统（重点！）</h2>
+      <p>同一道菜的营养价值由<b>出锅瞬间的品质</b>决定，而品质由你的<b>投料精准度</b>决定：</p>
+      <p style="text-align:center; font-size:14px;"><code>偏差 = Σ|每种必需食材实际投入 − 理想量×份数| + 配比外杂料总数</code></p>
+      <table>
+        <tr><th>档位</th><th>偏差</th><th>营养倍率</th><th>名字颜色</th></tr>
+        <tr><td><b>完美</b></td><td>0（分毫不差）</td><td><b>×1.2</b></td><td>🟡 金色</td></tr>
+        <tr><td><b>优秀</b></td><td>1</td><td>×0.9</td><td>🟢 绿色</td></tr>
+        <tr><td><b>普通</b></td><td>2</td><td>×0.6</td><td>⚪ 白色</td></tr>
+        <tr><td><b>生疏</b></td><td>≥3</td><td>×0.3</td><td>⚫ 深灰</td></tr>
+      </table>
+      <ul>
+        <li>倍率同时作用于<b>饱食度和饱和度</b>，出锅瞬间写进物品；物品说明上写的食物属性是"完美档上限"；</li>
+        <li>物品 lore 会显示品质档位与着色菜名，一眼可辨。</li>
+      </ul>
+      <div class="callout tip"><span class="tag">💡</span>冲完美品质的诀窍：① 用食谱书记录配方后一键投料（数量绝对精确）；② 别加杂料；③ 注意份数翻倍时每种食材都要等比例加倍。完美档 = 普通档 2 倍营养，长期打架/PvP 玩家值得练。</div>
+      <div class="callout warn"><span class="tag">⚠️</span><b>调味品</b>（盐、酱等，以服务器标签为准）只占锅格，<b>不算杂料、不影响品质</b>，可放心加；<b>等效食材</b>组内的肉可以互相顶替（配方要牛肉，投猪肉也算），同组数量会合并计算。</div>
+    </section>
+
+    <!-- 11 配方与食材 -->
+    <section id="recipe">
+      <h2><span class="h2icon">📖</span>配方 · 食材 · 种植</h2>
+      <h3>两类配方</h3>
+      <table>
+        <tr><th>类型</th><th>适用厨具</th><th>规则</th></tr>
+        <tr><td><b>模糊配方</b></td><td>炒锅、高汤锅</td><td>只定"理想配比"；必需食材齐了就能出菜，杂料拉低品质；份数按比例</td></tr>
+        <tr><td><b>精准配方</b></td><td>蒸笼、石磨、沙威玛、茶壶、砧板</td><td>一进一出，"器具+食材"唯一确定成品；成品可带随机权重</td></tr>
+      </table>
+      <h3>食谱书（强烈推荐）</h3>
+      <ul>
+        <li>对<b>已出锅的锅</b>右键空白食谱书 = 把锅内配比记录进书；</li>
+        <li>对<b>空锅</b>右键已记录的食谱书 = 从背包一键投料（材料不足会提示）——做完美品质的标配工具。</li>
+      </ul>
+      <h3>菜谱菜单 /kcrecipe</h3>
+      <p>游戏内食谱浏览器：首页列出 7 大厨具按钮（显示各有几条配方），点进去可翻页查看每条配方的食材、汤底、盛具详情。<b>浏览权限默认仅管理员</b>，需要向服主申请下放。</p>
+      <h3>食材来源</h3>
+      <ul>
+        <li><b>种植</b>：新增作物（番茄、生菜、辣椒、水稻等）。成熟后<b>右键直接收割</b>并自动回到生长中阶段，无需破坏重种；</li>
+        <li><b>水稻</b>特殊：三格高，要种在<b>水下开垦的水田</b>（锄头右键水下泥土）；附近 4 格有鳕鱼/美西螈时加速生长；</li>
+        <li><b>狩猎</b>：生物额外掉落（生牛杂等）；抢夺附魔有额外加成；</li>
+        <li><b>磨制/切配</b>：石磨磨粉、砧板切配加工出半成品食材（如生牛杂、面团）。</li>
+      </ul>
+    </section>
+
+    <!-- 12 工具 -->
+    <section id="tools">
+      <h2><span class="h2icon">🧰</span>油与厨房工具</h2>
+      <table>
+        <tr><th>工具</th><th>说明</th></tr>
+        <tr><td><b>油瓶</b></td><td>炒锅倒油的基本单位，消耗 1 个/次</td></tr>
+        <tr><td><b>搪瓷盆</b></td><td>储油罐：容量 16。右键开盖，开盖后油瓶加油、潜行+空手取油；手持<b>无油锅铲</b>右键 = 让铲子<b>沾油</b></td></tr>
+        <tr><td><b>油壶</b></td><td>大油罐：容量 256，<b>耐久条就是油量</b>。放地上成方块，空手取油、油脂加油</td></tr>
+        <tr><td><b>锅铲</b></td><td>一个物品两种形态（无油/沾油）：沾油后对炒锅=倒油、对搪瓷盆=沾油；无油状态用来翻炒；每次翻炒有概率磨损</td></tr>
+        <tr><td><b>菜刀</b></td><td>砧板切配用，每刀 1 耐久；有铁/金/钻/合金等材质</td></tr>
+        <tr><td><b>镰刀</b></td><td>范围收割：一挥收割半径 2 格（可升级更大）、高 2 格内的作物，每次挥砍 1 耐久——农场收割神器</td></tr>
+      </table>
+      <div class="callout warn"><span class="tag">⚠️</span>锅铲沾油/倒油的状态存在物品数据上（外观会变化）。对炉灶熄火要拿<b>原版铲子</b>，锅铲熄不了火。</div>
+    </section>
+
+    <!-- 13 家具 -->
+    <section id="furniture">
+      <h2><span class="h2icon">🪑</span>趣味家具与特殊物品</h2>
+      <ul>
+        <li><b>垃圾桶</b>：手持物品右键投放（存 3 件，满了挤掉最旧的），空手取出；<b>从 1 格以上跳到桶顶会整个人钻进桶里躲藏</b>（潜行退出）——捉迷藏/伏击神器；</li>
+        <li><b>稻草人</b>：16 格内耕地不被踩坏；3 个装备槽，可挂灯笼提供 15 级光照；<b>鹦鹉会停在肩上</b>；</li>
+        <li><b>果篮</b>：存取展示物品，<b>猫会主动趴上来</b>睡觉；</li>
+        <li><b>辣椒串/蘑菇串</b>：挂墙上装饰，右键一次采 3 个；</li>
+        <li><b>餐桌/椅子/凳子</b>：11 种木材变体，椅子可坐，餐桌可换桌布颜色；</li>
+        <li><b>嬗变饭袋</b>：潜行+右键把背包里全部熟牛肉装袋（上限 16 格）；右键开始吃，<b>每咬一口消耗一格并结算营养</b>——行军干粮，一格背包顶 16 顿饭；潜行+左键倒回背包；</li>
+        <li><b>猪儿虫</b>：右键喂给幼年鸡 = <b>立刻变成年鸡</b>（养鸡场提速神器）。</li>
+      </ul>
+    </section>
+
+    <!-- 14 指令 -->
+    <section id="commands">
+      <h2><span class="h2icon">⌨️</span>指令与权限</h2>
+      <table>
+        <tr><th style="width:42%">指令</th><th>说明</th></tr>
+        <tr><td><code>/kcrecipe</code></td><td>打开食谱浏览菜单（7 大厨具配方查看器）——<b>需浏览权限，默认仅管理员</b></td></tr>
+        <tr><td><code>/kcrecipe edit</code></td><td>管理员编辑模式：新增/修改/删除配方</td></tr>
+        <tr><td><code>/ce reload all</code></td><td>管理员重载资源包（改配方后生效）</td></tr>
+      </table>
+      <p>本插件没有烹饪等级/经验系统——你的"厨艺"就体现在每道菜的品质档位上。食谱浏览权限需要向服主申请下放。</p>
+    </section>
+
+    <!-- 15 FAQ -->
+    <section id="faq">
+      <h2><span class="h2icon">❓</span>常见问题 FAQ</h2>
+
+      <details class="faq"><summary>炒锅点了没反应，提示"需要热源"？</summary><div class="faq-body">
+        热源必须在炒锅<b>正下方一格</b>：点燃的篝火/营火、岩浆块、火、岩浆，或点火的炉灶。放在普通方块上加热不了。
+      </div></details>
+
+      <details class="faq"><summary>为什么我的菜总是烧糊？</summary><div class="faq-body">
+        翻炒完成后只有 <b>10 秒</b>盛出窗口，超时变黑暗料理、20 秒后变木炭。听到"出锅"提示立刻拿碗去点。另外配比完全对不上的话会出"迷之炒菜"，也要趁 20 秒内拿走。
+      </div></details>
+
+      <details class="faq"><summary>怎么做不出"完美"品质？</summary><div class="faq-body">
+        完美要求<b>零偏差</b>：每种食材的投入量 = 理想量 × 份数，且没有任何配比外杂料。建议用食谱书记录配方后一键投料。调味品和等效食材组不算偏差，可以放心用。
+      </div></details>
+
+      <details class="faq"><summary>这个食材放不进锅？</summary><div class="faq-body">
+        炒锅/高汤锅只收<b>白名单食材</b>（出现在任何配方理想配比里的食材 + 调味品/等效组）。真的不是食材的东西会提示"这不是食材"。
+      </div></details>
+
+      <details class="faq"><summary>取食材为什么掉血？</summary><div class="faq-body">
+        锅里有油/汤时伸进去取料会被<b>烫 1 颗心</b>（2 点伤害）——现实得很。投料前想清楚，或先把菜做完。
+      </div></details>
+
+      <details class="faq"><summary>高汤锅煮了半天不好？</summary><div class="faq-body">
+        检查三件事：① 下方程是否是热源；② 有没有<b>盖锅盖</b>（不盖不计时）；③ 中途是否开过盖/加过料（会重置计时）。
+      </div></details>
+
+      <details class="faq"><summary>/kcrecipe 提示无权限？</summary><div class="faq-body">
+        食谱浏览权限默认只给管理员，找服主把权限下放给玩家组即可。
+      </div></details>
+
+      <details class="faq"><summary>蒸笼塌了！</summary><div class="faq-body">
+        蒸笼失去支撑（下方的方块/蒸笼被拆）整摞会塌，食材掉一地。搭高塔时先铺结实的柱子，炉灶上最多 16 层、篝火上 8 层。
+      </div></details>
+
+      <details class="faq"><summary>石磨怎么算转了一圈？</summary><div class="faq-body">
+        绕磨盘完整走一圈约 7.5 秒（玩家）。每 4 圈出一批货。嫌慢就拴头骡（6 秒/圈，最快的牲口），或做牲口刷怪蛋直接生成拉磨工。
+      </div></details>
+
+      <details class="faq"><summary>吃完的碗去哪了？</summary><div class="faq-body">
+        吃完的容器（碗、空茶杯等）会掉在<b>你脚边</b>（不进背包），和骨头等副产物一起记得捡。
+      </div></details>
+    </section>
+
+    <footer>烹饪百科 · Kaleidoscope Cookery · 基于源码与默认配置整理 · 2026-08</footer>
+  </main>
+</div>
+
+<button class="backtop" id="backtop" title="回到顶部">↑</button>
+
+<script>
+  var sidebar = document.getElementById('sidebar');
+  document.getElementById('menuBtn').onclick = function(e){ e.stopPropagation(); sidebar.classList.toggle('open'); };
+  document.addEventListener('click', function(e){
+    if(sidebar.classList.contains('open') && !sidebar.contains(e.target)) sidebar.classList.remove('open');
+  });
+  document.getElementById('navSearch').addEventListener('input', function(){
+    var q = this.value.trim().toLowerCase();
+    document.querySelectorAll('#nav a').forEach(function(a){
+      a.style.display = (!q || a.textContent.toLowerCase().indexOf(q) > -1) ? '' : 'none';
+    });
+    document.querySelectorAll('.nav-group-title').forEach(function(t){ t.style.display = q ? 'none' : ''; });
+  });
+  var links = Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function highlight(){
+    var idx = 0;
+    sections.forEach(function(s, i){ if(s && s.getBoundingClientRect().top < 140) idx = i; });
+    links.forEach(function(a, i){ a.classList.toggle('active', i === idx); });
+  }
+  window.addEventListener('scroll', highlight, {passive:true}); highlight();
+  var backtop = document.getElementById('backtop');
+  window.addEventListener('scroll', function(){ backtop.classList.toggle('show', window.scrollY > 600); }, {passive:true});
+  backtop.onclick = function(){ window.scrollTo({top:0, behavior:'smooth'}); };
+</script>
+</body>
+</html>

@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚔️ KingdomsX 玩家完全教程 Wiki</title>
+<style>
+  :root{
+    --bg:#12141a; --panel:#191c25; --card:#1d212c; --line:#2a2f3d;
+    --text:#d8dce6; --muted:#9298a8; --gold:#e6b84c; --gold-dim:#b98e2f;
+    --link:#7fb0f5; --code-bg:#0d0f15; --green:#4cae6d; --red:#d96b6b;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:76px;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    font-size:15.5px; line-height:1.75;
+  }
+  a{color:var(--link); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  .topnav{position:fixed; top:0; left:0; right:0; height:52px; background:rgba(20,22,30,.94); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; z-index:70; padding:0 18px; gap:4px; backdrop-filter:blur(8px);}
+  .topnav .brand{font-weight:bold; color:var(--gold); margin-right:14px; font-size:15px; white-space:nowrap;}
+  .topnav a{padding:6px 13px; border-radius:8px; color:var(--text); font-size:13.5px; white-space:nowrap;}
+  .topnav a:hover{background:var(--card); text-decoration:none;}
+  .topnav a.here{background:var(--card); color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold-dim);}
+
+  /* ===== 布局 ===== */
+  .layout{display:flex; min-height:100vh; padding-top:52px;}
+  .sidebar{
+    width:280px; flex-shrink:0; background:var(--panel);
+    border-right:1px solid var(--line); padding:20px 14px;
+    position:sticky; top:52px; height:calc(100vh - 52px); overflow-y:auto;
+  }
+  .sidebar::-webkit-scrollbar{width:8px;}
+  .sidebar::-webkit-scrollbar-thumb{background:#2e3444; border-radius:4px;}
+  main{flex:1; min-width:0; padding:32px 48px 80px; max-width:1020px; margin:0 auto;}
+
+  /* ===== 侧边栏 ===== */
+  .logo{display:flex; align-items:center; gap:10px; padding:4px 8px 14px; border-bottom:1px solid var(--line); margin-bottom:14px;}
+  .logo .crown{font-size:26px;}
+  .logo b{font-size:16px; color:var(--gold); letter-spacing:.5px;}
+  .logo small{display:block; color:var(--muted); font-size:11.5px; font-weight:normal;}
+  #navSearch{
+    width:100%; padding:8px 12px; margin-bottom:12px; border-radius:8px;
+    border:1px solid var(--line); background:var(--code-bg); color:var(--text);
+    font-size:13.5px; outline:none;
+  }
+  #navSearch:focus{border-color:var(--gold-dim);}
+  .nav a{
+    display:block; padding:6px 10px; margin:2px 0; border-radius:7px;
+    color:var(--text); font-size:13.5px; border-left:3px solid transparent;
+  }
+  .nav a:hover{background:var(--card); text-decoration:none;}
+  .nav a.active{background:var(--card); border-left-color:var(--gold); color:var(--gold);}
+  .nav .num{color:var(--gold-dim); margin-right:7px; font-size:12px;}
+  .nav-group-title{color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:1.5px; padding:14px 10px 4px;}
+
+  /* ===== 正文 ===== */
+  .hero{
+    background:linear-gradient(135deg,#1c2130 0%,#231d15 100%);
+    border:1px solid var(--line); border-radius:14px; padding:34px 36px; margin-bottom:30px;
+  }
+  .hero h1{font-size:30px; color:var(--gold); letter-spacing:1px; margin-bottom:10px;}
+  .hero p{color:var(--muted); font-size:14.5px; max-width:760px;}
+  .hero .warnbar{
+    margin-top:16px; padding:12px 16px; border-radius:9px; font-size:13.5px;
+    background:rgba(230,184,76,.08); border:1px solid rgba(230,184,76,.35); color:#e8d9b0;
+  }
+
+  section{margin-bottom:56px;}
+  h2{
+    font-size:24px; color:var(--gold); padding-bottom:10px; margin-bottom:20px;
+    border-bottom:2px solid var(--line); letter-spacing:.5px;
+  }
+  h2 .h2icon{margin-right:8px;}
+  h3{font-size:18.5px; color:#f0d79a; margin:28px 0 12px;}
+  h4{font-size:16px; color:var(--text); margin:20px 0 8px;}
+  p{margin:10px 0;}
+  ul,ol{margin:10px 0 10px 26px;}
+  li{margin:5px 0;}
+  li::marker{color:var(--gold-dim);}
+  strong{color:#f4e6c0;}
+
+  code{
+    background:var(--code-bg); border:1px solid var(--line); border-radius:5px;
+    padding:1.5px 7px; font-size:13px; color:#f2c94c;
+    font-family:Consolas,"Cascadia Mono",monospace;
+  }
+  pre.cmd{
+    background:var(--code-bg); border:1px solid var(--line); border-left:3px solid var(--gold-dim);
+    border-radius:8px; padding:14px 18px; overflow-x:auto; margin:14px 0;
+    font-family:Consolas,"Cascadia Mono",monospace; font-size:13.5px; line-height:1.7;
+  }
+  pre.cmd code{background:none; border:none; padding:0; color:#cdd6e4;}
+  pre.cmd .cmt{color:#6d7689;}
+
+  table{
+    width:100%; border-collapse:collapse; margin:16px 0; font-size:14px;
+    background:var(--card); border-radius:9px; overflow:hidden;
+  }
+  th{background:#262b38; color:#f0d79a; text-align:left; padding:10px 14px; border:1px solid var(--line);}
+  td{padding:9px 14px; border:1px solid var(--line); vertical-align:top;}
+  tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+
+  .callout{
+    border-radius:9px; padding:13px 18px; margin:16px 0; font-size:14.5px;
+    border:1px solid;
+  }
+  .callout.tip{background:rgba(76,174,109,.07); border-color:rgba(76,174,109,.4);}
+  .callout.warn{background:rgba(230,184,76,.07); border-color:rgba(230,184,76,.4);}
+  .callout.danger{background:rgba(217,107,107,.07); border-color:rgba(217,107,107,.45);}
+  .callout .tag{font-weight:bold; margin-right:6px;}
+
+  details.faq{
+    background:var(--card); border:1px solid var(--line); border-radius:10px;
+    margin:12px 0; overflow:hidden;
+  }
+  details.faq summary{
+    cursor:pointer; padding:14px 18px; font-weight:bold; color:#f0d79a;
+    list-style:none; user-select:none;
+  }
+  details.faq summary::-webkit-details-marker{display:none;}
+  details.faq summary::before{content:"▸ "; color:var(--gold-dim);}
+  details.faq[open] summary::before{content:"▾ ";}
+  details.faq .faq-body{padding:0 18px 16px; color:var(--text); font-size:14.5px;}
+
+  .backtop{
+    position:fixed; right:26px; bottom:26px; width:44px; height:44px; border-radius:50%;
+    background:var(--gold); color:#141414; border:none; font-size:19px; cursor:pointer;
+    box-shadow:0 4px 14px rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:.25s;
+  }
+  .backtop.show{opacity:1; pointer-events:auto;}
+
+  .menu-btn{display:none;}
+  footer{color:var(--muted); font-size:13px; text-align:center; padding:30px 0 10px; border-top:1px solid var(--line); margin-top:40px;}
+
+  @media (max-width:900px){
+    .layout{display:block; padding-top:52px;}
+    .topnav{padding-left:58px; overflow-x:auto;}
+    .sidebar{
+      position:fixed; z-index:50; left:0; top:52px; height:calc(100vh - 52px); transform:translateX(-105%);
+      transition:transform .28s ease; box-shadow:8px 0 30px rgba(0,0,0,.5);
+    }
+    .sidebar.open{transform:translateX(0);}
+    main{padding:70px 20px 60px;}
+    .menu-btn{
+      display:block; position:fixed; z-index:80; top:9px; left:12px;
+      background:var(--card); color:var(--gold); border:1px solid var(--line);
+      border-radius:9px; padding:8px 14px; font-size:17px; cursor:pointer;
+    }
+    .hero{padding:24px 20px;}
+    .hero h1{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚜ 玩法 Wiki</span>
+  <a href="index.html">🏠 首页</a>
+  <a class="here" href="kingdoms.html">⚔️ 国家</a>
+  <a href="fishing.html">🎣 钓鱼</a>
+  <a href="cooking.html">🍳 烹饪</a>
+  <a href="bartending.html">🍸 调酒</a>
+</nav>
+
+<button class="menu-btn" id="menuBtn">☰ 目录</button>
+
+<div class="layout">
+  <!-- ============ 侧边栏 ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <span class="crown">👑</span>
+      <div>
+        <b>KingdomsX 教程</b>
+        <small>玩家版 · 基于官方 Wiki 整理</small>
+      </div>
+    </div>
+    <input type="text" id="navSearch" placeholder="🔍 搜索章节…">
+    <nav class="nav" id="nav">
+      <div class="nav-group-title">新手</div>
+      <a href="#quickstart"><span class="num">01</span>五分钟上手</a>
+      <a href="#concepts"><span class="num">02</span>核心概念</a>
+      <div class="nav-group-title">经营</div>
+      <a href="#kingdom"><span class="num">03</span>创建与管理王国</a>
+      <a href="#land"><span class="num">04</span>领地系统</a>
+      <a href="#nexus"><span class="num">05</span>中枢 Nexus</a>
+      <a href="#rp"><span class="num">06</span>资源点 RP</a>
+      <a href="#structures"><span class="num">07</span>建筑 Structures</a>
+      <a href="#turrets"><span class="num">08</span>炮塔 Turrets</a>
+      <a href="#relations"><span class="num">09</span>关系与外交</a>
+      <a href="#nations"><span class="num">10</span>国家 Nations</a>
+      <a href="#taxes"><span class="num">11</span>税收与银行</a>
+      <div class="nav-group-title">战争</div>
+      <a href="#shield"><span class="num">12</span>护盾与和平主义</a>
+      <a href="#war"><span class="num">13</span>战争与入侵 ⚔</a>
+      <a href="#guards"><span class="num">14</span>守卫与士兵</a>
+      <div class="nav-group-title">工具</div>
+      <a href="#protection"><span class="num">15</span>保护牌锁箱</a>
+      <a href="#mails"><span class="num">16</span>王国邮件</a>
+      <a href="#treaty"><span class="num">17</span>和平条约与附庸</a>
+      <a href="#outposts"><span class="num">18</span>前哨战 Outposts</a>
+      <a href="#commands"><span class="num">19</span>指令速查表</a>
+      <a href="#faq"><span class="num">20</span>常见问题 FAQ</a>
+      <a href="#glossary"><span class="num">21</span>术语表</a>
+    </nav>
+  </aside>
+
+  <!-- ============ 正文 ============ -->
+  <main>
+    <div class="hero">
+      <h1>⚔️ KingdomsX 玩家完全教程 Wiki</h1>
+      <p>KingdomsX 是一个"王国玩法"插件（类似 Factions/阵营）：玩家组建<b>王国</b>、圈占<b>领地</b>、建造<b>炮塔和建筑</b>防守基地，并通过<b>入侵战争</b>抢夺别人的土地和资源。</p>
+      <div class="warnbar">📖 本教程基于 KingdomsX 官方 Wiki（wiki.kingdomsx.com）整理翻译，内容对应<b>插件默认配置</b>。你所在的服务器可能自定义了规则（如价格、护盾时长、是否开启掠夺战等），<b>一切以服务器内实际设置和公告为准</b>。遇到问题先看【常见问题】，再用 <code>/k help</code> 查看服务器开放的指令。</div>
+    </div>
+
+    <!-- ========== 01 五分钟上手 ========== -->
+    <section id="quickstart">
+      <h2><span class="h2icon">🚀</span>五分钟上手（新手必读）</h2>
+      <p><b>新手路径（按顺序做）：</b></p>
+      <ol>
+        <li><b>加入或创建一个王国</b>
+          <ul>
+            <li>加入别人：让有权限的成员邀请你，或使用 <code>/k requestJoin &lt;王国名&gt;</code> 主动申请，或向对方索取<b>邀请码</b>。</li>
+            <li>自己创建：<code>/k create &lt;名字&gt;</code>（通常需要一笔金钱，且名字需符合服务器命名规则）。</li>
+          </ul>
+          <div class="callout tip"><span class="tag">💡</span>新手推荐先加入一个成熟的王国，学习玩法后再自立门户。</div>
+        </li>
+        <li><b>圈地</b>
+          <ul>
+            <li>输入 <code>/k map</code> 打开互动地图，直接在聊天栏点击地图上的区块即可圈地；</li>
+            <li>或站在想圈的地块上输入 <code>/k claim</code>。</li>
+            <li>领地能保护箱子、允许放置炮塔和建筑。</li>
+          </ul>
+        </li>
+        <li><b>放置中枢（Nexus）</b>
+          <ul>
+            <li>使用 <code>/k nexus</code> 放置王国中枢。中枢是王国的"心脏"：升级、护盾、商店、税收、成员管理都在这里操作。</li>
+          </ul>
+          <div class="callout warn"><span class="tag">⚠️</span>别人挖你的中枢会<b>偷走王国资源点</b>，所以一定要把它藏好、护好！</div>
+        </li>
+        <li><b>赚取资源点（RP）</b>
+          <ul>
+            <li>打开中枢里的<b>资源点转换器</b>（或用 <code>/k rp converter</code>），把多余物品放进去换 RP。</li>
+            <li>普通物品每 5 个换 1 RP；钻石、绿宝石、金锭、铁锭等<b>特殊物品</b>单个就有更高价值（用 <code>/k tradable</code> 查看列表）。</li>
+          </ul>
+          <div class="callout warn"><span class="tag">⚠️</span>放完物品必须点 <b>Apply（应用）</b> 才会转换！关闭界面或点返回只会把物品退回。</div>
+        </li>
+        <li><b>了解保护机制</b>
+          <ul>
+            <li>新王国通常自带<b>几天免费护盾</b>，且前几天免缴服务器税——抓紧时间发展！</li>
+            <li>被入侵时，全王国成员可用 <code>/k teleport</code> 传送到战场支援。</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ========== 02 核心概念 ========== -->
+    <section id="concepts">
+      <h2><span class="h2icon">🧩</span>核心概念</h2>
+
+      <h3>王国（Kingdom）</h3>
+      <p>一群共享领地和资源的玩家组成的团体。每个王国拥有独立的：资源点、银行、升级等级、职位体系、关系属性和领地。王国可以创建或加入<b>国家</b>。长期缴不起服务器税的王国会被<b>解散</b>。</p>
+
+      <h3>领地（Land / Claim）</h3>
+      <p>一个区块（Chunk，16×16 格）= 一块领地。圈占后可保护箱子、放置炮塔与建筑。</p>
+      <p><b>领地上限（默认规则）的构成：</b></p>
+      <ul>
+        <li>每名成员提供 <b>5 格</b>领地；</li>
+        <li>加入国家后，国家内每个王国再提供 5 格；</li>
+        <li>"最大领地"杂项升级可增加上限；</li>
+        <li>管理员可用指令额外赠送。</li>
+      </ul>
+      <p>想要<b>别人的领地</b>？只能通过<b>入侵战争</b>抢夺。</p>
+
+      <h3>资源点（Resource Points / RP）</h3>
+      <p>王国的主要货币（属于<b>王国</b>而不是个人！），用于购买炮塔、建筑、护盾、弹药和升级。详见<a href="#rp">资源点章节</a>。</p>
+
+      <h3>国力（Might）</h3>
+      <p>王国/国家的排行榜（<code>/k top</code>）依据"国力"计算，默认主要由<b>资源点数量</b>和<b>成员数量</b>决定。每次收税时，国力前 10 的王国和国家会获得金钱和 RP 奖励。</p>
+
+      <h3>力量（Power，可选玩法）</h3>
+      <p>部分服务器会开启类似老版 Factions 的"力量"系统：成员在线自动积累力量、死亡掉力量，王国可圈地数量受总力量限制；力量不足时你的领地可能被<b>直接越圈（overclaim）</b>。是否开启取决于服务器，默认关闭。</p>
+    </section>
+
+    <!-- ========== 03 创建与管理 ========== -->
+    <section id="kingdom">
+      <h2><span class="h2icon">👑</span>创建与管理你的王国</h2>
+
+      <h3>创建</h3>
+      <pre class="cmd"><code>/k create &lt;王国名&gt;</code></pre>
+      <ul>
+        <li>通常消耗金钱（Vault 经济）；</li>
+        <li>创建成功后，脚下领地会自动圈占，并把王国之家（home）设在你所在位置；</li>
+        <li>创建时可选择<b>和平主义</b>或<b>好战（非和平主义）</b>路线（之后可在中枢里更改）。</li>
+      </ul>
+
+      <h3>王国信息与门面</h3>
+      <table>
+        <tr><th style="width:40%">指令</th><th>作用</th></tr>
+        <tr><td><code>/k show [名字]</code></td><td>查看王国/玩家详情</td></tr>
+        <tr><td><code>/k rename &lt;新名&gt;</code></td><td>重命名王国（需权限，通常收费）</td></tr>
+        <tr><td><code>/k lore &lt;描述/remove&gt;</code></td><td>设置王国简介，跨领地时以大标题显示在别人屏幕上</td></tr>
+        <tr><td><code>/k tag &lt;标签/remove&gt;</code></td><td>设置王国简称（聊天栏等处显示的小标签）</td></tr>
+        <tr><td><code>/k top</code></td><td>查看国力排行榜</td></tr>
+      </table>
+
+      <h3>成员管理</h3>
+      <table>
+        <tr><th style="width:40%">指令</th><th>作用</th></tr>
+        <tr><td><code>/k requestJoin &lt;王国&gt;</code></td><td>申请加入某王国</td></tr>
+        <tr><td><code>/k joinRequests</code></td><td>查看/处理入国申请（需 INVITE 权限）</td></tr>
+        <tr><td><code>/k inviteCodes</code></td><td>制作/管理邀请码（凭码即可入国）</td></tr>
+        <tr><td><code>/k promote &lt;玩家&gt;</code></td><td>晋升成员职位</td></tr>
+        <tr><td><code>/k demote &lt;玩家&gt;</code></td><td>降职成员</td></tr>
+        <tr><td><code>/k kick &lt;玩家&gt;</code></td><td>踢出成员</td></tr>
+        <tr><td><code>/k king &lt;玩家&gt;</code></td><td><b>转让王位</b>（全服公告）</td></tr>
+        <tr><td><code>/k disband</code></td><td><b>解散王国</b>（仅国王可用，领地和成员全部失去，慎用！）</td></tr>
+        <tr><td><code>/k broadcast &lt;消息&gt;</code></td><td>向全体成员广播（带音效）</td></tr>
+        <tr><td><code>/k merge &lt;王国&gt;</code></td><td>请求把你的王国<b>并入</b>对方（成员、领地、RP、银行全部转移；升级等级只在己方更高时转移）</td></tr>
+      </table>
+
+      <h3>职位（Ranks）</h3>
+      <p>职位在游戏内由国王配置，每个职位有：</p>
+      <ul>
+        <li><b>节点（Node）</b>：职位唯一标识；</li>
+        <li><b>优先级（Priority）</b>：国王为 0（最高），成员最低；</li>
+        <li>权限节点：如 <code>CLAIM</code>（圈地）、<code>INVADE</code>（入侵）、<code>SURRENDER</code>（投降）、<code>WITHDRAW</code>（取款）、<code>KICK</code>、<code>SET_HOME</code>、<code>TAX_EXEMPT</code>（免税）等。</li>
+      </ul>
+      <p>职位权限还会与<b>关系属性</b>配合：例如到盟友领地放方块，先看两国关系是否允许，再看你的职位是否允许。</p>
+
+      <h3>选举（Elections，可选功能）</h3>
+      <p>王国可以开启民主选举，每周一次：</p>
+      <ul>
+        <li><code>/k elections statement &lt;宣言&gt;</code> —— 报名参选国王；</li>
+        <li><code>/k elections vote</code> —— 打开投票界面投票。</li>
+        <li>选举持续 24 小时，期间<b>冻结成员进出</b>；只有投票总人数超过王国成员 50%，结果才生效。</li>
+      </ul>
+
+      <h3>私人营地（Camps，实验性功能）</h3>
+      <p>部分服务器允许玩家在<b>无人认领的领地</b>放置<b>营火</b>，快速创建一个"单人营地"型王国（名字自动为 <code>PR-&lt;玩家名&gt;</code>），适合自用防御而不打算外交的玩家。</p>
+    </section>
+
+    <!-- ========== 04 领地系统 ========== -->
+    <section id="land">
+      <h2><span class="h2icon">🗺️</span>领地系统：圈地、地图与传送</h2>
+
+      <h3>互动地图 /k map</h3>
+      <pre class="cmd"><code>/k map                    <span class="cmt"># 显示当前位置地图</span>
+/k map auto               <span class="cmt"># 跨领地时自动刷新地图</span>
+/k map reset              <span class="cmt"># 恢复默认地图大小</span>
+/k map &lt;参数&gt;…            <span class="cmt"># 调整地图高度/宽度（有上限，具体看游戏内补全提示）</span></code></pre>
+      <p>地图是聊天栏里的交互界面：<b>鼠标悬停查看信息，点击即可圈地！</b></p>
+
+      <h3>圈地指令全家桶</h3>
+      <pre class="cmd"><code>/k claim                  <span class="cmt"># 圈占脚下领地</span>
+/k claim auto             <span class="cmt"># 走到哪圈到哪（自动连圈）</span>
+/k claim square &lt;半径&gt;     <span class="cmt"># 以脚下为中心圈正方形</span>
+/k claim line &lt;数量&gt;       <span class="cmt"># 沿面朝方向圈一条线</span>
+/k claim corner pos1 → 走到对角 → /k claim corner pos2
+                          <span class="cmt"># 圈出两角之间的矩形（WorldEdit 选区式）</span>
+/k claim fill             <span class="cmt"># 自动填充被已圈领地包围的"洞"</span>
+/k claim clipboard        <span class="cmt"># 查看待圈清单</span>
+/k claim confirm          <span class="cmt"># 确认执行清单中的圈地</span>
+/k unclaim                <span class="cmt"># 放弃脚下领地</span>
+/k unclaim all            <span class="cmt"># 放弃所有没有炮塔/建筑在里面的领地</span>
+/k undo / /k redo         <span class="cmt"># 撤销/重做上一步圈地操作</span></code></pre>
+      <div class="callout tip"><span class="tag">💡</span><code>claim fill/square/corner/line</code> 不会立刻生效，而是先加入<b>待确认清单</b>，检查无误后 <code>confirm</code> 一次执行。</div>
+
+      <h3>领地可视化 /k visualize</h3>
+      <pre class="cmd"><code>/k visualize               <span class="cmt"># 显示当前领地信息与王国标题</span>
+/k visualize toggle        <span class="cmt"># 开关跨领地时的边框提示</span>
+/k visualize permanent     <span class="cmt"># 永久显示领地边框</span>
+/k visualize markers &lt;类型&gt; <span class="cmt"># 边框样式：Blocks（方块角标）/ Horizontal / Vertical</span></code></pre>
+      <p>跨领地时屏幕上会显示王国名和 lore 大标题，边框用假方块/粒子标出，不同关系（自家/盟友/敌人/荒野）颜色不同。</p>
+
+      <h3>传送</h3>
+      <pre class="cmd"><code>/k home                    <span class="cmt"># 传送到王国之家（移动或受伤会取消传送）</span>
+/k sethome [center]        <span class="cmt"># 在脚下设置王国之家</span>
+/k unsethome               <span class="cmt"># 删除王国之家</span>
+/k teleport                <span class="cmt"># 战争时传送到入侵现场支援（重要！）</span></code></pre>
+    </section>
+
+    <!-- ========== 05 中枢 ========== -->
+    <section id="nexus">
+      <h2><span class="h2icon">🧠</span>中枢（Nexus）：王国的大脑</h2>
+      <p>中枢是王国最重要的"虚拟建筑"：</p>
+      <ul>
+        <li>用 <code>/k nexus</code> 放置（需要 NEXUS 权限）；可放置多个，不占用物品、破坏不掉落；</li>
+        <li>领地被入侵或放弃时中枢自动消失；</li>
+        <li>用 <code>/k nexus open</code> 可<b>远程打开</b>中枢界面（需权限）。</li>
+      </ul>
+
+      <h3>中枢能做的事（GUI 菜单）</h3>
+      <ul>
+        <li>🛡️ 购买/续费<b>护盾</b>、切换<b>和平主义</b>模式；</li>
+        <li>⚙️ 调整<b>关系属性</b>（对盟友/停战国开放哪些权限）；</li>
+        <li>💰 设置<b>税收公式</b>；</li>
+        <li>⬆️ 购买<b>升级</b>（杂项升级如防爆、领地上限；冠军升级等）——部分服务器的等级系统会<b>锁定</b>高级内容，需先提升王国等级；</li>
+        <li>🛒 炮塔/建筑商店；</li>
+        <li>👥 成员与职位管理；</li>
+        <li>📬 王国邮箱。</li>
+      </ul>
+      <div class="callout warn"><span class="tag">⚠️</span><b>保护中枢！</b>非盟友王国的玩家<b>挖掘你的中枢会偷走王国资源点</b>，每次挖掘都有损失。把中枢埋进基地最深处，配合能量核心（Powercell）防护。</div>
+    </section>
+
+    <!-- ========== 06 资源点 ========== -->
+    <section id="rp">
+      <h2><span class="h2icon">💎</span>资源点（RP）：王国的血液</h2>
+
+      <h3>获取方式</h3>
+      <table>
+        <tr><th style="width:30%">方式</th><th>说明</th></tr>
+        <tr><td><b>资源点转换器</b></td><td>中枢内打开或 <code>/k rp converter</code>。普通物品 5 个 = 1 RP；特殊物品（钻石/绿宝石/金/铁等，见 <code>/k tradable</code>）单个价值更高。<b>必须点 Apply 才转换</b>，关闭界面/Back 会退回物品</td></tr>
+        <tr><td><b>提取器（Extractor）</b></td><td>放置后自动产 RP（有储量上限，需要<b>燃料</b>，没燃料就停工）</td></tr>
+        <tr><td><b>入侵掠夺</b></td><td>赢下入侵可抢走对方 RP（入侵中枢区块还有额外金钱+RP 战利品）</td></tr>
+        <tr><td><b>挖别人中枢</b></td><td>每挖一次偷一点对方 RP</td></tr>
+        <tr><td><code>/k sell</code></td><td>把手里的炮塔/建筑卖回给系统换 RP</td></tr>
+        <tr><td><code>/k donate &lt;王国&gt; &lt;数量&gt;</code></td><td>向别国捐赠 RP（需 WITHDRAW 权限）</td></tr>
+        <tr><td>排行奖励</td><td>收税时国力前 10 的王国/国家获得金钱+RP</td></tr>
+        <tr><td>前哨站建筑</td><td>类似全球股票市场，买卖价格受全服影响（高级玩法）</td></tr>
+      </table>
+
+      <h3>与金钱互转</h3>
+      <pre class="cmd"><code>/k rp deposit &lt;数量&gt;       <span class="cmt"># 把金钱转换成王国 RP</span>
+/k rp withdraw &lt;数量&gt;      <span class="cmt"># 把王国 RP 转换成金钱</span></code></pre>
+      <div class="callout warn"><span class="tag">⚠️</span>RP 属于王国，个人无法持有。玩家税不能用 RP 缴纳。</div>
+
+      <h3>王国仓库</h3>
+      <p><code>/k vault</code> 直接打开王国共享箱子（需权限）。</p>
+    </section>
+
+    <!-- ========== 07 建筑 ========== -->
+    <section id="structures">
+      <h2><span class="h2icon">🏰</span>建筑（Structures）</h2>
+      <p>建筑是放在领地里的功能性方块。购买：中枢商店；放置后右键打开操作界面。破坏后重新放置即可继续使用（中枢除外）。</p>
+
+      <table>
+        <tr><th style="width:28%">建筑</th><th>功能</th></tr>
+        <tr><td><b>中枢 Nexus</b></td><td>王国核心。被入侵后自动消失，不会掉落</td></tr>
+        <tr><td><b>能量核心 Powercell</b></td><td>保护以自身为中心 <b>3×3 领地</b>：敌人必须先攻下 Powercell 所在领地，才能入侵周围 8 格。<b>围绕中枢布置是防入侵的核心策略</b></td></tr>
+        <tr><td><b>提取器 Extractor</b></td><td>随时间自动生产 RP（有储量上限），需要<b>燃料</b>，右键 GUI 查看/补充燃料</td></tr>
+        <tr><td><b>前哨站 Outpost（建筑）</b></td><td>用 RP 购买各种物品 + <b>远程访问中枢</b>，放在前线很方便</td></tr>
+        <tr><td><b>传送垫 Warp Pad</b></td><td>在王国各建筑间传送。往垫子上<b>扔煤炭</b>充能（1 煤 = 30 燃料）；传送费用 = 两点间距离的一半（跨世界固定 300 燃料）。每个传送垫可命名，显示在全息图和传送菜单里</td></tr>
+        <tr><td><b>调节器 Regulator</b></td><td>管理所在领地的规则（只管<b>自己这一格</b>！），见下表</td></tr>
+        <tr><td><b>攻城炮 Siege Cannon</b></td><td>攻城重武器，见下文</td></tr>
+      </table>
+      <div class="callout tip"><span class="tag">💡</span>同一格领地可以放多个建筑（但中枢和国家中枢不能共存于同一格）。</div>
+
+      <h3>调节器（Regulator）规则</h3>
+      <p>对<b>其所在领地</b>生效：</p>
+      <ul>
+        <li><b>禁止怪物生成</b>（仅自然生成，不影响王国的守卫/士兵/冠军）；</li>
+        <li><b>禁止动物生成</b>；</li>
+        <li><b>关闭炮塔</b>（临时让所有人安全进入该格）；</li>
+        <li><b>允许爆炸</b>（默认因防爆升级禁爆，可在此单独放开；也可在中枢直接关闭整个王国的防爆升级）；</li>
+        <li><b>自动补弹</b>：炮塔弹药打空且王国付得起钱时自动充满；</li>
+        <li><b>Attributes（属性）/ Interactions（交互）</b>：授权领地外的特定玩家管理/使用这格里的东西（无视关系属性）。</li>
+      </ul>
+
+      <h3>攻城炮（Siege Cannon）</h3>
+      <p><b>用途</b>：轰击敌方王国领地，<b>削减护盾</b>；护盾归零后可<b>摧毁炮塔和建筑</b>（无视防爆升级）。</p>
+      <ul>
+        <li>在 GUI 里装填特殊弹药 → 点 GUI 坐上炮台 → 调整炮管 → <b>左键开火</b>（坐着时右键任意处可随时打开 GUI）；</li>
+        <li>射击冷却 10–20 秒（依炮等级）；</li>
+        <li>命中任意王国领地都会削减其护盾，并报告命中情况；</li>
+        <li><b>不能</b>摧毁能量核心和中枢；对友方领地同样有效（小心轰到自己家！）；护盾未破时打不坏建筑。</li>
+      </ul>
+
+      <h4>弹药对比（默认数值）</h4>
+      <table>
+        <tr><th>弹药</th><th>护盾伤害</th><th>爆炸半径</th><th>对人伤害</th><th>击退</th><th>建筑耐久伤害</th><th>麻痹</th></tr>
+        <tr><td>铁块 Iron Block</td><td>2 分钟</td><td>1</td><td>1</td><td>1</td><td>30</td><td>—</td></tr>
+        <tr><td>金块 Gold Block</td><td>3 分钟</td><td>1</td><td>2</td><td>2</td><td>50</td><td>5 秒</td></tr>
+        <tr><td>火球 Fireball</td><td>5 分钟</td><td>2</td><td>3</td><td>3</td><td>70</td><td>10 秒</td></tr>
+      </table>
+    </section>
+
+    <!-- ========== 08 炮塔 ========== -->
+    <section id="turrets">
+      <h2><span class="h2icon">🗼</span>炮塔（Turrets）</h2>
+      <p>炮塔是自动防守的"哨戒方块"，<b>也会打怪</b>。</p>
+
+      <h3>要点</h3>
+      <ul>
+        <li>只能放在<b>栅栏/墙类方块</b>上；</li>
+        <li>需要<b>弹药</b>才能开火：右键炮塔打开 GUI 购买（也有满弹一键购买）；</li>
+        <li>可右键<b>升级</b>：提升射程、伤害、载弹量等（GUI 里可见下一级预览）；</li>
+        <li>是否射击取决于两国<b>关系属性</b>（如 TURRET_CEASEFIRE）——盟友领地不会被你的炮塔打；</li>
+        <li>和平主义王国的炮塔不会射击玩家；对和平主义王国的玩家也不射击；</li>
+        <li>治疗/灵能/士兵类炮塔只针对玩家；炮塔一般不攻击动物、水生生物和 NPC；</li>
+        <li>炮塔数量过多可能造成卡顿，服务器通常有限制。</li>
+      </ul>
+
+      <h3>常见炮塔类型</h3>
+      <table>
+        <tr><th style="width:36%">类型</th><th>作用</th></tr>
+        <tr><td>箭矢型（arrow）</td><td>发射箭矢攻击敌人，最常见</td></tr>
+        <tr><td>火焰型（inferno）</td><td>喷火/燃烧敌人</td></tr>
+        <tr><td>治疗型（healing）</td><td>为己方和盟友<b>回血</b>（只在有人掉血时触发）</td></tr>
+        <tr><td>士兵型（soldier）</td><td>在敌人靠近时<b>刷出士兵</b>追杀</td></tr>
+        <tr><td>压力雷（pressure_mine）</td><td>地面陷阱类</td></tr>
+      </table>
+      <div class="callout tip"><span class="tag">💡</span>炮塔不射击？→ 看文末 FAQ。服务器管理员还能自制炮塔，所以你见到花式炮塔别惊讶。</div>
+    </section>
+
+    <!-- ========== 09 关系与外交 ========== -->
+    <section id="relations">
+      <h2><span class="h2icon">🤝</span>关系与外交</h2>
+
+      <h3>关系类型</h3>
+      <p>玩家之间没有直接关系——一切关系都是<b>王国之间</b>的：</p>
+      <table>
+        <tr><th style="width:30%">关系</th><th>说明</th></tr>
+        <tr><td>中立 Neutral</td><td>默认状态，无特殊待遇（对方不属于任何王国时也是中立）</td></tr>
+        <tr><td>国家 Nation</td><td>同一国家内的王国（未单独结盟时）</td></tr>
+        <tr><td>盟友 Ally</td><td>结盟，访问权限最高</td></tr>
+        <tr><td>停战 Truce</td><td>类似盟友但权限更低</td></tr>
+        <tr><td>敌对 Enemy</td><td>宣战（默认只是"标记"，允许入侵等战争行为的前提）</td></tr>
+      </table>
+
+      <pre class="cmd"><code>/k ally &lt;王国&gt;      <span class="cmt"># 请求结盟</span>
+/k truce &lt;王国&gt;     <span class="cmt"># 请求停战</span>
+/k enemy &lt;王国&gt;     <span class="cmt"># 宣战</span>
+/k revoke &lt;王国&gt;    <span class="cmt"># 撤销与某王国的关系</span></code></pre>
+
+      <h3>关系属性（Relation Attributes）——"双向同意"机制</h3>
+      <p>国王在中枢设置里，为每种关系配置属性，例如：</p>
+      <ul>
+        <li><b>CEASEFIRE（停火）</b>：允许对方在领地内 PvP/造成伤害与否；</li>
+        <li><b>TURRET_CEASEFIRE（炮塔停火）</b>：炮塔不打对方；</li>
+        <li><b>BUILD（建造）/ INTERACT（交互）</b>：允许对方建造/使用方块；</li>
+        <li><b>MANAGE_STRUCTURES（管理建筑）</b> 等。</li>
+      </ul>
+      <div class="callout danger"><span class="tag">❗</span><b>关键规则：大多数属性需要双方都开启才生效。</b><br>例：你给盟友关了停火，但对方给你开着 → 盟友依然能打你。这是为了避免一方突然改设置导致另一方被动挨打。</div>
+
+      <h3>聊天频道</h3>
+      <pre class="cmd"><code>/k chat k      <span class="cmt"># 王国频道（只有成员可见）</span>
+/k chat a      <span class="cmt"># 盟友频道</span>
+/k chat n      <span class="cmt"># 国家频道</span>
+/k chat g      <span class="cmt"># 全局频道</span>
+/k chat k &lt;消息&gt; <span class="cmt"># 不切换频道，临时发一条</span></code></pre>
+      <ul>
+        <li>支持 <code>@名字</code> 提醒（被@的玩家有音效和动作栏提示）；</li>
+        <li>支持 <code>!</code> 前缀在受限频道喊话（部分服务器开启）；</li>
+        <li>支持彩色代码和十六进制颜色（需权限）。</li>
+      </ul>
+
+      <h3>其他相关机制</h3>
+      <ul>
+        <li><b>下界传送门保护</b>：目的地领地属于与你没有停火属性（含炮塔停火）的王国时，传送会被取消——无法用下界门偷袭。</li>
+        <li><b>信标</b>：在已圈领地里，只有拥有停火属性的玩家才受信标效果影响。</li>
+        <li><b>喷溅药水</b>：不得对有停火属性的玩家使用负面药水（中毒、虚弱等）。</li>
+        <li><b><code>/k pvp</code></b>：允许你与 Normally 打不了的<b>自己王国成员/盟友</b>切磋。<b>双方都开了才生效</b>；无法绕过 WorldGuard 等其他插件的 PvP 禁止。</li>
+      </ul>
+    </section>
+
+    <!-- ========== 10 国家 ========== -->
+    <section id="nations">
+      <h2><span class="h2icon">🌐</span>国家（Nations）</h2>
+      <p>国家 = 多个王国组成的联盟（类似"文明"）。由创建国的国王担任<b>国家元首</b>，该国称为<b>首都（capital）</b>。国家没有升级系统，其余玩法与王国高度相似。</p>
+
+      <h3>加入国家的好处</h3>
+      <ul>
+        <li>领地上限增加（国家内每国 +5 格）；</li>
+        <li>成员王国被入侵时，<b>首都的冠军会参战</b>协防；</li>
+        <li>国内任意王国被入侵，全国家收到警报；</li>
+        <li>可购买<b>国家护盾</b>，罩住所有成员国；</li>
+        <li>国家聊天频道、国家职位、国家领地圈占。</li>
+      </ul>
+
+      <h3>坏处/风险</h3>
+      <ul>
+        <li>国家没有护盾时，任何成员国都可能被入侵（<b>即使该王国自己开着护盾</b>）；</li>
+        <li>国家的和平主义状态会<b>强制</b>施加于成员国；</li>
+        <li>首都冠军较弱时反而可能拖累防守。</li>
+      </ul>
+
+      <h3>国家区域（Nation Zones）</h3>
+      <p>首都领地周围 3×3 的缓冲地带（默认半径 1），非本国成员<b>不能圈占、入侵、建造</b>；想深入必须先把周边整圈领地全部打下来。国家区域不会显示在 <code>/k map</code> 上。</p>
+
+      <pre class="cmd"><code>/k nation top          <span class="cmt"># 国家排行榜</span>
+/k nation show &lt;名字&gt;   <span class="cmt"># 查看国家信息</span>
+/k chat n              <span class="cmt"># 国家频道</span></code></pre>
+      <p>国家创建/邀请等指令与王国指令一致（在中枢/子指令里操作，具体以服务器为准）。</p>
+    </section>
+
+    <!-- ========== 11 税收与银行 ========== -->
+    <section id="taxes">
+      <h2><span class="h2icon">💰</span>税收与银行</h2>
+      <p><b>征收顺序：玩家 → 王国 → 国家 → 服务器</b>（交给服务器的钱直接消失）。默认每 24 小时收一次。</p>
+      <ul>
+        <li><b>玩家税</b>：从玩家账户收钱，交给所属王国；成员头几天免税；职位有 TAX_EXEMPT 权限的免税；</li>
+        <li><b>王国税</b>：国王可在中枢设置<b>自己的收税公式</b>，从成员处收取；王国银行的钱用于缴纳<b>国家税</b>和<b>服务器税</b>；</li>
+        <li><b>国家税</b>：首都管理，向成员国收取；国家付不起服务器税会被解散，王国付不起会被解散；</li>
+        <li><b>新手保护</b>：新王国、新成员、新国家头几天免税。</li>
+      </ul>
+
+      <h3>王国银行指令</h3>
+      <pre class="cmd"><code>/k bank deposit &lt;金额&gt;    <span class="cmt"># 存钱进王国银行（用于缴税）</span>
+/k bank withdraw &lt;金额&gt;   <span class="cmt"># 取钱（需 WITHDRAW 权限）</span></code></pre>
+    </section>
+
+    <!-- ========== 12 护盾与和平主义 ========== -->
+    <section id="shield">
+      <h2><span class="h2icon">🛡️</span>护盾与和平主义</h2>
+
+      <h3>和平主义（Pacifism）</h3>
+      <p>一种王国状态：与所有王国强制友好——<b>不能入侵别人，别人也不能入侵你</b>，不能 PvP，攻城炮对它无效。国家无法和平主义。</p>
+      <ul>
+        <li>创建王国时选择，或之后在中枢设置里切换；</li>
+        <li>上次入侵后的一段时间内无法切换回和平主义（防逃逸）。</li>
+      </ul>
+
+      <h3>护盾（Shields）</h3>
+      <p>在中枢购买，倒计时内<b>免疫入侵</b>：</p>
+      <ul>
+        <li>新购护盾时长<b>累加</b>到现有护盾上；</li>
+        <li><b>护盾可以被敌方攻城炮轰掉</b>；</li>
+        <li>新王国通常自带几天免费护盾；</li>
+        <li>国家护盾可覆盖全体成员，但国家没护盾时成员各自的护盾<b>失效</b>（默认规则）。</li>
+      </ul>
+      <div class="callout tip"><span class="tag">💡</span>防守思路：靠和平主义躺平会被限制很多（不能 PvP、不能被打也不能打人），更常见的是"好战 + 买护盾 + 攒 RP 维持护盾"的路线，在护盾倒计时结束前完成军事准备。</div>
+
+      <h3>大规模战争（Mass Wars）</h3>
+      <p>全服定时活动（默认每 12 小时一次），开启时全服大标题 + BossBar 计时：</p>
+      <ul>
+        <li>默认规则下，<b>可以入侵有护盾的王国</b>、入侵<b>免费且不限次数</b>；</li>
+        <li>部分服务器只在全民战争期间允许入侵——具体看服务器配置；</li>
+        <li>管理员可手动开始/结束。</li>
+      </ul>
+    </section>
+
+    <!-- ========== 13 战争与入侵 ========== -->
+    <section id="war">
+      <h2><span class="h2icon">⚔️</span>战争与入侵（重点！）</h2>
+
+      <h3>发动入侵</h3>
+      <pre class="cmd"><code>/k invade      <span class="cmt"># 站在想抢的敌方领地上发动入侵</span>
+/k ransack     <span class="cmt"># 快速掠夺：只抢钱和 RP，不占领地（中枢格不可用）</span></code></pre>
+      <p><b>入侵目的</b>：抢箱子物资、占领建筑、抢 RP 和钱。打下<b>中枢所在格</b>奖励最丰厚（额外偷取该国 RP 和银行金钱）。</p>
+
+      <h4>发动入侵可能被拒绝的原因</h4>
+      <ul>
+        <li>对方有新手保护 / 护盾 / 和平主义；</li>
+        <li><b>实力差距限制</b>：你明显更强时反而打不了弱国（弱国可以打强国，保护平衡）；</li>
+        <li>关系不满足要求（如需要先 <code>/k enemy</code> 宣战或用 <code>/k challenge</code> 下战书）；</li>
+        <li>服务器限定只在全民战争期间允许入侵；</li>
+        <li>你没有 INVADE 职位权限、处于创造/隐身/上帝模式；</li>
+        <li>该国正被别国入侵 / 双方各有入侵数量上限 / 入侵冷却中；</li>
+        <li>王国付不起入侵花费（RP/金钱）。</li>
+      </ul>
+
+      <h3>冠军（Champion）——入侵的核心</h3>
+      <p>每个王国的守护者，默认是一只<b>僵尸</b>（可在中枢升级强化、更换类型，部分服务器接入 MythicMobs 自定义 Boss）：</p>
+      <ul>
+        <li>有人入侵你的领地时自动刷出，<b>只会追击发起入侵的玩家</b>，绝不换目标；</li>
+        <li>入侵者在冠军 13 格内可看到血条和时限 BossBar；</li>
+        <li><b>杀掉冠军 = 占领该格</b>；多人可同时入侵同一格，谁先杀掉归谁；</li>
+        <li>冠军免疫自然伤害类效果（如阳光燃烧、僵尸变溺尸），不能穿过传送门。</li>
+      </ul>
+
+      <h3>入侵期间的限制（双方）</h3>
+      <ul>
+        <li>❌ 任何形式的传送（指令、道具、传送门等）；</li>
+        <li>❌ 部分指令被禁用；</li>
+        <li>❌ 部分方块交互被禁用。</li>
+      </ul>
+
+      <h3>入侵结束方式（任意一条）</h3>
+      <ol>
+        <li>冠军被击杀 → <b>入侵者获胜</b>，领地易主；</li>
+        <li>冠军计时结束 → <b>防守方获胜</b>；</li>
+        <li>入侵者死亡/下线/被踢出王国 → 防守方获胜；</li>
+        <li>任意一方 <code>/k surrender</code> 投降（防守方投降 = 送地；进攻方投降 = 退兵，都有惩罚）；</li>
+        <li>领地被放弃 / 任一方王国解散。</li>
+      </ol>
+
+      <h3>防守方怎么做</h3>
+      <ul>
+        <li>全体成员 <code>/k teleport</code> <b>传送到入侵现场</b>回防（传到入侵者进来的位置，避免陷阱）；</li>
+        <li>让冠军拖住入侵者，靠炮塔、守卫、人海围杀；</li>
+        <li>实在打不过：有 SURRENDER 权限的成员 <code>/k surrender</code> 及时止损；</li>
+        <li>平时防御布置：中枢格放 <b>Powercell</b> 环形布防；升级冠军；修好炮塔弹药房；别只堆黑曜石墙——高空飞行机器（粘液块飞机）是它的克星，注意天花板和地下洞穴。</li>
+      </ul>
+
+      <h3>掠夺战（Plunders，可选入侵模式）</h3>
+      <p>部分服务器把冠军模式换成"击杀计分"的团队战：</p>
+      <ul>
+        <li>双方在领地内互杀，先杀满对方死亡上限的一方获胜；</li>
+        <li>任何死法都计入对方比分（包括摔死、怪杀），<b>盟友可以参战</b>；</li>
+        <li>若限时内防守方一直被压在圈外（占领进度机制，类似 KoTH），进攻方直接获胜；防守方撑到时间结束则获胜；</li>
+        <li>盟友不参与占领进度的计算。</li>
+      </ul>
+
+      <h3>挑战（/k challenge，可选机制）</h3>
+      <pre class="cmd"><code>/k challenge &lt;王国&gt;</code></pre>
+      <p>开启此机制的服务器，入侵前必须先"下战书"：选择准备时间，倒计时结束后你有 6 小时窗口可以入侵该国任意领地；过期需重新下战书。</p>
+    </section>
+
+    <!-- ========== 14 守卫与士兵 ========== -->
+    <section id="guards">
+      <h2><span class="h2icon">🛡️</span>王国守卫与士兵</h2>
+      <ul>
+        <li><b>王国守卫（Guards）</b>：没有停火属性的玩家踏入敌方领地时刷出的卫兵（中枢格的更强）。<b>只追它锁定的那名玩家</b>，直到：杀死目标 / 目标下线 / 目标传送（珍珠和紫颂果除外）/ 超时。</li>
+        <li>同一王国的守卫不会重复刷：只要还有一只在追你，就不会来第二只（看不到不代表没有！）。</li>
+        <li><b>士兵（Soldiers）</b>：由士兵炮塔刷出的援军，机制同上。</li>
+      </ul>
+      <div class="callout tip"><span class="tag">💡</span>被守卫追时用<b>末影珍珠</b>或<b>紫颂果</b>位移不算传送，守卫不会立刻消失——但它们超时后也会自己离开。</div>
+    </section>
+
+    <!-- ========== 15 保护牌 ========== -->
+    <section id="protection">
+      <h2><span class="h2icon">🔒</span>保护牌：锁住你的箱子</h2>
+      <p>王国专属的箱子保护（类似 Lockette）：</p>
+
+      <h3>上锁方法（任选其一）</h3>
+      <ol>
+        <li>对着箱子<b>贴一张告示牌</b>，第一行写：<code>[protect]</code> / <code>[protected]</code> / <code>[private]</code> / <code>private</code>；</li>
+        <li><b>手持告示牌潜行 + 左键</b>点击箱子（最快，创造模式也有效）。</li>
+      </ol>
+      <p>上锁成功后告示牌会自动变化。只有你能开箱/破坏箱子和牌子；合成双箱时另一半自动受保护。</p>
+
+      <h3>开放权限写法</h3>
+      <ul>
+        <li><code>[everyone]</code> —— 全国成员可用（不可破坏）；</li>
+        <li><code>[everyone*]</code> —— <b>所有人</b>都可用（不可破坏）。</li>
+      </ul>
+      <p><b>高级设置</b>：右键牌子可编辑保护类型、添加允许/禁止的玩家和王国名单（优先级高于保护类型）。</p>
+      <p><b>漏斗/管道规则</b>：受保护容器与未保护容器之间<b>不能</b>自动转运物品；两个保护物属同一玩家、或目标容器的主人有权访问源容器时才可以。</p>
+    </section>
+
+    <!-- ========== 16 王国邮件 ========== -->
+    <section id="mails">
+      <h2><span class="h2icon">📬</span>王国邮件</h2>
+      <p>王国官方信箱（在中枢里），用于王国之间的正式沟通——<b>属于王国而非个人</b>：</p>
+      <ul>
+        <li>查看：需要 VIEW_MAILS 职位权限；</li>
+        <li>写信：需要 MANAGE_MAILS 权限。点击信箱顶部的<b>书本图标</b>获得专用信纸（书）；</li>
+        <li>信的内容 = 书里的文字（支持颜色，不支持占位符）；</li>
+        <li><b>潜行 + 右键</b>书本：设置主题、抄送（CC）收件人、预览效果；</li>
+        <li>写完后回到信箱，把书<b>丢进空槽位</b>即发送。</li>
+      </ul>
+    </section>
+
+    <!-- ========== 17 和平条约 ========== -->
+    <section id="treaty">
+      <h2><span class="h2icon">🕊️</span>和平条约与附庸（插件功能）</h2>
+      <p>安装了 Peace Treaties 插件的服务器，战后可以用条约正式结束战争状态：</p>
+      <ul>
+        <li>向敌对王国发送提案：<code>/k neutral &lt;王国&gt;</code>；</li>
+        <li>对方通过邮件收到条约，可用 <code>/k pt accept</code> 接受 / <code>/k pt reject</code> 拒绝；<code>/k pt review</code> 查看所有往来条约。</li>
+      </ul>
+
+      <h3>条约条款（消耗战争点数来设定）</h3>
+      <table>
+        <tr><th style="width:34%">条款</th><th>效果</th></tr>
+        <tr><td>索取资源点</td><td>对方支付指定 RP</td></tr>
+        <tr><td>战争赔款</td><td>对方从王国银行支付指定金钱</td></tr>
+        <tr><td>割地（保留领地）</td><td>从入侵所得领地里勾选保留哪些</td></tr>
+        <tr><td>退出/解散国家</td><td>强制对方离开国家（或解散其国家）</td></tr>
+        <tr><td>附庸化</td><td>长期限制（见下）</td></tr>
+      </table>
+
+      <ul>
+        <li><b>战争点数（War Points）</b>来源：击杀敌人、赢下入侵、破坏敌方炮塔/建筑。点数<b>按敌国分开累计</b>——对 A 国攒的点只能用在 A 国身上；</li>
+        <li>无任何条款的条约叫<b>白色和平（white peace）</b>；</li>
+        <li>条约生效后全服公告，且两国在一定时间内<b>不能再互相宣战</b>（防止强国反复刷弱国）。</li>
+      </ul>
+
+      <h3>附庸（Vassalization）</h3>
+      <p>宗主国可长期控制附庸国：</p>
+      <ul>
+        <li>抽成附庸的银行收入（Scutage）；</li>
+        <li>强制继承宗主的外交关系、禁止自主改关系；</li>
+        <li>限制领地总数、炮塔和建筑数量；</li>
+        <li>宗主可修改附庸的关系属性、开关其杂项升级；</li>
+        <li>附庸只能有一个宗主；成员数/领地数超限的王国无法被附庸；</li>
+        <li>解除方式：由第三国击败宗主并强制其签下释放附庸的条约。</li>
+      </ul>
+    </section>
+
+    <!-- ========== 18 前哨战 ========== -->
+    <section id="outposts">
+      <h2><span class="h2icon">🚩</span>前哨战 Outposts（插件活动）</h2>
+      <p>服务器安装 Outposts 插件后的 KoTH（王中之王）式全服活动：</p>
+      <ul>
+        <li>世界中会设立若干<b>前哨区域</b>（WorldGuard 区域）；</li>
+        <li>参战需王国支付少量金钱+RP 报名，有成员人数上下限；</li>
+        <li><code>/k outposts join &lt;区域&gt;</code> 报名，<code>/k outposts tp</code> 传送进场；</li>
+        <li>活动开始后，<b>累计站在区域内时间最多的王国获胜</b>，获得 RP、金钱和物品奖励；</li>
+        <li>场内可能刷新特殊怪物，击杀有额外奖励；</li>
+        <li>结束后失败方被传送回出生点，物品奖励掉落在指定位置，先到先得。</li>
+      </ul>
+      <div class="callout warn"><span class="tag">⚠️</span>注意区分：<b>Outpost 建筑</b>（领地内买物品、远程开中枢的小建筑）和 <b>Outpost 前哨战活动</b>是两回事。</div>
+    </section>
+
+    <!-- ========== 19 指令速查表 ========== -->
+    <section id="commands">
+      <h2><span class="h2icon">⌨️</span>指令速查表</h2>
+      <p>主指令 <code>/kingdoms</code>，别名 <code>/k</code> <code>/kingdom</code> <code>/kingdomx</code> <code>/kingdomsx</code>。<br>
+      <code>&lt;必填&gt;</code> <code>[可选]</code>。用 <b>Tab 键</b>自动补全，忘了用法就 <code>/k help [页码]</code> 翻交互式帮助（鼠标悬停有说明）。</p>
+
+      <h3>基础</h3>
+      <table>
+        <tr><th style="width:40%">指令</th><th>说明</th></tr>
+        <tr><td><code>/k help [页/指令]</code></td><td>交互式帮助</td></tr>
+        <tr><td><code>/k show [王国/玩家]</code></td><td>查看王国或玩家信息</td></tr>
+        <tr><td><code>/k top</code></td><td>王国国力排行榜</td></tr>
+        <tr><td><code>/k map [auto/reset/…]</code></td><td>互动地图（可点击圈地）</td></tr>
+        <tr><td><code>/k language [语言]</code></td><td>切换个人界面语言</td></tr>
+      </table>
+
+      <h3>王国与成员</h3>
+      <table>
+        <tr><th style="width:40%">指令</th><th>说明</th></tr>
+        <tr><td><code>/k create &lt;名&gt;</code></td><td>创建王国</td></tr>
+        <tr><td><code>/k rename &lt;名&gt;</code> / <code>/k lore &lt;描述&gt;</code> / <code>/k tag &lt;标签&gt;</code></td><td>门面设置</td></tr>
+        <tr><td><code>/k requestJoin &lt;王国&gt;</code></td><td>申请入国</td></tr>
+        <tr><td><code>/k joinRequests</code></td><td>处理入国申请</td></tr>
+        <tr><td><code>/k inviteCodes</code></td><td>邀请码管理</td></tr>
+        <tr><td><code>/k promote/demote &lt;玩家&gt;</code></td><td>升降职</td></tr>
+        <tr><td><code>/k kick &lt;玩家&gt;</code></td><td>踢人</td></tr>
+        <tr><td><code>/k king &lt;玩家&gt;</code></td><td>转让王位</td></tr>
+        <tr><td><code>/k disband</code></td><td>解散王国</td></tr>
+        <tr><td><code>/k merge &lt;王国&gt;</code></td><td>请求并入对方</td></tr>
+        <tr><td><code>/k broadcast &lt;消息&gt;</code></td><td>王国广播</td></tr>
+        <tr><td><code>/k elections statement/vote</code></td><td>选举报名/投票</td></tr>
+      </table>
+
+      <h3>领地</h3>
+      <table>
+        <tr><th style="width:40%">指令</th><th>说明</th></tr>
+        <tr><td><code>/k claim [auto/square/line/fill/corner]</code></td><td>圈地（多种方式）</td></tr>
+        <tr><td><code>/k claim clipboard/confirm</code></td><td>待圈清单/确认</td></tr>
+        <tr><td><code>/k unclaim [all]</code></td><td>放弃领地</td></tr>
+        <tr><td><code>/k undo</code> / <code>/k redo</code></td><td>撤销/重做</td></tr>
+        <tr><td><code>/k visualize [toggle/permanent/markers]</code></td><td>领地边框可视化</td></tr>
+        <tr><td><code>/k home</code> / <code>/k sethome</code> / <code>/k unsethome</code></td><td>王国传送点</td></tr>
+        <tr><td><code>/k teleport</code></td><td>战争回防传送</td></tr>
+      </table>
+
+      <h3>经济</h3>
+      <table>
+        <tr><th style="width:40%">指令</th><th>说明</th></tr>
+        <tr><td><code>/k rp converter</code></td><td>资源点转换器</td></tr>
+        <tr><td><code>/k rp deposit/withdraw &lt;数量&gt;</code></td><td>金钱 ⇄ RP 互换</td></tr>
+        <tr><td><code>/k rp transfer kingdom/nation &lt;数量&gt;</code></td><td>王国 ⇄ 国家 RP 调拨</td></tr>
+        <tr><td><code>/k tradable</code></td><td>特殊物品 RP 价值表</td></tr>
+        <tr><td><code>/k sell</code></td><td>卖出手持炮塔/建筑</td></tr>
+        <tr><td><code>/k donate &lt;王国&gt; &lt;数量&gt;</code></td><td>捐赠 RP</td></tr>
+        <tr><td><code>/k bank deposit/withdraw &lt;金额&gt;</code></td><td>王国银行存取</td></tr>
+        <tr><td><code>/k vault</code></td><td>王国共享箱子</td></tr>
+        <tr><td><code>/k extractor</code></td><td>一键收取全部提取器产出（VIP 类指令）</td></tr>
+      </table>
+
+      <h3>中枢与建筑</h3>
+      <table>
+        <tr><th style="width:40%">指令</th><th>说明</th></tr>
+        <tr><td><code>/k nexus [open/remove]</code></td><td>放置/远程打开/移除中枢</td></tr>
+        <tr><td><code>/k gui &lt;名称&gt;</code></td><td>远程打开指定界面（如 <code>/k gui champion-upgrades</code>）</td></tr>
+      </table>
+
+      <h3>外交与战争</h3>
+      <table>
+        <tr><th style="width:40%">指令</th><th>说明</th></tr>
+        <tr><td><code>/k ally/truce/enemy &lt;王国&gt;</code></td><td>结盟/停战/宣战</td></tr>
+        <tr><td><code>/k revoke &lt;王国&gt;</code></td><td>撤销关系</td></tr>
+        <tr><td><code>/k chat &lt;k/a/n/g&gt; [消息]</code></td><td>聊天频道</td></tr>
+        <tr><td><code>/k pvp</code></td><td>切换与友军的 PvP</td></tr>
+        <tr><td><code>/k invade</code></td><td>发动入侵</td></tr>
+        <tr><td><code>/k ransack</code></td><td>快速掠夺（不占地）</td></tr>
+        <tr><td><code>/k surrender</code></td><td>投降</td></tr>
+        <tr><td><code>/k challenge &lt;王国&gt;</code></td><td>下战书</td></tr>
+      </table>
+
+      <h3>和平条约（装了该插件时）</h3>
+      <table>
+        <tr><th style="width:40%">指令</th><th>说明</th></tr>
+        <tr><td><code>/k neutral &lt;王国&gt;</code></td><td>发送和平提案</td></tr>
+        <tr><td><code>/k pt review</code></td><td>查看条约</td></tr>
+        <tr><td><code>/k pt accept/reject</code></td><td>接受/拒绝</td></tr>
+        <tr><td><code>/k pt resume</code></td><td>继续编辑未完成的条约</td></tr>
+        <tr><td><code>/k pt miscUpgrades</code></td><td>宗主管理附庸升级</td></tr>
+      </table>
+    </section>
+
+    <!-- ========== 20 FAQ ========== -->
+    <section id="faq">
+      <h2><span class="h2icon">❓</span>常见问题 FAQ</h2>
+
+      <details class="faq"><summary>炮塔不射击？</summary><div class="faq-body">
+        依次检查：服务器刚启动后炮塔需要约 1 分钟加载；<b>有没有弹药</b>（右键炮塔买弹）；你们与炮塔所属王国是否有炮塔停火属性（治疗塔则相反，只认友军）；该领地的调节器是否关闭了炮塔；你是否处于创造/隐身/上帝模式（炮塔不打这种人）；双方是否有一方是和平主义；部分炮塔（治疗/灵能/士兵）只锁定玩家，不打动物和 NPC；炮塔的射线检测在贴脸等个别站位下可能失灵。
+      </div></details>
+
+      <details class="faq"><summary>提取器不产资源点？</summary><div class="faq-body">
+        检查<b>燃料</b>，没燃料就停工。右键提取器打开 GUI 加燃料。
+      </div></details>
+
+      <details class="faq"><summary>踏进敌方领地提示守卫来了却看不到怪？</summary><div class="faq-body">
+        守卫只追它锁定的目标且全王国同一时间只刷一只——可能在很远的地方追你；若提示音效齐全却始终没怪，多半是插件冲突，报告给服务器管理员。
+      </div></details>
+
+      <details class="faq"><summary>为什么不能打自己王国的成员/盟友？</summary><div class="faq-body">
+        关系属性默认关闭友军 PvP（防误伤）。想切磋：<b>双方</b>都输入 <code>/k pvp</code>。仍不行则是 WorldGuard 等其他插件禁止了该区域 PvP。
+      </div></details>
+
+      <details class="faq"><summary>被入侵了怎么办？</summary><div class="faq-body">
+        1️⃣ 全员 <code>/k teleport</code> 回防；2️⃣ 保护并协助冠军（它只咬入侵者一个人，拖住即可）；3️⃣ 利用地形+炮塔+守卫消耗对方；4️⃣ 守不住就让有权限的人 <code>/k surrender</code> 止损。平时：中枢格用 Powercell 布防、升级冠军、保持炮塔弹药充足。
+      </div></details>
+
+      <details class="faq"><summary>/k invade 用不了？</summary><div class="faq-body">
+        对照"发动入侵可能被拒绝的原因"清单：护盾/和平主义/新手保护、实力差距、没宣战或没下战书、只在全民战争开放、没有 INVADE 权限、冷却中、RP 或金钱不足。
+      </div></details>
+
+      <details class="faq"><summary>下界传送门传不过去？</summary><div class="faq-body">
+        目的地领地属于与你没有停火属性的王国时，传送会被插件取消（防偷袭机制）。绕路或先改善关系。
+      </div></details>
+
+      <details class="faq"><summary>领地里信标没用？</summary><div class="faq-body">
+        信标只对拥有停火属性的玩家生效。让访客与你结盟/停战，或把信标挪到公共区。
+      </div></details>
+
+      <details class="faq"><summary>入侵中枢格有什么额外好处？</summary><div class="faq-body">
+        除了占领土地，还会额外从该国偷取资源点和银行金钱——所以大家最爱打中枢，也最该保护中枢。
+      </div></details>
+
+      <details class="faq"><summary>被抓进附庸/收到条约怎么办？</summary><div class="faq-body">
+        条约邮件在中枢信箱里，<code>/k pt accept</code> / <code>/k pt reject</code> 自由选择；接受附庸会长期受限（强制外交、抽成、限建），想翻身需要第三国帮你打赢宗主。
+      </div></details>
+
+      <details class="faq"><summary>怎么查看我的王国还有多少领地上限？</summary><div class="faq-body">
+        <code>/k show</code> 查看王国信息；上限 = 成员数 × 5 + 国家加成 + 升级加成（默认规则）。
+      </div></details>
+
+      <details class="faq"><summary>聊天里的 @某人 是什么？</summary><div class="faq-body">
+        游戏内提醒功能：被 @ 的玩家会有音效和屏幕提示。可用 <code>/k chat</code> 切换频道；<code>!</code> 开头可在部分受限频道发言。
+      </div></details>
+    </section>
+
+    <!-- ========== 21 术语表 ========== -->
+    <section id="glossary">
+      <h2><span class="h2icon">📚</span>术语表</h2>
+      <table>
+        <tr><th style="width:34%">术语</th><th>含义</th></tr>
+        <tr><td>王国（Kingdom）</td><td>玩家团体，共享领地、RP、银行与升级</td></tr>
+        <tr><td>国家（Nation）</td><td>王国组成的联盟，首都为王</td></tr>
+        <tr><td>领地/区块（Land/Chunk）</td><td>16×16 地块；Claim 指被王国圈占的领地</td></tr>
+        <tr><td>中枢（Nexus）</td><td>王国核心建筑，管理一切；被挖会丢 RP</td></tr>
+        <tr><td>资源点（RP）</td><td>王国货币，买炮塔/建筑/护盾/升级</td></tr>
+        <tr><td>国力（Might）</td><td>排行榜依据，默认 = RP 与成员数综合</td></tr>
+        <tr><td>冠军（Champion）</td><td>王国守护生物，杀掉它才能占领领地</td></tr>
+        <tr><td>守卫/士兵（Guard/Soldier）</td><td>领地自动防御生物</td></tr>
+        <tr><td>炮塔（Turret）/ 建筑（Structure）</td><td>放置型防御/功能方块（合称"王国建筑"）</td></tr>
+        <tr><td>关系属性（Relation Attribute）</td><td>王国间的权限开关（停火/建造/飞行等），多数需双向开启</td></tr>
+        <tr><td>护盾（Shield）</td><td>免疫入侵的倒计时保护，可被攻城炮轰掉</td></tr>
+        <tr><td>和平主义（Pacifism）</td><td>不打架保护状态</td></tr>
+        <tr><td>大规模战争（Mass War）</td><td>每 12 小时全服开放的入侵狂欢</td></tr>
+        <tr><td>掠夺（Ransack）</td><td>只抢资源不占地的入侵</td></tr>
+        <tr><td>掠夺战（Plunder）</td><td>击杀计分制入侵模式（可选）</td></tr>
+        <tr><td>攻城炮（Siege Cannon）</td><td>削护盾、拆建筑的玩家操作重炮</td></tr>
+        <tr><td>保护牌（Protection Sign）</td><td>告示牌锁箱系统</td></tr>
+        <tr><td>战争点数（War Points）</td><td>和平条约条款的"货币"，按敌国分开计</td></tr>
+        <tr><td>附庸（Vassal）/ 宗主（Overlord）</td><td>条约形成的长期控制关系</td></tr>
+        <tr><td>前哨战（Outpost）</td><td>KoTH 式占点活动（区别于 Outpost 建筑）</td></tr>
+        <tr><td>王国建筑物品（Kingdom Item）</td><td>手持的炮塔/建筑物品</td></tr>
+        <tr><td>隐藏王国</td><td>在中枢开启隐藏，不出现在地图上</td></tr>
+        <tr><td>永久王国</td><td>管理员设置，免税且不会被自动解散</td></tr>
+      </table>
+    </section>
+
+    <footer>
+      本 Wiki 由 KingdomsX 官方文档（wiki.kingdomsx.com）整理翻译 · 最后更新：2026-08<br>
+      祝你称王顺利！👑
+    </footer>
+  </main>
+</div>
+
+<button class="backtop" id="backtop" title="回到顶部">↑</button>
+
+<script>
+  // 侧边栏目录：移动端开关
+  var sidebar = document.getElementById('sidebar');
+  document.getElementById('menuBtn').onclick = function(e){
+    e.stopPropagation();
+    sidebar.classList.toggle('open');
+  };
+  document.addEventListener('click', function(e){
+    if(sidebar.classList.contains('open') && !sidebar.contains(e.target)) sidebar.classList.remove('open');
+  });
+
+  // 目录搜索过滤
+  document.getElementById('navSearch').addEventListener('input', function(){
+    var q = this.value.trim().toLowerCase();
+    document.querySelectorAll('#nav a').forEach(function(a){
+      a.style.display = (!q || a.textContent.toLowerCase().indexOf(q) > -1) ? '' : 'none';
+    });
+    document.querySelectorAll('.nav-group-title').forEach(function(t){ t.style.display = q ? 'none' : ''; });
+  });
+
+  // 滚动高亮当前章节
+  var links = Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function highlight(){
+    var idx = 0;
+    sections.forEach(function(s, i){ if(s && s.getBoundingClientRect().top < 140) idx = i; });
+    links.forEach(function(a, i){ a.classList.toggle('active', i === idx); });
+  }
+  window.addEventListener('scroll', highlight, {passive:true});
+  highlight();
+
+  // 回到顶部按钮
+  var backtop = document.getElementById('backtop');
+  window.addEventListener('scroll', function(){
+    backtop.classList.toggle('show', window.scrollY > 600);
+  }, {passive:true});
+  backtop.onclick = function(){ window.scrollTo({top:0, behavior:'smooth'}); };
+</script>
+</body>
+</html>
