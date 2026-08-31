@@ -81,6 +81,23 @@
   details.faq[open] summary::before{content:"▾ ";}
   details.faq .faq-body{padding:0 18px 16px; color:var(--text); font-size:14.5px;}
 
+  .recipe-summary{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 20px;}
+  .recipe-summary span{background:#182631; border:1px solid #315163; border-radius:999px; padding:4px 11px; color:#b9e7f4; font-size:12.5px;}
+  .recipe-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:18px 0 26px;}
+  .recipe-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; min-width:0;}
+  .recipe-head{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:13px;}
+  .recipe-head h3{margin:0; font-size:16.5px; color:#d3eef8;}
+  .recipe-tag{flex-shrink:0; border:1px solid #355665; background:#192b34; color:#87cee2; border-radius:999px; padding:2px 8px; font-size:11.5px;}
+  .recipe-body{display:flex; align-items:center; justify-content:center; gap:13px;}
+  .craft-grid{display:grid; grid-template-columns:repeat(3,54px); grid-template-rows:repeat(3,54px); gap:4px; padding:7px; background:#10131a; border:1px solid #343a48; border-radius:8px;}
+  .slot{display:flex; align-items:center; justify-content:center; text-align:center; padding:3px; background:linear-gradient(145deg,#353b49,#252a35); border:2px solid; border-color:#4b5261 #1b1f28 #1b1f28 #4b5261; color:#eef2f8; font-size:11px; line-height:1.15; overflow-wrap:anywhere;}
+  .slot.empty{background:#171a22; border-color:#232832; color:transparent;}
+  .recipe-arrow{font-size:24px; color:var(--accent);}
+  .recipe-output{width:72px; min-height:72px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:3px; padding:7px; background:#222b35; border:2px solid; border-color:#526170 #151a21 #151a21 #526170; border-radius:6px; color:#f2f5f8; font-size:12px; line-height:1.2;}
+  .recipe-output b{color:#f2c94c; font-size:14px;}
+  .recipe-note{margin:12px 0 0; color:var(--muted); font-size:12.5px; line-height:1.55;}
+  .compact-table td:first-child{white-space:nowrap; color:#d3eef8;}
+
   .backtop{position:fixed; right:26px; bottom:26px; width:44px; height:44px; border-radius:50%; background:var(--accent);
     color:#10181d; border:none; font-size:19px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:.25s;}
   .backtop.show{opacity:1; pointer-events:auto;}
@@ -97,6 +114,11 @@
     .menu-btn{display:block; position:fixed; z-index:80; top:9px; left:12px; background:var(--card); color:var(--accent);
       border:1px solid var(--line); border-radius:8px; padding:5px 11px; font-size:16px; cursor:pointer;}
     .hero{padding:24px 20px;} .hero h1{font-size:24px;}
+    .recipe-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:480px){
+    .craft-grid{grid-template-columns:repeat(3,46px); grid-template-rows:repeat(3,46px);}
+    .recipe-body{gap:8px;} .recipe-output{width:62px; min-height:62px;}
   }
 </style>
 </head>
@@ -136,10 +158,12 @@
       <a href="#bottle"><span class="num">11</span>瓶中信与沉没笔记</a>
       <a href="#calligraphy"><span class="num">12</span>书法台与诅咒附魔</a>
       <a href="#events"><span class="num">13</span>特殊事件与 Boss</a>
-      <a href="#misc"><span class="num">14</span>鱼料理与实用家具</a>
+      <a href="#dredging"><span class="num">14</span>挖泥装置</a>
+      <a href="#misc"><span class="num">15</span>鱼料理与实用家具</a>
       <div class="nav-group-title">工具</div>
-      <a href="#commands"><span class="num">15</span>指令速查</a>
-      <a href="#faq"><span class="num">16</span>常见问题 FAQ</a>
+      <a href="#recipes"><span class="num">16</span>合成表</a>
+      <a href="#commands"><span class="num">17</span>指令速查</a>
+      <a href="#faq"><span class="num">18</span>常见问题 FAQ</a>
     </nav>
   </aside>
 
@@ -147,7 +171,7 @@
     <div class="hero">
       <h1>🎣 钓鱼百科（Fathoms）</h1>
       <p>一套彻底取代原版钓鱼的深度玩法：<b>39 种普通鱼 + 36 种畸变鱼</b>、随月相轮转的夏至/日蚀钓法、切鱼台、神像仪式、书法台解密……钓上来的每一条鱼都是图鉴的一块拼图。</p>
-      <div class="warnbar">📖 本教程基于插件默认规则整理，服务器可能有所调整，以游戏内实际为准。鱼饵、鱼竿、家具的<b>合成配方在服务器资源包中</b>，可向管理员索取合成表。</div>
+      <div class="warnbar">📖 本教程已按当前服务器配置更新。鱼饵、鱼竿、切鱼台、书法台、虹吸器和挖泥装置等配方，均可在本页的<a href="#recipes"><b>合成表</b></a>直接查看。</div>
     </div>
 
     <!-- 01 快速上手 -->
@@ -201,7 +225,7 @@
       <ul>
         <li><b>第 1–4 天 = 夏至</b>，<b>第 5–8 天 = 日蚀</b>；</li>
         <li>普通鱼和畸变鱼各有 11 种<b>夏至限定</b>、11 种<b>日蚀限定</b>——错过的月相只能等下一轮；</li>
-        <li>若服务器在 HUD/计分板上显示了月相图标，可直接查看当前处于哪个半程。</li>
+        <li>TAB上显示了月相图标，可直接查看当前处于哪个半程。</li>
       </ul>
       <div class="callout warn"><span class="tag">⚠️</span><b>虾会反转月相！</b>手持<b>虾</b>或<b>幽灵虾</b>钓鱼时，月相判定被反转：夏至期间拿虾能钓<b>日蚀限定</b>鱼，日蚀期间拿虾能钓<b>夏至限定</b>鱼。想不受月相限制？两种虾各备一点，随时切换。</div>
       <div class="callout tip"><span class="tag">💡</span>记不住顺序也没关系：月亮圆缺循环一轮（8 个游戏日）= 夏至 4 天 + 日蚀 4 天，数日子即可。</div>
@@ -314,7 +338,7 @@
     <!-- 08 切鱼台 -->
     <section id="chopping">
       <h2><span class="h2icon">🔪</span>切鱼台</h2>
-      <p>切鱼台是把多余的鱼转化为资源的核心设施（有 19 种木质外观）。</p>
+      <p>切鱼台是把多余的鱼转化为资源的核心设施（共有 19 种木质或石质外观）。</p>
       <h3>操作方法</h3>
       <ol>
         <li>放置切鱼台；</li>
@@ -372,7 +396,7 @@
         <tr><td>屠宰护符</td><td>幸运效果 + 掉落骨头；短时间内击杀掉落提升</td></tr>
         <tr><td>召唤兽群</td><td>召唤一批深渊生物——刷怪场の友</td></tr>
         <tr><td>神赐</td><td>随机掉落一件好东西：鹦鹉螺壳/海洋之心/海螺/附魔金苹果/钻石/下界合金锭等</td></tr>
-        <tr><td>献祭</td><td>献祭附近一匹马/驴/骡/骆驼，召唤深渊神话生物；失败则生成<b>凯尔皮</b>骷髅马（见下）</td></tr>
+        <tr><td>献祭</td><td>献祭附近一匹马/驴/骡/骆驼，召唤深渊生物；失败则生成<b>凯尔皮</b>骷髅马（见下）</td></tr>
         <tr><td>祈雨舞</td><td>切换降雨/雷暴 ↔ 放晴（农民和钓客狂喜）</td></tr>
         <tr><td>幸运仪式</td><td>幸运 + 村庄英雄效果，外加绿宝石和金锭</td></tr>
       </table>
@@ -406,10 +430,11 @@
       <p>瓶中信是仪式系统的"图纸"来源。开启规则：</p>
       <ul>
         <li>必须站在<b>海洋/沙滩群系</b>或<b>多石水域</b>右键开启，其他地方开启会提示"此瓶中信息无效"；</li>
-        <li><b>海洋开启</b>：多数情况得到海洋沉没笔记（幸运仪式 / 屠宰护符 / 形态化马 / 祈雨舞），也有机会得到多石水域航海图；</li>
-        <li><b>多石水域开启</b>：可能得到神赐笔记、召唤兽群笔记，或绿洲航海图、许愿井航海图；</li>
+        <li><b>海洋开启</b>：等概率获得 4 种海洋沉没笔记之一（幸运仪式 / 屠宰护符 / 形态化马 / 祈雨舞）；</li>
+        <li><b>多石水域开启</b>：等概率获得神赐笔记或召唤兽群笔记；</li>
         <li>偶尔还会额外掉落一个鹦鹉螺壳。</li>
       </ul>
+      <div class="callout tip"><span class="tag">🧭</span><b>航海图玩法已经移除</b>，当前瓶中信不会再开出绿洲、许愿井或多石水域航海图。</div>
       <p><b>沉没笔记</b>共 6 种，<b>空中右键可以翻面</b>，lore 标注"记载仪式: ××"。凑齐笔记 + 喂满精魂的神像，就能执行对应仪式。</p>
     </section>
 
@@ -460,7 +485,35 @@
       <p>钓到龙虾时有极小概率直接蜕变为蓝龙虾——图鉴里最难的一抹蓝，纯看脸。</p>
     </section>
 
-    <!-- 14 料理与杂项 -->
+    <!-- 14 挖泥装置 -->
+    <section id="dredging">
+      <h2><span class="h2icon">⚙️</span>挖泥装置</h2>
+      <p>挖泥装置会把吊爪沿水体向下放到水底，再按当前群系从专属战利品池中打捞物品。装置拥有完整的升降动画，最深可下探约 <b>24 格</b>，进度和已捕获物会持久保存。</p>
+
+      <h3>放置与操作</h3>
+      <ol>
+        <li>把装置放在<b>水面上方或水边的实心方块</b>上，确保吊爪正下方能穿过水体；</li>
+        <li>右键装置，吊爪开始下降；吊爪必须接触过水，干地放下不会获得战利品；</li>
+        <li>吊爪触底后等待约 <b>10 秒</b>。看到吊爪下方出现战利品、并听到提示音后，再右键收线；</li>
+        <li>吊爪回到顶部后，再右键一次把物品收入背包；背包满时会掉在装置旁。</li>
+      </ol>
+      <div class="callout warn"><span class="tag">⚠️</span>太早右键会直接空钩收回。若正下方 24 格内完全没有水，即使触底也不会生成战利品。</div>
+
+      <h3>群系战利品</h3>
+      <table class="compact-table">
+        <tr><th>区域</th><th>可能获得</th></tr>
+        <tr><td>温暖海洋</td><td>易碎/沉重/怪异/受损神像、煤与粗铁/粗金块</td></tr>
+        <tr><td>冰冻海洋</td><td>崎岖/沉重/怪异/受损神像、煤与粗铁/粗金块</td></tr>
+        <tr><td>普通海洋</td><td>沉重/怪异/受损神像、煤与粗铁/粗金块</td></tr>
+        <tr><td>海岸</td><td>沉重/怪异/受损神像</td></tr>
+        <tr><td>河流</td><td>侵蚀神像、粗铁块、粗铜块</td></tr>
+        <tr><td>沼泽</td><td>潮湿神像、粗铁块、粗铜块</td></tr>
+        <tr><td>多石水域</td><td>崎岖神像、煤与粗铁/粗金块</td></tr>
+        <tr><td>其他群系</td><td>砂砾或砂土</td></tr>
+      </table>
+    </section>
+
+    <!-- 15 料理与杂项 -->
     <section id="misc">
       <h2><span class="h2icon">🍤</span>鱼料理与实用家具</h2>
       <h3>食用效果</h3>
@@ -475,13 +528,147 @@
       <h3>实用物具</h3>
       <ul>
         <li><b>海螺 / 荆棘螺壳</b>：右键吹奏音乐（有冷却），纯氛围组；</li>
-        <li><b>鹦鹉螺虹吸管</b>：放置后自动吸取附近的掉落物进内置容器；右键开容器、潜行+右键一键取走；外壳随收集量升级变色；</li>
+        <li><b>鹦鹉螺虹吸管</b>：每 3 秒自动吸取约 2.8 格内的一组掉落物，存入 CraftEngine 提供的<b>三行持久容器</b>；右键打开容器取放物品。外壳会随库存数量变色，清空后恢复原样；打破时内容会安全掉落；</li>
         <li><b>华丽工具 6 件</b>：镐/斧/铲/锄/切肉斧/献祭小刀，可在锻造台用<b>下界合金锭</b>升级为下界合金版（保留附魔与耐久）；华丽切肉斧是切龙虾刚需；</li>
-        <li><b>鱼肚掉落</b>：切鱼有机会掉<b>沉没钥匙</b>（带"福佑"精魂的鱼概率更高），金鳃鱼有机会掉<b>华丽钥匙</b>——服务器可能用它们对接宝箱/抽奖系统。</li>
+        <li><b>鱼肚掉落</b>：当前默认的<b>沉没钥匙概率为 4%、华丽钥匙概率为 2% 0</b>，不会自然掉落。</li>
       </ul>
     </section>
 
-    <!-- 15 指令 -->
+    <!-- 16 合成表 -->
+    <section id="recipes">
+      <h2><span class="h2icon">🧰</span>常用物品合成表</h2>
+      <p>以下内容直接按当前 CraftEngine 配方整理。九宫格位置与工作台一致；“任选”表示同一格可使用列出的任意一种材料。</p>
+      <div class="recipe-summary">
+        <span>42 条已注册配方</span><span>8 类工作台配方</span><span>19 种切鱼台</span><span>15 种烹饪方式</span>
+      </div>
+
+      <div class="recipe-grid">
+        <article class="recipe-card">
+          <div class="recipe-head"><h3>竹钓竿</h3><span class="recipe-tag">有序合成</span></div>
+          <div class="recipe-body">
+            <div class="craft-grid">
+              <span class="slot empty">空</span><span class="slot empty">空</span><span class="slot">竹子</span>
+              <span class="slot empty">空</span><span class="slot">竹子</span><span class="slot">线</span>
+              <span class="slot">竹子</span><span class="slot empty">空</span><span class="slot">线</span>
+            </div><span class="recipe-arrow">→</span><div class="recipe-output">竹钓竿<b>×1</b></div>
+          </div>
+          <p class="recipe-note"><code>fathoms:bamboo_fishing_rod</code> · 耐久 128，可用竹子修复。</p>
+        </article>
+
+        <article class="recipe-card">
+          <div class="recipe-head"><h3>腥饵</h3><span class="recipe-tag">无序合成</span></div>
+          <div class="recipe-body">
+            <div class="craft-grid">
+              <span class="slot">任意原版鱼</span><span class="slot">腐肉或蜘蛛眼</span><span class="slot">糖</span>
+              <span class="slot empty">空</span><span class="slot empty">空</span><span class="slot empty">空</span>
+              <span class="slot empty">空</span><span class="slot empty">空</span><span class="slot empty">空</span>
+            </div><span class="recipe-arrow">→</span><div class="recipe-output">腥饵<b>×2</b></div>
+          </div>
+          <p class="recipe-note">鱼可选鳕鱼、熟鳕鱼、鲑鱼、熟鲑鱼、河豚或热带鱼。</p>
+        </article>
+
+        <article class="recipe-card">
+          <div class="recipe-head"><h3>糖饵</h3><span class="recipe-tag">无序合成</span></div>
+          <div class="recipe-body">
+            <div class="craft-grid">
+              <span class="slot">糖</span><span class="slot">糖</span><span class="slot empty">空</span>
+              <span class="slot">糖</span><span class="slot">糖</span><span class="slot empty">空</span>
+              <span class="slot empty">空</span><span class="slot empty">空</span><span class="slot empty">空</span>
+            </div><span class="recipe-arrow">→</span><div class="recipe-output">糖饵<b>×1</b></div>
+          </div>
+          <p class="recipe-note"><code>fathoms:sugar_bait</code> · 消除垃圾渔获，并提高鱼类权重。</p>
+        </article>
+
+        <article class="recipe-card">
+          <div class="recipe-head"><h3>美食圣典</h3><span class="recipe-tag">无序合成</span></div>
+          <div class="recipe-body">
+            <div class="craft-grid">
+              <span class="slot">任意原版鱼</span><span class="slot">书</span><span class="slot empty">空</span>
+              <span class="slot empty">空</span><span class="slot empty">空</span><span class="slot empty">空</span>
+              <span class="slot empty">空</span><span class="slot empty">空</span><span class="slot empty">空</span>
+            </div><span class="recipe-arrow">→</span><div class="recipe-output">美食圣典<b>×1</b></div>
+          </div>
+          <p class="recipe-note">鱼可选鳕鱼、鲑鱼、热带鱼或河豚。手持右键打开鱼类图鉴。</p>
+        </article>
+
+        <article class="recipe-card">
+          <div class="recipe-head"><h3>书法台</h3><span class="recipe-tag">有序合成</span></div>
+          <div class="recipe-body">
+            <div class="craft-grid">
+              <span class="slot">墨囊</span><span class="slot">纸</span><span class="slot empty">空</span>
+              <span class="slot">任意木板</span><span class="slot">任意木板</span><span class="slot empty">空</span>
+              <span class="slot">任意木板</span><span class="slot">任意木板</span><span class="slot empty">空</span>
+            </div><span class="recipe-arrow">→</span><div class="recipe-output">书法台<b>×1</b></div>
+          </div>
+          <p class="recipe-note"><code>fathoms:calligraphy_table</code> · 用典籍与异变墨囊解码诅咒。</p>
+        </article>
+
+        <article class="recipe-card">
+          <div class="recipe-head"><h3>鹦鹉螺虹吸管</h3><span class="recipe-tag">有序合成</span></div>
+          <div class="recipe-body">
+            <div class="craft-grid">
+              <span class="slot">荧光墨囊</span><span class="slot">荧光墨囊</span><span class="slot">荧光墨囊</span>
+              <span class="slot">鹦鹉螺壳</span><span class="slot">鹦鹉螺壳</span><span class="slot">荧光墨囊</span>
+              <span class="slot">鹦鹉螺壳</span><span class="slot">鹦鹉螺壳</span><span class="slot">荧光墨囊</span>
+            </div><span class="recipe-arrow">→</span><div class="recipe-output">虹吸管<b>×1</b></div>
+          </div>
+          <p class="recipe-note"><code>fathoms:nautilus_siphon</code> · 自动收集附近掉落物，内置三行容器。</p>
+        </article>
+
+        <article class="recipe-card">
+          <div class="recipe-head"><h3>献祭小刀</h3><span class="recipe-tag">有序合成</span></div>
+          <div class="recipe-body">
+            <div class="craft-grid">
+              <span class="slot">黑曜石</span><span class="slot empty">空</span><span class="slot empty">空</span>
+              <span class="slot">木棍</span><span class="slot empty">空</span><span class="slot empty">空</span>
+              <span class="slot empty">空</span><span class="slot empty">空</span><span class="slot empty">空</span>
+            </div><span class="recipe-arrow">→</span><div class="recipe-output">献祭小刀<b>×1</b></div>
+          </div>
+          <p class="recipe-note"><code>fathoms:sacrificial_knife</code> · 切鱼时可把精魂传递给附近神像。</p>
+        </article>
+
+        <article class="recipe-card">
+          <div class="recipe-head"><h3>挖泥装置</h3><span class="recipe-tag">有序合成</span></div>
+          <div class="recipe-body">
+            <div class="craft-grid">
+              <span class="slot">磨制深板岩</span><span class="slot">磨制深板岩</span><span class="slot">磨制深板岩</span>
+              <span class="slot">铁链</span><span class="slot empty">空</span><span class="slot">铁块</span>
+              <span class="slot">铁锭</span><span class="slot empty">空</span><span class="slot">铁块</span>
+            </div><span class="recipe-arrow">→</span><div class="recipe-output">挖泥装置<b>×1</b></div>
+          </div>
+          <p class="recipe-note"><code>fathoms:dredging_apparatus</code> · 此服务器版本中的材料 ID 为 <code>minecraft:iron_chain</code>。</p>
+        </article>
+      </div>
+
+      <h3>切鱼台：19 种材质</h3>
+      <p>所有切鱼台结构相同：工作台<b>中间一排放 3 个表层材料</b>，<b>最下一排放 3 个底层材料</b>，最上排留空。</p>
+      <table class="compact-table">
+        <tr><th>成品系列</th><th>中间一排 ×3</th><th>底下一排 ×3</th></tr>
+        <tr><td>木质 12 种</td><td>对应木板</td><td>对应去皮原木/菌柄；竹制使用去皮竹块</td></tr>
+        <tr><td>石头</td><td>石头</td><td>平滑石头</td></tr>
+        <tr><td>花岗岩</td><td>磨制花岗岩</td><td>平滑石头</td></tr>
+        <tr><td>安山岩</td><td>磨制安山岩</td><td>平滑石头</td></tr>
+        <tr><td>闪长岩</td><td>磨制闪长岩</td><td>平滑石头</td></tr>
+        <tr><td>泥坯</td><td>泥坯</td><td>泥砖</td></tr>
+        <tr><td>砂岩</td><td>砂岩</td><td>平滑砂岩</td></tr>
+        <tr><td>深板岩</td><td>磨制深板岩</td><td>平滑石头</td></tr>
+      </table>
+      <p class="recipe-note">木质系列包括：橡木、云杉、白桦、丛林、金合欢、深色橡木、红树、樱花、竹、苍白橡木、绯红、诡异。</p>
+
+      <h3>鱼类烹饪：15 条配方</h3>
+      <table class="compact-table">
+        <tr><th>原料</th><th>设备</th><th>成品</th><th>时间 / 经验</th></tr>
+        <tr><td>鳕鱼、热带鱼、河豚或生鱼片</td><td>熔炉</td><td>烤鱼 ×1</td><td>10 秒 / 0.35</td></tr>
+        <tr><td>鳕鱼、热带鱼、河豚或生鱼片</td><td>烟熏炉</td><td>烤鱼 ×1</td><td>5 秒 / 0.35</td></tr>
+        <tr><td>鳕鱼、热带鱼、河豚或生鱼片</td><td>营火</td><td>烤鱼 ×1</td><td>30 秒 / 0.35</td></tr>
+        <tr><td>畸变生鱼</td><td>熔炉</td><td>畸变烤鱼 ×1</td><td>10 秒 / 0.35</td></tr>
+        <tr><td>畸变生鱼</td><td>烟熏炉</td><td>畸变烤鱼 ×1</td><td>5 秒 / 0.35</td></tr>
+        <tr><td>畸变生鱼</td><td>营火</td><td>畸变烤鱼 ×1</td><td>30 秒 / 0.35</td></tr>
+      </table>
+      <div class="callout tip"><span class="tag">💡</span>目前 CraftEngine 中没有鮟鱇诱饵、宝石磁铁、华丽工具或七种神像的普通工作台配方；它们需要通过钓鱼、挖泥、仪式或服务器其他玩法获取。</div>
+    </section>
+
+    <!-- 17 指令 -->
     <section id="commands">
       <h2><span class="h2icon">⌨️</span>指令速查</h2>
       <p>主指令 <code>/fathoms</code>，别名 <code>/fath</code>。玩家指令默认全部开放，无需额外权限。</p>
@@ -498,7 +685,7 @@
       <p>图鉴 GUI：已捕获显示鱼模型 + 栖息环境；未捕获显示"？？？"+ 环境线索；支持翻页，底部统计书显示总进度。</p>
     </section>
 
-    <!-- 16 FAQ -->
+    <!-- 18 FAQ -->
     <section id="faq">
       <h2><span class="h2icon">❓</span>常见问题 FAQ</h2>
 
@@ -534,6 +721,14 @@
         每翻一张卡消耗 1 个<b>异变墨囊</b>——切带"神秘"精魂的鱼（小丑鱼/腔棘鱼/鳉鱼等）有机会获得。没有墨囊时翻牌无效。
       </div></details>
 
+      <details class="faq"><summary>挖泥装置为什么收上来是空的？</summary><div class="faq-body">
+        吊爪必须在下降途中<b>接触过水</b>，触底后还要等待约 <b>10 秒</b>。看到吊爪下方出现物品后再右键收线；提前操作会直接空钩返回。装置最深只能下探约 24 格。
+      </div></details>
+
+      <details class="faq"><summary>鹦鹉螺虹吸管清空后为什么没有立刻变回原色？</summary><div class="faq-body">
+        正常情况下，关闭容器后外壳会立即按库存刷新；完全清空时恢复初始颜色。若客户端偶尔没有刷新，重新打开并关闭一次容器即可触发同步。
+      </div></details>
+
       <details class="faq"><summary>金鳃鱼到底怎么钓？</summary><div class="faq-body">
         常规钓法钓不到。需要"鎏金微光"生成在你附近（条件：钓鱼场次累计 ≥32 且钓到过至少 1 条畸变鱼），之后在微光附近起竿<b>必得金鳃鱼</b>，钓到即消散。
       </div></details>
@@ -543,7 +738,7 @@
       </div></details>
     </section>
 
-    <footer>钓鱼百科 · Fathoms · 玩家教程 · 2026-08</footer>
+    <footer>钓鱼百科 · Fathoms · 玩家教程 · 最后更新：2026-08-31</footer>
   </main>
 </div>
 
