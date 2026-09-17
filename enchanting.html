@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ 附魔百科 · FirEnchant — 玩法 Wiki</title>
+<style>
+  :root{
+    --bg:#12141a; --panel:#191c25; --card:#1d212c; --line:#2a2f3d;
+    --text:#d8dce6; --muted:#9298a8; --accent:#b07cf0; --accent-dim:#7b55a8;
+    --link:#7fb0f5; --code-bg:#0d0f15;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:76px;}
+  body{background:var(--bg); color:var(--text);
+    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    font-size:15.5px; line-height:1.75;}
+  a{color:var(--link); text-decoration:none;} a:hover{text-decoration:underline;}
+
+  .topnav{position:fixed; top:0; left:0; right:0; height:52px; background:rgba(20,22,30,.94); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; z-index:70; padding:0 18px; gap:4px; backdrop-filter:blur(8px);}
+  .topnav .brand{font-weight:bold; color:var(--accent); margin-right:14px; font-size:15px; white-space:nowrap;}
+  .topnav a{padding:6px 13px; border-radius:8px; color:var(--text); font-size:13.5px; white-space:nowrap;}
+  .topnav a:hover{background:var(--card); text-decoration:none;}
+  .topnav a.here{background:var(--card); color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent-dim);}
+
+  .layout{display:flex; padding-top:52px; min-height:100vh;}
+  .sidebar{width:270px; flex-shrink:0; background:var(--panel); border-right:1px solid var(--line);
+    padding:20px 14px; position:sticky; top:52px; height:calc(100vh - 52px); overflow-y:auto;}
+  .sidebar::-webkit-scrollbar{width:8px;} .sidebar::-webkit-scrollbar-thumb{background:#2e3444; border-radius:4px;}
+  .logo{display:flex; align-items:center; gap:10px; padding:4px 8px 14px; border-bottom:1px solid var(--line); margin-bottom:14px;}
+  .logo .crown{font-size:26px;}
+  .logo b{font-size:16px; color:var(--accent); letter-spacing:.5px;}
+  .logo small{display:block; color:var(--muted); font-size:11.5px; font-weight:normal;}
+  #navSearch{width:100%; padding:8px 12px; margin-bottom:12px; border-radius:8px; border:1px solid var(--line);
+    background:var(--code-bg); color:var(--text); font-size:13.5px; outline:none;}
+  #navSearch:focus{border-color:var(--accent-dim);}
+  .nav a{display:block; padding:6px 10px; margin:2px 0; border-radius:7px; color:var(--text); font-size:13.5px; border-left:3px solid transparent;}
+  .nav a:hover{background:var(--card); text-decoration:none;}
+  .nav a.active{background:var(--card); border-left-color:var(--accent); color:var(--accent);}
+  .nav .num{color:var(--accent-dim); margin-right:7px; font-size:12px;}
+  .nav-group-title{color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:1.5px; padding:14px 10px 4px;}
+
+  main{flex:1; min-width:0; padding:32px 48px 80px; max-width:1020px; margin:0 auto;}
+  .hero{background:linear-gradient(135deg,#1e1626 0%,#251737 100%); border:1px solid var(--line); border-radius:14px; padding:34px 36px; margin-bottom:30px;}
+  .hero h1{font-size:30px; color:var(--accent); letter-spacing:1px; margin-bottom:10px;}
+  .hero p{color:var(--muted); font-size:14.5px; max-width:760px;}
+  .hero .warnbar{margin-top:16px; padding:12px 16px; border-radius:9px; font-size:13.5px;
+    background:rgba(176,124,240,.08); border:1px solid rgba(176,124,240,.4); color:#e6d9f7;}
+
+  section{margin-bottom:56px;}
+  h2{font-size:24px; color:var(--accent); padding-bottom:10px; margin-bottom:20px; border-bottom:2px solid var(--line); letter-spacing:.5px;}
+  h2 .h2icon{margin-right:8px;}
+  h3{font-size:18.5px; color:#d3b3f5; margin:28px 0 12px;}
+  h4{font-size:16px; color:var(--text); margin:20px 0 8px;}
+  p{margin:10px 0;} ul,ol{margin:10px 0 10px 26px;} li{margin:5px 0;}
+  li::marker{color:var(--accent-dim);}
+  strong{color:#ece0fb;}
+
+  code{background:var(--code-bg); border:1px solid var(--line); border-radius:5px; padding:1.5px 7px; font-size:13px; color:#f2c94c;
+    font-family:Consolas,"Cascadia Mono",monospace;}
+  pre.cmd{background:var(--code-bg); border:1px solid var(--line); border-left:3px solid var(--accent-dim); border-radius:8px;
+    padding:14px 18px; overflow-x:auto; margin:14px 0; font-family:Consolas,"Cascadia Mono",monospace; font-size:13.5px; line-height:1.7;}
+  pre.cmd .cmt{color:#6d7689;}
+
+  table{width:100%; border-collapse:collapse; margin:16px 0; font-size:13.5px; background:var(--card); border-radius:9px; overflow:hidden;}
+  th{background:#2a2238; color:#d3b3f5; text-align:left; padding:9px 12px; border:1px solid var(--line);}
+  td{padding:8px 12px; border:1px solid var(--line); vertical-align:top;}
+  tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+
+  .callout{border-radius:9px; padding:13px 18px; margin:16px 0; font-size:14.5px; border:1px solid;}
+  .callout.tip{background:rgba(76,174,109,.07); border-color:rgba(76,174,109,.4);}
+  .callout.warn{background:rgba(230,184,76,.07); border-color:rgba(230,184,76,.4);}
+  .callout.danger{background:rgba(217,107,107,.07); border-color:rgba(217,107,107,.45);}
+  .callout .tag{font-weight:bold; margin-right:6px;}
+
+  details.faq{background:var(--card); border:1px solid var(--line); border-radius:10px; margin:12px 0; overflow:hidden;}
+  details.faq summary{cursor:pointer; padding:14px 18px; font-weight:bold; color:#d3b3f5; list-style:none; user-select:none;}
+  details.faq summary::-webkit-details-marker{display:none;}
+  details.faq summary::before{content:"▸ "; color:var(--accent-dim);}
+  details.faq[open] summary::before{content:"▾ ";}
+  details.faq .faq-body{padding:0 18px 16px; color:var(--text); font-size:14.5px;}
+
+  .backtop{position:fixed; right:26px; bottom:26px; width:44px; height:44px; border-radius:50%; background:var(--accent);
+    color:#1a1026; border:none; font-size:19px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:.25s;}
+  .backtop.show{opacity:1; pointer-events:auto;}
+  .menu-btn{display:none;}
+  footer{color:var(--muted); font-size:13px; text-align:center; padding:30px 0 10px; border-top:1px solid var(--line); margin-top:40px;}
+
+  @media (max-width:900px){
+    .layout{display:block;}
+    .topnav{padding-left:58px; overflow-x:auto;}
+    .sidebar{position:fixed; z-index:50; left:0; top:52px; height:calc(100vh - 52px); transform:translateX(-105%);
+      transition:transform .28s ease; box-shadow:8px 0 30px rgba(0,0,0,.5);}
+    .sidebar.open{transform:translateX(0);}
+    main{padding:24px 20px 60px;}
+    .menu-btn{display:block; position:fixed; z-index:80; top:9px; left:12px; background:var(--card); color:var(--accent);
+      border:1px solid var(--line); border-radius:8px; padding:5px 11px; font-size:16px; cursor:pointer;}
+    .hero{padding:24px 20px;} .hero h1{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<button class="menu-btn" id="menuBtn">☰</button>
+<nav class="topnav">
+  <span class="brand">✨ 附魔百科</span>
+  <a href="index.html">🏠 首页</a>
+  <a href="kingdoms.html">⚔️ 国家</a>
+  <a href="fishing.html">🎣 钓鱼</a>
+  <a href="cooking.html">🍳 烹饪</a>
+  <a href="bartending.html">🍸 调酒</a>
+  <a class="here" href="enchanting.html">✨ 附魔</a>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <span class="crown">✨</span>
+      <div><b>FirEnchant 附魔</b><small>FirEnchantKt 3.2.5 · 基于本服配置整理</small></div>
+    </div>
+    <input type="text" id="navSearch" placeholder="🔍 搜索章节…">
+    <nav class="nav" id="nav">
+      <div class="nav-group-title">入门</div>
+      <a href="#start"><span class="num">01</span>快速上手</a>
+      <a href="#get"><span class="num">02</span>附魔书从哪来</a>
+      <div class="nav-group-title">两条主线</div>
+      <a href="#table"><span class="num">03</span>附魔台（造书）</a>
+      <a href="#anvil"><span class="num">04</span>铁砧（附到装备）</a>
+      <div class="nav-group-title">辅助道具</div>
+      <a href="#soul"><span class="num">05</span>魔咒之尘（降失败率）</a>
+      <a href="#rune"><span class="num">06</span>三种符文</a>
+      <a href="#tome"><span class="num">07</span>重生之书 / 反转之书</a>
+      <div class="nav-group-title">善后</div>
+      <a href="#broken"><span class="num">08</span>装备破损与修复台</a>
+      <a href="#menu"><span class="num">09</span>菜单与物品图鉴</a>
+      <div class="nav-group-title">资料</div>
+      <a href="#list"><span class="num">10</span>附魔一览表</a>
+      <a href="#commands"><span class="num">11</span>指令与权限</a>
+      <a href="#faq"><span class="num">12</span>常见问题 FAQ</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h1>✨ 附魔百科（FirEnchant）</h1>
+      <p>本服把原版附魔改造成了一套完整的<b>「附魔书」玩法</b>：在<span style="color:#d3b3f5;">附魔台</span>用「起源之书」抽书，带着书的<b>失败率</b>去<span style="color:#d3b3f5;">铁砧</span>把它敲上装备；失败了装备会<b>破损</b>，需要送进「修复台」耗时间修好。附魔书、魔咒之尘、符文、重生/反转之书共同组成了一个循环。</p>
+      <div class="warnbar">📖 本教程基于本服 <code>FirEnchantKt 3.2.5</code> 与 CraftEngine 资源包配置整理。数值（失败率、耗时、折扣、权限）以游戏内实际表现和服主设置为准。</div>
+    </div>
+
+    <!-- 01 快速上手 -->
+    <section id="start">
+      <h2><span class="h2icon">🚀</span>快速上手</h2>
+      <ol>
+        <li><b>准备「起源之书」</b>：向服主兑换或从活动获取<b>剑/镐/弓……附魔书</b>（如「剑附魔书」「胸甲附魔书」），这是附魔的原料。</li>
+        <li><b>去附魔台抽书</b>：右键附魔台打开新界面，把起源之书放进中间槽位，点亮的高亮栏位会显示<b>结果附魔</b>与<b>失败率</b>；点击即可消耗等级与青金石，产出一本<b>插件附魔书</b>。</li>
+        <li><b>去铁砧上附魔</b>：把装备和附魔书放进铁砧，固定消耗 <b>18 经验等级</b>。成功则附魔生效；<b>失败装备会变成「损坏的×××」</b>。</li>
+        <li><b>降低失败率</b>：失败率越高的书越容易炸。用<b>魔咒之尘</b>（铁砧里使用，每个 −3%，最多 12 个）把书压到最低 5%；或用<b>保护符文</b>保住装备不坏。</li>
+        <li><b>修装备</b>：损坏的装备放进<b>修复台</b>免费修复，但要等 <b>10 分钟</b>；着急就用<b>修复材料</b>缩短时间。</li>
+      </ol>
+      <div class="callout tip"><span class="tag">💡</span>一句话流程：<b>起源之书 → 附魔台造书 → 魔咒之尘降失败率 → 铁砧附到装备 → 失败送修复台</b>。新手最容易忽略的是「失败率」，它是这套玩法的核心数值。</div>
+    </section>
+
+    <!-- 02 获取 -->
+    <section id="get">
+      <h2><span class="h2icon">📦</span>附魔书从哪来</h2>
+      <h3>起源之书（附魔原料）</h3>
+      <p><b>起源之书</b>是一本「什么都没附」的空书，每本对应一类装备。放进附魔台后，插件会模拟对应的原版物品来抽取附魔。共 16 种：</p>
+      <table>
+        <tr><th>分类</th><th>起源之书</th></tr>
+        <tr><td>武器</td><td>剑附魔书 · 斧附魔书 · 重锤附魔书 · 三叉戟附魔书</td></tr>
+        <tr><td>工具</td><td>镐附魔书 · 铲附魔书 · 锄附魔书 · 鱼竿附魔书</td></tr>
+        <tr><td>远程 / 防具</td><td>弓附魔书 · 弩附魔书 · 盾附魔书 · 鞘翅附魔书</td></tr>
+        <tr><td>护甲</td><td>头盔附魔书 · 胸甲附魔书 · 护腿附魔书 · 靴子附魔书</td></tr>
+      </table>
+      <h3>插件附魔书</h3>
+      <ul>
+        <li><b>附魔台产出</b>：用起源之书在附魔台抽奖得到，是主要来源。</li>
+        <li><b>战利品自动转换</b>：箱子里开出来的<b>原版附魔书</b>会被自动转换成插件附魔书（失败率随机 0%～100%）。</li>
+        <li><b>活动 / 兑换</b>：服主可能通过礼包、活动、抽奖发放，具体问服主。</li>
+      </ul>
+      <div class="callout warn"><span class="tag">⚠️</span><b>原版附魔书不能在铁砧上使用</b>（创造模式除外）。所以别想着用刷怪塔掉的附魔书直接砸装备，先确认它是不是已被系统转换。</div>
+    </section>
+
+    <!-- 03 附魔台 -->
+    <section id="table">
+      <h2><span class="h2icon">🔮</span>附魔台（造书）</h2>
+      <p>本服右键附魔台<b>不会打开原版界面</b>，而是打开一个定制 GUI。流程如下：</p>
+      <ol>
+        <li>把<b>起源之书</b>放进中间输入槽；</li>
+        <li>界面右侧/上方的 <b>3 个栏位（第一/二/三行）</b>会根据你的等级和青金石数量<b>逐个亮起</b>；</li>
+        <li>亮起的栏位会显示<b>将要产出的附魔书</b>（附魔名称、等级、失败率）；</li>
+        <li>点击亮起的栏位 → 扣除等级与青金石 → 得到<b>插件附魔书</b>。</li>
+      </ol>
+      <h3>三个栏位的花费</h3>
+      <table>
+        <tr><th>栏位</th><th>消耗经验等级</th><th>消耗青金石</th><th>说明</th></tr>
+        <tr><td>第一行</td><td>5 级</td><td>1 个</td><td>门槛最低，等级/青金石不足则不亮</td></tr>
+        <tr><td>第二行</td><td>15 级</td><td>2 个</td><td>通常结果更好</td></tr>
+        <tr><td>第三行</td><td>20 级</td><td>3 个</td><td>消耗最高，最高级结果常在此</td></tr>
+      </table>
+      <div class="callout tip"><span class="tag">💡</span>书架依然有用！抽取沿用原版算法，<b>附魔台周围的有效书架数量</b>会影响结果等级。想抽好属性，先把书架摆到位（三格高、隔一格空位那套经典摆法）。</div>
+      <div class="callout warn"><span class="tag">⚠️</span>每个栏位的抽取结果由你的<b>附魔种子</b>决定，抽完后种子会变化。用<b>重生之书</b>可刷新下一次的可选列表，用<b>反转之书</b>可拿回上一次的结果（见第 07 节）。界面上也有「查看所有魔咒」按钮，可打开全服附魔书图鉴。</div>
+    </section>
+
+    <!-- 04 铁砧 -->
+    <section id="anvil">
+      <h2><span class="h2icon">⚒️</span>铁砧（把书附到装备）</h2>
+      <p>拿到附魔书后，去铁砧把书和装备放进去即可施加附魔。规则与原版不同，重点看<b>失败率</b>：</p>
+      <table>
+        <tr><th>项目</th><th>规则</th></tr>
+        <tr><td>经验消耗</td><td><b>固定 18 经验等级</b>（不按原版公式）</td></tr>
+        <tr><td>成功 / 失败</td><td>按附魔书上的<b>失败率</b>判定；失败率越高越容易炸</td></tr>
+        <tr><td>失败后果</td><td>装备变为<b>「损坏的×××」</b>，需要送到修复台修复</td></tr>
+        <tr><td>失败补偿</td><td>返还若干<b>魔咒之尘</b>，可用来降低下一本书的失败率</td></tr>
+        <tr><td>附魔书合并</td><td>两本同名附魔书可在铁砧合并升等级；结果失败率默认取<b>左侧那本</b>的失败率</td></tr>
+        <tr><td>保护符文</td><td>装备带保护符文时，失败只消耗符文，<b>装备不坏</b></td></tr>
+      </table>
+      <div class="callout danger"><span class="tag">☠️</span>本服<b>没有</b>「连续失败补偿」与「必成功兜底」（相关选项已关闭），运气差就是会炸。所以高失败率的书，请务必先用魔咒之尘压到可接受的范围，或者挂保护符文再上。</div>
+      <div class="callout tip"><span class="tag">💡</span>推荐顺序：先用便宜的低级书试水，失败率低于 15% 再上主力装备；珍贵装备一定配保护符文。</div>
+    </section>
+
+    <!-- 05 魔咒之尘 -->
+    <section id="soul">
+      <h2><span class="h2icon">🌫️</span>魔咒之尘（降低失败率）</h2>
+      <p><b>魔咒之尘</b>是这套玩法的「保险」：在铁砧上把它用在附魔书上，可逐次降低失败率。</p>
+      <table>
+        <tr><th>项目</th><th>数值</th></tr>
+        <tr><td>每颗降低失败率</td><td><b>−3%</b></td></tr>
+        <tr><td>每颗消耗经验</td><td><b>3 级</b></td></tr>
+        <tr><td>每本书上限</td><td>最多使用 <b>12 颗</b>（共 −36%）</td></tr>
+        <tr><td>失败率下限</td><td>最低只能降到 <b>5%</b>，不会归零</td></tr>
+      </table>
+      <h3>如何获得魔咒之尘</h3>
+      <ul>
+        <li><b>铁砧附魔失败</b>时作为补偿返还；</li>
+        <li><b>魔咒提取菜单</b>：把多余的附魔书放进「提取」界面，可兑换成魔咒之尘（见第 09 节）。</li>
+      </ul>
+      <div class="callout tip"><span class="tag">💡</span>算账：一本失败率 40% 的书，用 12 颗尘可以压到 5%（约 −35%）。所以重复的垃圾书别丢，提取成尘给好书降失败率更划算。</div>
+    </section>
+
+    <!-- 06 符文 -->
+    <section id="rune">
+      <h2><span class="h2icon">🧿</span>三种符文</h2>
+      <p>符文都在<b>铁砧</b>上使用，作用于装备本身，各司其职：</p>
+      <table>
+        <tr><th>符文</th><th>作用</th><th>消耗</th><th>失败后果</th></tr>
+        <tr><td><b>保护符文</b></td><td>给装备添加一个保护词条。附魔失败时<b>消耗词条，装备不损坏</b></td><td>18 级</td><td>符文被消耗</td></tr>
+        <tr><td><b>升级符文</b></td><td>随机升级装备上<b>一个可升级的附魔</b>（成功率 30% / 50% / 75% / 100% 四种）</td><td>25 级</td><td>失败<b>不损坏</b>装备</td></tr>
+        <tr><td><b>拓展符文</b></td><td>给装备<b>额外增加一个可附魔槽位</b>（需服务器安装 EnchantmentSlots 插件）</td><td>12 级</td><td>—</td></tr>
+      </table>
+      <div class="callout warn"><span class="tag">⚠️</span>升级符文按成功率区分稀有度，是给高价值装备冲满级的道具；升级失败不会炸装备，但符文会消失。拓展符文受当前槽位上限限制，具体上限以服内 EnchantmentSlots 设置为准。</div>
+    </section>
+
+    <!-- 07 重生/反转 -->
+    <section id="tome">
+      <h2><span class="h2icon">📕</span>重生之书 / 反转之书</h2>
+      <p>这两本「书」在<b>附魔台</b>里使用，用来操控抽取结果：</p>
+      <ul>
+        <li><b>重生之书</b>：放进附魔台立即消耗，<b>刷新下一次可选择的魔咒列表</b>。当三个栏位抽出的结果都不满意时，用它重开一次。</li>
+        <li><b>反转之书</b>：放进附魔台立即消耗，<b>获得上一次附魔时抽到的附魔书</b>。注意：被重生之书刷掉的种子不会被记录，反转的是「上一次真正附魔得到的结果」。</li>
+      </ul>
+      <div class="callout tip"><span class="tag">💡</span>省钱思路：先用重生之书把结果刷到心仪方向，再花等级去点栏位；万一失误用反转之书找回上次的产物。</div>
+    </section>
+
+    <!-- 08 破损与修复 -->
+    <section id="broken">
+      <h2><span class="h2icon">🛠️</span>装备破损与修复台</h2>
+      <p>铁砧附魔失败会把装备变成<b>「损坏的×××」</b>（外观变了、属性失效、不能正常使用），必须送进修复台。</p>
+      <h3>修复台流程</h3>
+      <ol>
+        <li>把损坏的装备放进输入槽，点<b>「确认修复」</b>；</li>
+        <li>修复<b>免费</b>，但默认需要 <b>600 秒（10 分钟）</b>；</li>
+        <li>完成后队列物品会提示「已修复」，<b>左键取走</b>；未完成时 <b>Shift+左键可取消并取回</b>原装备。</li>
+      </ol>
+      <h3>同时修复数量</h3>
+      <table>
+        <tr><th>身份</th><th>修复队列上限</th></tr>
+        <tr><td>普通玩家</td><td>3 件</td></tr>
+        <tr><td>拥有 <code>firenchant.vip</code></td><td><b>6 件</b></td></tr>
+      </table>
+      <h3>加速修复</h3>
+      <ul>
+        <li><b>修复材料（50%）</b>：手持材料点击正在修复的装备，<b>减少剩余时间的 50%</b>；</li>
+        <li><b>修复材料（600秒）</b>：直接<b>减少 600 秒</b>剩余时间；</li>
+        <li><b>会员折扣</b>：拥有 <code>firenchant.vip</code> 修复时间打 <b>7 折</b>，<code>firenchant.svip</code> 打 <b>5 折</b>（折扣与材料可叠加使用）。</li>
+      </ul>
+      <div class="callout tip"><span class="tag">💡</span>破损装备的名称和 Lore 会被保留到修复完成，不用担心丢附魔。身上多备几个修复材料，关键时刻能省十分钟。</div>
+    </section>
+
+    <!-- 09 菜单与图鉴 -->
+    <section id="menu">
+      <h2><span class="h2icon">🖥️</span>菜单与物品图鉴</h2>
+      <h3>游戏内界面</h3>
+      <table>
+        <tr><th>界面</th><th>怎么打开</th><th>用途</th></tr>
+        <tr><td>附魔台</td><td>右键附魔台方块</td><td>用起源之书抽附魔书（三个栏位）</td></tr>
+        <tr><td>附魔书图鉴</td><td>附魔台内「查看所有魔咒」按钮，或 <code>/firenchant openmenu enchanted-books-list</code></td><td>翻页浏览全服所有附魔书（只看不拿）</td></tr>
+        <tr><td>魔咒提取台</td><td><code>/firenchant openmenu extract-soul</code></td><td>把附魔书兑换成<b>魔咒之尘</b></td></tr>
+        <tr><td>修复台</td><td><code>/firenchant openmenu repair-table</code></td><td>寄存修复损坏的装备</td></tr>
+      </table>
+      <h3>道具速查</h3>
+      <table>
+        <tr><th>道具</th><th>作用</th></tr>
+        <tr><td>起源之书（16 种）</td><td>附魔台的原料，决定能抽哪类附魔</td></tr>
+        <tr><td>附魔书</td><td>带失败率的成品书，铁砧上附到装备</td></tr>
+        <tr><td>魔咒之尘</td><td>铁砧用法：降失败率，每个 −3%</td></tr>
+        <tr><td>保护符文</td><td>铁砧用法：附魔失败时保护装备不损坏</td></tr>
+        <tr><td>升级符文（30/50/75/100%）</td><td>铁砧用法：随机升级一个可升级附魔</td></tr>
+        <tr><td>拓展符文</td><td>铁砧用法：增加一个附魔槽位</td></tr>
+        <tr><td>重生之书</td><td>附魔台用法：刷新下一次可抽列表</td></tr>
+        <tr><td>反转之书</td><td>附魔台用法：拿回上一次的附魔结果</td></tr>
+        <tr><td>修复材料（50% / 600秒）</td><td>修复台用法：缩短正在修复装备的剩余时间</td></tr>
+        <tr><td>破损装备（损坏的×××）</td><td>铁砧失败的产物，送去修复台</td></tr>
+      </table>
+    </section>
+
+    <!-- 10 附魔一览 -->
+    <section id="list">
+      <h2><span class="h2icon">📜</span>附魔一览表</h2>
+      <p>本服目前收录的附魔（名称与说明取自资源包「附魔书」描述）：</p>
+      <table>
+        <tr><th style="width:20%">附魔</th><th>效果</th></tr>
+        <tr><td><b>锋利</b></td><td>攻击时，增加攻击伤害。</td></tr>
+        <tr><td><b>节肢杀手</b></td><td>攻击节肢生物时，增加攻击伤害。</td></tr>
+        <tr><td><b>亡灵杀手</b></td><td>攻击亡灵生物时，增加攻击伤害。</td></tr>
+        <tr><td><b>破甲</b></td><td>攻击时，降低目标的护甲值和韧性。</td></tr>
+        <tr><td><b>穿刺</b></td><td>攻击时，额外增加伤害。</td></tr>
+        <tr><td><b>致密</b></td><td>下落攻击时，根据掉落格数增加攻击伤害。</td></tr>
+        <tr><td><b>风爆</b></td><td>从高处下落攻击时，在自身位置产生风爆，将自己和周围目标向上弹起。</td></tr>
+        <tr><td><b>火焰附加</b></td><td>攻击目标时，点燃目标。</td></tr>
+        <tr><td><b>击退</b></td><td>攻击目标时，增加击退距离。</td></tr>
+        <tr><td><b>抢夺</b></td><td>击杀生物时，有概率掉落更多的战利品。</td></tr>
+        <tr><td><b>横扫之刃</b></td><td>使用剑横扫时，增加攻击伤害。</td></tr>
+        <tr><td><b>力量</b></td><td>增加射箭时的攻击伤害。</td></tr>
+        <tr><td><b>火矢</b></td><td>击中目标时，点燃目标。</td></tr>
+        <tr><td><b>冲击</b></td><td>射箭命中对方时，增加击退距离。</td></tr>
+        <tr><td><b>无限</b></td><td>射箭不消耗箭矢。</td></tr>
+        <tr><td><b>多重射击</b></td><td>使用弩发射箭时，额外增加箭矢的数量。</td></tr>
+        <tr><td><b>穿透</b></td><td>使用弩发射箭时，箭矢可以穿透命中的目标。</td></tr>
+        <tr><td><b>快速装填</b></td><td>使用弩上膛时，增加箭矢的上膛速度。</td></tr>
+        <tr><td><b>忠诚</b></td><td>掷出三叉戟后，三叉戟会自动返回到你的手中。</td></tr>
+        <tr><td><b>激流</b></td><td>在水中投掷时，向前方冲刺。</td></tr>
+        <tr><td><b>引雷</b></td><td>投掷时，在命中目标的地点召唤闪电。</td></tr>
+        <tr><td><b>保护</b></td><td>减少受到的伤害。</td></tr>
+        <tr><td><b>爆炸保护</b></td><td>减少受到的爆炸伤害。</td></tr>
+        <tr><td><b>火焰保护</b></td><td>减少受到的火焰伤害。</td></tr>
+        <tr><td><b>弹射物保护</b></td><td>减少受到的弹射物伤害。</td></tr>
+        <tr><td><b>摔落保护</b></td><td>减少从高处摔落的伤害。</td></tr>
+        <tr><td><b>荆棘</b></td><td>受到伤害时，有概率对伤害你的生物和玩家造成伤害。</td></tr>
+        <tr><td><b>水下呼吸</b></td><td>减少在水下氧气值的消耗速度。</td></tr>
+        <tr><td><b>水下速掘</b></td><td>增加在水下挖掘方块的速度。</td></tr>
+        <tr><td><b>深海探索者</b></td><td>增加在水底的移动速度。</td></tr>
+        <tr><td><b>冰霜行者</b></td><td>靠近水面时，使水结冰。</td></tr>
+        <tr><td><b>灵魂疾行</b></td><td>增加在灵魂沙上的移动速度。</td></tr>
+        <tr><td><b>迅捷潜行</b></td><td>增加在潜行时的移动速度。</td></tr>
+        <tr><td><b>效率</b></td><td>提高挖掘速度。</td></tr>
+        <tr><td><b>时运</b></td><td>挖掘矿物时，有概率额外获得更多数量的矿石。</td></tr>
+        <tr><td><b>精准采集</b></td><td>挖掘方块时，掉落方块本身。</td></tr>
+        <tr><td><b>耐久</b></td><td>使用时，有概率不减少物品的耐久值。</td></tr>
+        <tr><td><b>经验修补</b></td><td>获得经验时，会消耗一部分经验修复装备的耐久值。</td></tr>
+        <tr><td><b>海之眷顾</b></td><td>钓鱼时，增加获得宝藏的概率。</td></tr>
+        <tr><td><b>饵钓</b></td><td>钓鱼时，加快当前鱼儿的咬钩速度。</td></tr>
+        <tr><td><b>绑定诅咒</b></td><td>穿戴的装备将无法脱下。</td></tr>
+        <tr><td><b>消失诅咒</b></td><td>死亡后，物品将消失。</td></tr>
+      </table>
+      <div class="callout warn"><span class="tag">⚠️</span>不同装备能抽到的附魔受「起源之书」类型限制（剑书出不了海之眷顾）。每本书上都有适用装备的小图标，放书时留意描述里的图标提示。</div>
+    </section>
+
+    <!-- 11 指令 -->
+    <section id="commands">
+      <h2><span class="h2icon">⌨️</span>指令与权限</h2>
+      <h3>玩家指令</h3>
+      <table>
+        <tr><th style="width:46%">指令</th><th>说明</th></tr>
+        <tr><td><code>/firenchant openmenu enchanting-table</code></td><td>打开附魔台界面（也可以直接右键附魔台方块）</td></tr>
+        <tr><td><code>/firenchant openmenu enchanted-books-list</code></td><td>打开全服附魔书图鉴</td></tr>
+        <tr><td><code>/firenchant openmenu extract-soul</code></td><td>打开魔咒提取台，把附魔书换成魔咒之尘</td></tr>
+        <tr><td><code>/firenchant openmenu repair-table</code></td><td>打开修复台，寄存修复损坏装备</td></tr>
+        <tr><td><code>/firenchant version</code></td><td>查看插件版本</td></tr>
+      </table>
+      <p>以上 <code>openmenu</code> 指令都支持在末尾追加玩家名，由管理员代开界面。</p>
+      <h3>管理员指令</h3>
+      <table>
+        <tr><th style="width:46%">指令</th><th>说明</th></tr>
+        <tr><td><code>/firenchant giveenchantedbook …</code></td><td>给予指定玩家一本指定附魔书（可设等级、失败率、已用灵魂数）</td></tr>
+        <tr><td><code>/firenchant brokengear …</code></td><td>破坏 / 修复玩家主手装备（测试破损与修复流程）</td></tr>
+        <tr><td><code>/firenchant debug …</code></td><td>调试：查询书架数量、玩家附魔种子、下次附魔结果</td></tr>
+        <tr><td><code>/firenchant reload</code></td><td>重载配置文件</td></tr>
+      </table>
+      <h3>常见权限节点</h3>
+      <table>
+        <tr><th>权限</th><th>作用</th></tr>
+        <tr><td><code>enchantingtable.use</code></td><td>使用附魔台栏位（默认配置的附魔前置条件）</td></tr>
+        <tr><td><code>firenchant.vip</code></td><td>修复队列 6 件、修复时间 7 折</td></tr>
+        <tr><td><code>firenchant.svip</code></td><td>修复时间 5 折</td></tr>
+        <tr><td><code>firenchant.command.*</code></td><td>对应管理指令的执行权限</td></tr>
+      </table>
+      <div class="callout warn"><span class="tag">⚠️</span>如果你发现附魔台栏位点不亮，先确认等级和青金石是否够，再确认自己是否拥有 <code>enchantingtable.use</code> 权限——缺权限也会导致栏位无法激活。</div>
+    </section>
+
+    <!-- 12 FAQ -->
+    <section id="faq">
+      <h2><span class="h2icon">❓</span>常见问题 FAQ</h2>
+
+      <details class="faq"><summary>附魔台栏位是灰的 / 点不动？</summary><div class="faq-body">
+        三个栏位分别需要：第一行 5 级+1 青金石、第二行 15 级+2 青金石、第三行 20 级+3 青金石，且都要有 <code>enchantingtable.use</code> 权限。任一条件不满足，该栏位就不会亮。
+      </div></details>
+
+      <details class="faq"><summary>为什么附魔还会失败？怎么提高成功率？</summary><div class="faq-body">
+        插件附魔书带有<b>失败率</b>，这是本服的核心数值。降低方法：① 在铁砧上用<b>魔咒之尘</b>，每颗 −3%；② 优先用失败率低的书；③ 挂<b>保护符文</b>，失败时保装备不坏。失败率最低只能到 5%。
+      </div></details>
+
+      <details class="faq"><summary>附魔失败装备变成「损坏的×××」了怎么办？</summary><div class="faq-body">
+        去<b>修复台</b>（<code>/firenchant openmenu repair-table</code>）放进输入槽确认修复，免费但默认等 10 分钟。用<b>修复材料</b>可以立即缩短剩余时间，VIP/SVIP 还有时间折扣。修复后名称和属性都会还原。
+      </div></details>
+
+      <details class="faq"><summary>原版附魔书为什么放不进铁砧？</summary><div class="faq-body">
+        本服<b>禁用了原版附魔书在铁砧上的使用</b>。箱子里的原版附魔书在生成的瞬间会被自动转换成插件附魔书，用转换后的书即可。刷怪塔掉的旧书如果没转换，属于历史物品。
+      </div></details>
+
+      <details class="faq"><summary>重复 / 没用的附魔书怎么处理？</summary><div class="faq-body">
+        用<b>魔咒提取台</b>（<code>/firenchant openmenu extract-soul</code>）把书兑换成<b>魔咒之尘</b>，再用尘给好书降失败率；同名书也可以在铁砧合并提升等级。
+      </div></details>
+
+      <details class="faq"><summary>升级符文和拓展符文有什么区别？</summary><div class="faq-body">
+        <b>升级符文</b>随机升级装备上已有的一个附魔，按 30/50/75/100% 四种成功率；失败不炸装备。<b>拓展符文</b>则是给装备多加一个附魔槽位（需要 EnchantmentSlots 支持）。
+      </div></details>
+
+      <details class="faq"><summary>附魔结果不满意，能重来吗？</summary><div class="faq-body">
+        用<b>重生之书</b>刷新下一次可抽列表；如果只是想找回上一次抽到的结果，用<b>反转之书</b>。注意被重生之书刷掉的种子不会记录。
+      </div></details>
+
+      <details class="faq"><summary>书架还有用吗？怎么摆？</summary><div class="faq-body">
+        有用，抽取沿用原版算法，有效书架数量影响结果等级。按经典摆法在附魔台周围留出「一格空位」再放满书架即可。具体可用管理员的 <code>/firenchant debug</code> 查询有效书架数。
+      </div></details>
+
+      <details class="faq"><summary>vip / svip 权限能带来什么？</summary><div class="faq-body">
+        <code>firenchant.vip</code>：修复队列 3→6 件、修复时间 7 折；<code>firenchant.svip</code>：修复时间 5 折。折扣可与修复材料叠加。
+      </div></details>
+    </section>
+
+    <footer>附魔百科 · FirEnchantKt 3.2.5 · 基于本服配置与源码整理 · 2026-09</footer>
+  </main>
+</div>
+
+<button class="backtop" id="backtop" title="回到顶部">↑</button>
+
+<script>
+  var sidebar = document.getElementById('sidebar');
+  document.getElementById('menuBtn').onclick = function(e){ e.stopPropagation(); sidebar.classList.toggle('open'); };
+  document.addEventListener('click', function(e){
+    if(sidebar.classList.contains('open') && !sidebar.contains(e.target)) sidebar.classList.remove('open');
+  });
+  document.getElementById('navSearch').addEventListener('input', function(){
+    var q = this.value.trim().toLowerCase();
+    document.querySelectorAll('#nav a').forEach(function(a){
+      a.style.display = (!q || a.textContent.toLowerCase().indexOf(q) > -1) ? '' : 'none';
+    });
+    document.querySelectorAll('.nav-group-title').forEach(function(t){ t.style.display = q ? 'none' : ''; });
+  });
+  var links = Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function highlight(){
+    var idx = 0;
+    sections.forEach(function(s, i){ if(s && s.getBoundingClientRect().top < 140) idx = i; });
+    links.forEach(function(a, i){ a.classList.toggle('active', i === idx); });
+  }
+  window.addEventListener('scroll', highlight, {passive:true}); highlight();
+  var backtop = document.getElementById('backtop');
+  window.addEventListener('scroll', function(){ backtop.classList.toggle('show', window.scrollY > 600); }, {passive:true});
+  backtop.onclick = function(){ window.scrollTo({top:0, behavior:'smooth'}); };
+</script>
+</body>
+</html>
